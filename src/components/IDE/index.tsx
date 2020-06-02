@@ -3,6 +3,7 @@ import SplitPane, { Pane } from "react-split-pane";
 import axios from "axios";
 import useSocket from "hooks/useSocket";
 
+import { executeCode } from "api";
 import PlayArrow from "@material-ui/icons/PlayArrow";
 import SaveIcon from "@material-ui/icons/Save";
 import ShareIcon from "@material-ui/icons/Share";
@@ -27,11 +28,15 @@ const IDE: React.FC<IDEProps> = ({ height }) => {
   const [msg, isConnected, socketId] = useSocket(serverUrl, topic);
 
   const handleExecution = async () => {
-    const res = await axios.post("http://localhost:8080/execute", {
+    const executionRes = await executeCode({
       code: JSON.stringify(editorCode),
-      socketId,
+      socketId: socketId as string,
       dockerConfig: "0",
     });
+    console.log(executionRes);
+    if (executionRes.isSuccess) {
+      console.log("COMPLETED");
+    }
   };
 
   return (
