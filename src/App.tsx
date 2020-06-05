@@ -1,5 +1,10 @@
 import React from "react";
 import { RecoilRoot } from "recoil";
+import { Provider } from "react-redux";
+import { PersistGate } from "redux-persist/integration/react";
+
+import { store, persistor } from "store";
+
 import MainTheme from "./theme";
 import "typeface-roboto";
 
@@ -12,13 +17,17 @@ import "./App.css";
 const App: React.FC = () => {
   return (
     <div className="App">
-      <RecoilRoot>
-        <ThemeProvider theme={MainTheme}>
-          <AuthLayout>
-            <Home />
-          </AuthLayout>
-        </ThemeProvider>
-      </RecoilRoot>
+      <Provider store={store}>
+        <RecoilRoot>
+          <PersistGate loading={null} persistor={persistor}>
+            <ThemeProvider theme={MainTheme}>
+              <AuthLayout>
+                <Home />
+              </AuthLayout>
+            </ThemeProvider>
+          </PersistGate>
+        </RecoilRoot>
+      </Provider>
     </div>
   );
 };

@@ -16,6 +16,7 @@ import { useRecoilState } from "recoil";
 import DrawerState from "atoms/DrawerState";
 
 import Logo from "shared/assets/images/logo.png";
+import LogoWhite from "shared/assets/images/logo-white.png";
 
 const drawerWidth = 240;
 
@@ -84,13 +85,13 @@ const Navbar: React.FC = () => {
         </IconButton>
         <div
           style={{
-            background: "#fff",
+            // background: "#fff",
 
             justifyContent: "center",
             alignItems: "center",
           }}
         >
-          <img style={{ width: 40, height: 40 }} src={Logo} />
+          <img style={{ width: 40, height: 40 }} src={LogoWhite} />
         </div>
         <Typography variant="h6" noWrap style={{ marginLeft: 10 }}>
           Syntasso.io
