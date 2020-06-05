@@ -17,11 +17,7 @@ interface IDEProps {
 }
 
 const IDE: React.FC<IDEProps> = ({ height }) => {
-  const [editorCode, setEditorCode] = useState(
-    `const a = () => {
-    console.log("Hello World");
-  }`
-  );
+  const [editorCode, setEditorCode] = useState("console.log('Hello World');");
   const serverUrl = "http://localhost:8080",
     topic = "build-img-stdout";
 
@@ -29,8 +25,8 @@ const IDE: React.FC<IDEProps> = ({ height }) => {
 
   const handleExecution = async () => {
     const executionRes = await executeCode({
-      code: JSON.stringify(editorCode),
-      socketId: socketId as string,
+      code: editorCode,
+      socketId: socketId.toString(),
       dockerConfig: "0",
     });
     console.log(executionRes);
