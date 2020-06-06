@@ -16,12 +16,11 @@ const authAction = (action: string, params: authParams) => async (
   switch (action) {
     case Auth.Login:
       try {
-        // const {
-        //   input: { email, password },
-        // } = params;
-        // const { token } = params;
-        // console.log(email);
-        // console.log(password);
+        const { token } = params;
+
+        const { email, password } = params.input!;
+        console.log(email);
+        console.log(password);
         dispatch({
           type: Auth.Success,
           what: Auth.Login,
