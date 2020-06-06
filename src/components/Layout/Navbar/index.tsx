@@ -14,7 +14,8 @@ import MenuIcon from "@material-ui/icons/Menu";
 import Typography from "@material-ui/core/Typography";
 import { useRecoilState } from "recoil";
 import DrawerState from "atoms/DrawerState";
-
+import ThemeState from "atoms/Theme";
+import { Brightness3, BrightnessHigh } from "@material-ui/icons";
 import Logo from "shared/assets/images/logo.png";
 import LogoWhite from "shared/assets/images/logo-white.png";
 
@@ -51,6 +52,8 @@ const useStyles = makeStyles((theme) =>
 
 const Navbar: React.FC = () => {
   const [drawerState, setDrawerState] = useRecoilState(DrawerState);
+  const [themeState, setThemeState] = useRecoilState(ThemeState);
+
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const classes = useStyles();
   const theme = useTheme();
@@ -64,6 +67,11 @@ const Navbar: React.FC = () => {
   };
   const handleClose = () => {
     setAnchorEl(null);
+  };
+  const handleThemeChange = () => {
+    setThemeState({
+      light: !themeState.light,
+    });
   };
 
   return (
@@ -105,6 +113,15 @@ const Navbar: React.FC = () => {
           color="inherit"
         >
           <AccountCircle />
+        </IconButton>
+        <IconButton
+          aria-label="account of current user"
+          aria-controls="menu-appbar"
+          aria-haspopup="true"
+          onClick={handleThemeChange}
+          color="inherit"
+        >
+          {themeState.light ? <Brightness3 /> : <BrightnessHigh />}
         </IconButton>
         <Menu
           id="menu-appbar"
