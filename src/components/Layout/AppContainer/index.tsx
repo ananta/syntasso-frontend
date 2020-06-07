@@ -1,5 +1,4 @@
 import React from "react";
-import clsx from "clsx";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { makeStyles, createStyles } from "@material-ui/core";
 

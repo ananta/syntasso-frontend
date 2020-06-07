@@ -10,13 +10,11 @@ const useStyles = makeStyles((theme) =>
     },
     content: {
       flexGrow: 1,
-      // padding: theme.spacing(1, 0),
     },
     toolbar: {
       display: "flex",
       alignItems: "center",
       justifyContent: "flex-end",
-      // necessary for content to be below app bar
       ...theme.mixins.toolbar,
     },
   })

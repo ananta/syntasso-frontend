@@ -29,7 +29,6 @@ const Editor: React.FC<EditorInterface> = ({
     <div style={{}}>
       <ReactResizeDetector handleWidth handleHeight onResize={onResize} />
       <AceEditor
-        // height={"300px"}
         height={(height * 17).toString() + "px"}
         width={editorSize.width.toString() + "px"}
         placeholder="// Please add yoeur code here"
