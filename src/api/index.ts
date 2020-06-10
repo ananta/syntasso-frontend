@@ -1,3 +1,3 @@
-import executeCode from "./methods/executeCode";
+import executeCode from './methods/executeCode';
 
 export { executeCode };

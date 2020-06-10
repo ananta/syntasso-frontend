@@ -1,1 +1,1 @@
-declare module "recoil";
+declare module 'recoil';
