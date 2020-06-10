@@ -2,7 +2,7 @@ import React from 'react';
 
 import { PersistGate } from 'redux-persist/integration/react';
 import { useRecoilState } from 'recoil';
-
+import './styles/app.css';
 import { persistor } from 'store';
 
 // import MainTheme from "./theme";

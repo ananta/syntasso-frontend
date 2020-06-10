@@ -25,6 +25,7 @@
         "clsx": "^1.1.0",
         "express-ws": "^4.0.0",
         "node-pty": "^0.9.0",
+        "postcss-import": "^12.0.1",
         "react": "^16.13.1",
         "react-ace": "^9.0.0",
         "react-alert": "^7.0.1",
@@ -50,10 +51,12 @@
         "xterm-for-react": "^1.0.4"
     },
     "scripts": {
-        "start": "react-scripts start",
-        "build": "react-scripts build",
+        "start": "npm run watch:css & react-scripts start",
+        "build": "npm run watch:css & react-scripts build",
         "test": "react-scripts test",
         "eject": "react-scripts eject",
+        "build:css": "postcss src/styles/tailwind.css -o src/styles/app.css",
+        "watch:css": "postcss src/styles/tailwind.css -o src/styles/app.css -w",
         "lint": "eslint '*/**/*.{js,ts,tsx}' --quiet --fix"
     },
     "eslintConfig": {

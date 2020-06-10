@@ -17,6 +17,7 @@ const Home = () => {
             >
                 <div style={{ width: '90%' }}>
                     <IDE height={20} />
+                    <p className="text-red-300">Hello</p>
                 </div>
             </div>
         </div>

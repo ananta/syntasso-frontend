@@ -1,0 +1,7 @@
+@import 'tailwindcss/base';
+
+@import 'tailwindcss/components';
+
+@import 'tailwindcss/utilities';
+
+/* we can add custom css to override the tailwind config here */
