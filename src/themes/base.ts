@@ -3,7 +3,8 @@ import { lightTheme } from "./light";
 import { darkTheme } from "./dark";
 
 export function getThemeByName(theme: string): Theme {
-  return themeMap[theme];
+  console.log(themeMap[theme]);
+  return Object.assign({}, themeMap[theme]);
 }
 
 const themeMap: { [key: string]: Theme } = {

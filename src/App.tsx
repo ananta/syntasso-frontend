@@ -18,7 +18,9 @@ import "./App.css";
 
 const App: React.FC = () => {
   const [themeState] = useRecoilState(ThemeState);
-  console.log(themeState.light);
+
+  // console.log(themeState);
+
   return (
     <PersistGate loading={null} persistor={persistor}>
       <ThemeProvider
