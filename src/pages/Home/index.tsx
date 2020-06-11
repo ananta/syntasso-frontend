@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import IDE from 'components/IDE';
+import { RouteComponentProps } from 'react-router-dom';
 
-const Home = () => {
+const Home: React.FC<RouteComponentProps> = () => {
     return (
         <div>
             <div style={{ height: 100, marginLeft: 40 }}>
