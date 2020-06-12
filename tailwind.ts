@@ -12,6 +12,11 @@ module.exports = {
             xl: '1280px',
         },
         colors: {
+            primary: {
+                default: '#0B3340',
+                lighter: '#135468',
+                dark: '#02212b',
+            },
             transparent: 'transparent',
             current: 'currentColor',
             black: '#000',
