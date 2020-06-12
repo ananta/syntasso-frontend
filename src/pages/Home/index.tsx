@@ -1,11 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
 import IDE from 'components/IDE';
 import { RouteComponentProps } from 'react-router-dom';
+import CardComponent from 'components/Common/CardComponent';
 
 const Home: React.FC<RouteComponentProps> = () => {
     return (
         <div>
-            <div style={{ height: 100, marginLeft: 40 }}>
+            <div className="bg-gray-200 min-h-screen p-8 flex items-center justify-center">
+                <CardComponent />
+            </div>
+            {/* <div style={{ height: 100, marginLeft: 40 }}>
                 <h1>Test Environment</h1>
             </div>
             <div
@@ -20,7 +24,7 @@ const Home: React.FC<RouteComponentProps> = () => {
                     <IDE height={20} />
                     <p className="text-red-300">Hello</p>
                 </div>
-            </div>
+            </div> */}
         </div>
     );
 };

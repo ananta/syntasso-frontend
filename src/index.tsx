@@ -10,7 +10,7 @@ import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(
     <React.StrictMode>
-        <div className="App">
+        <div className="App antialiased text-gray-900">
             <Provider store={store}>
                 <RecoilRoot>
                     <App />

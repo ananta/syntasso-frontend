@@ -1,10 +1,7 @@
 import React, { useEffect } from 'react';
 import AppContainer from 'components/Layout/AppContainer';
 import Navbar from 'components/Layout/Navbar';
-import { SwipableDrawerComponent } from 'components/Layout/Drawer';
-import Container from 'components/Layout/Container';
 import HomeHeader from 'components/Layout/Header/HomeHeader';
-import { History } from 'history';
 import { RouteComponentProps, RouteProps } from 'react-router-dom';
 
 interface Props {
