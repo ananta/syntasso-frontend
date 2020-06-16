@@ -22,7 +22,11 @@ import { ThemeProvider } from '@material-ui/core';
 import { getThemeByName } from 'themes/base';
 
 // Public Pages
-import Home from 'pages/Home';
+import Dashboard from 'pages/Authenticated/Dashboard';
+import About from 'pages/Public/About';
+import Features from 'pages/Public/Features';
+import Pricing from 'pages/Public/Pricing';
+import Home from 'pages/Public/Home';
 
 // Authenticated Pages
 
@@ -30,15 +34,33 @@ const pages = [
     // Public pages
     {
         exact: true,
-        path: Routes.login,
+        path: Routes.home,
         component: Home,
+        layout: PublicLayout,
+    },
+    {
+        exact: true,
+        path: Routes.features,
+        component: Features,
+        layout: PublicLayout,
+    },
+    {
+        exact: true,
+        path: Routes.pricing,
+        component: Pricing,
+        layout: PublicLayout,
+    },
+    {
+        exact: true,
+        path: Routes.about,
+        component: About,
         layout: PublicLayout,
     },
     // Authenticated pages
     {
         exact: false,
         path: Routes.dashboard,
-        component: Home,
+        component: Dashboard,
         layout: AuthLayout,
     },
 ];
