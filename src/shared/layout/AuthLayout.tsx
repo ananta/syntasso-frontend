@@ -2,7 +2,8 @@ import React, { useEffect } from 'react';
 import AppContainer from 'components/Layout/AppContainer';
 import Navbar from 'components/Layout/Navbar';
 // import Container from 'components/Layout/Container';
-import HomeHeader from 'components/Layout/Header/HomeHeader';
+import { useSelector, RootStateOrAny } from 'react-redux';
+import routes from 'routes';
 
 import { RouteComponentProps, RouteProps } from 'react-router-dom';
 
@@ -12,29 +13,32 @@ interface Props {
 
 const AuthLayout: React.FC<Props & RouteComponentProps> = (props) => {
     const { children } = props;
-
+    const Auth = useSelector((state: RootStateOrAny) => state.Auth);
     useEffect(() => {
-        console.log('Component did mount');
-        // check the login credential for the user in this layout
-        // if (!localStorage.getItem("token")) {
-        //     // User is not logged in. Redirect back to login
-        //     this.props.history.push(routes.login);
-        //     message.warning("Please login first");
-        //     return;
-        //   }
-        // check for the token
-        // if token available
-        // navigate to the dashboard
-        // else warn
+        if (!Auth.isLoggedIn) {
+            props.history.push(routes.home);
+        }
     }, []);
-
     return (
         <AppContainer>
             <Navbar />
-            {children}
-            {/* <Navbar />
-            <SwipableDrawerComponent /> */}
-            {/* <Container>{children}</Container> */}
+
+            <div>
+                <header className="bg-white shadow">
+                    <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                        <h1 className="text-3xl font-bold leading-tight text-gray-900">Dashboard</h1>
+                    </div>
+                </header>
+                <main>
+                    <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+                        {/* <!-- Replace with your content --> */}
+                        <div className="px-4 py-6 sm:px-0">
+                            <div className="border-4 border-dashed border-gray-200 rounded-lg h-96">{children}</div>
+                        </div>
+                        {/* <!-- /End replace --> */}
+                    </div>
+                </main>
+            </div>
         </AppContainer>
     );
 };
