@@ -19,7 +19,7 @@ const authAction = (action: string, params: authParams) => async (dispatch: Func
                 dispatch({
                     type: Auth.Success,
                     what: Auth.Login,
-                    data: { user: { token: 'testToken' } },
+                    data: { user: { token: 'testToken', email, password } },
                 });
 
                 break;

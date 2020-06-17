@@ -21,6 +21,7 @@ import About from 'pages/Public/About';
 import Features from 'pages/Public/Features';
 import Pricing from 'pages/Public/Pricing';
 import Home from 'pages/Public/Home';
+import Login from 'pages/Public/Login';
 
 // Authenticated Pages
 
@@ -48,6 +49,12 @@ const pages = [
         exact: true,
         path: Routes.about,
         component: About,
+        layout: PublicLayout,
+    },
+    {
+        exact: true,
+        path: Routes.login,
+        component: Login,
         layout: PublicLayout,
     },
     // Authenticated pages
