@@ -55,11 +55,13 @@ const Navbar = () => {
                             <img className="h-8 w-8" src={Logo} alt="Syntasso logo" />
                         </Link>
                         <div className="hidden md:block">
-                            <div className="ml-10 flex items-baseline">
-                                <NavButton title="Features" to="/features" className="ml-0" />
-                                <NavButton title="Pricing" to="/pricing" />
-                                <NavButton title="About" to="/about" />
-                            </div>
+                            {!isLoggedIn && (
+                                <div className="ml-10 flex items-baseline">
+                                    <NavButton title="Features" to="/features" className="ml-0" />
+                                    <NavButton title="Pricing" to="/pricing" />
+                                    <NavButton title="About" to="/about" />
+                                </div>
+                            )}
                         </div>
                     </div>
                     <div className="hidden md:block">

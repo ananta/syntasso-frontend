@@ -19,7 +19,7 @@ interface IDEProps {
 const IDE: React.FC<IDEProps> = ({ height }) => {
     const [editorCode, setEditorCode] = useState("console.log('Hello World');");
     const serverUrl = 'http://localhost:8080',
-        topic = 'build-img-stdout';
+        topic = 'docker-app-stdout';
 
     const [msg, isConnected, socketId] = useSocket(serverUrl, topic);
 
