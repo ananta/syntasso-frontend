@@ -1,4 +1,6 @@
 import { Auth } from './ActionTypes';
+import { persistor } from 'store';
+import { toast } from 'react-toastify';
 
 interface authParams {
     input?: {
@@ -14,8 +16,8 @@ const authAction = (action: string, params: authParams) => async (dispatch: Func
         case Auth.Login:
             try {
                 const { email, password } = params.input!;
-                console.log(email);
-                console.log(password);
+                await new Promise((resolve) => setTimeout(resolve, 5000));
+                toast.success('Logged In!');
                 dispatch({
                     type: Auth.Success,
                     what: Auth.Login,
@@ -32,7 +34,7 @@ const authAction = (action: string, params: authParams) => async (dispatch: Func
             }
             break;
         case Auth.Logout:
-            dispatch({ type: 'HARD_RESET' });
+            dispatch({ type: Auth.Reset });
             break;
         default:
     }

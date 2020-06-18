@@ -3,6 +3,8 @@ import { Auth } from '../actions/ActionTypes';
 interface authData {
     user: {
         token: string;
+        email: string;
+        password: string;
     };
     isLoggedIn: boolean;
 }
@@ -10,6 +12,8 @@ interface authData {
 const data: authData = {
     user: {
         token: '',
+        email: '',
+        password: '',
     },
     isLoggedIn: false,
 };
@@ -35,6 +39,7 @@ export interface authProps {
 const initialState: authProps = { data };
 
 initialState[Auth.Login] = { ...commonState };
+initialState[Auth.Logout] = { ...commonState };
 
 const authReducer = (
     state: authProps = initialState,
@@ -60,6 +65,7 @@ const authReducer = (
         case Auth.Reset:
             return {
                 ...state,
+                data,
                 [action.what]: {
                     ...commonState,
                 },

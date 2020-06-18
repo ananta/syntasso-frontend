@@ -25,7 +25,7 @@ const PublicLayout: React.FC<Props & RouteComponentProps> = (props) => {
         if (Auth.data.isLoggedIn) {
             props.history.push(routes.dashboard);
         }
-    }, []);
+    }, [Auth]);
 
     return (
         <AppContainer>

@@ -1,13 +1,58 @@
-import React from 'react';
+import React, { useState } from 'react';
 import TextInput from 'components/Common/TextInput';
 import SocialSignIn from 'components/Common/SocialSignIn';
 import { TitleText, MediumTitle, RegularText } from './CustomText';
 import Button from 'components/Common/Button';
+import { toast } from 'react-toastify';
+import { useDispatch, useSelector, RootStateOrAny } from 'react-redux';
+import { Auth } from 'actions/ActionTypes';
+import { useForm, Controller } from 'react-hook-form';
 
 import useLocalStorage from 'hooks/useLocalStorage';
+import authAction from 'actions/AuthActions';
 
+interface InputProps {
+    firstName?: string;
+    lastName?: string;
+    email: string;
+    password: string;
+}
 const HeroWithForm = () => {
+    // const [input, setInput] = useState({
+    //     email: '',
+    //     password: '',
+    //     firstName: '',
+    //     lastName: '',
+    // });
+    const dispatch = useDispatch();
     const [isLoginSelected, setLoginSelected] = useLocalStorage('isLoginSelected', true);
+    const AuthState = useSelector((state: RootStateOrAny) => state.Auth);
+    const { register, handleSubmit, control } = useForm<InputProps>({
+        defaultValues: {
+            email: '',
+            firstName: '',
+            lastName: '',
+        },
+    });
+
+    // const alert = useAlert();
+
+    const handleLogin = (data) => {
+        console.log('here is the data');
+        console.log(data);
+
+        dispatch(
+            authAction(Auth.Login, {
+                input: {
+                    ...data,
+                },
+            }),
+        );
+    };
+
+    const handleRegister = (data) => {
+        console.log(data);
+    };
 
     return (
         <div className="mx-auto max-w-6xl py-10">
@@ -24,55 +69,104 @@ const HeroWithForm = () => {
                 <div className="md:w-1/2 pt-10 flex justify-center  md:justify-end w-full md:w-1/2  md:pt-0 ">
                     <div className="shadow-xl flex-auto max-w-sm p-10 pb-20 bg-white">
                         <SocialSignIn />
-                        <div className="w-full border-t border-gray-400" />
-                        {!isLoginSelected && (
-                            <>
-                                <TextInput
-                                    lableClassNames="text-gray-600"
-                                    isRequired
-                                    lable="First Name"
-                                    placeholder="First Name"
-                                />
-                                <TextInput
-                                    lableClassNames="text-gray-600"
-                                    isRequired
-                                    lable="Last Name"
-                                    placeholder="Last Name"
-                                />
-                            </>
-                        )}
-                        <TextInput lableClassNames="text-gray-600" isRequired lable="Email" placeholder="Email" />
-                        <TextInput
-                            lableClassNames="text-gray-600"
-                            isRequired
-                            secureTextEntry
-                            lable="Password"
-                            placeholder="Password"
-                        />
-                        <div className="mt-6 relative ">
-                            <div className="w-full">
-                                {isLoginSelected ? <Button title="Sign In" /> : <Button title="Register" />}
-                            </div>
-                        </div>
-                        <div className="relative mt-20 text-gray-600 w-full text-center border-b leading-tight mt-1">
-                            <span className="bg-white my-1 px-0">OR</span>
-                        </div>
-                        <div className="relative w-full">
-                            {isLoginSelected ? (
-                                <Button
-                                    title="Register Here"
-                                    color="gray-600"
-                                    onClick={() => setLoginSelected(false)}
-                                />
-                            ) : (
-                                <Button
-                                    // isBusy
-                                    title="Login Here"
-                                    color="gray-600"
-                                    onClick={() => setLoginSelected(true)}
-                                />
+                        <form onSubmit={handleSubmit(isLoginSelected ? handleLogin : handleRegister)}>
+                            <div className="w-full border-t border-gray-400" />
+                            {!isLoginSelected && (
+                                <>
+                                    <Controller
+                                        as={
+                                            <TextInput
+                                                lableClassNames="text-gray-600"
+                                                isRequired
+                                                lable="First Name"
+                                                name="firstName"
+                                                ref={register}
+                                                placeholder="First Name"
+                                            />
+                                        }
+                                        control={control}
+                                        rules={{ required: true }}
+                                        name="firstName"
+                                    />
+                                    <Controller
+                                        as={
+                                            <TextInput
+                                                name="lastName"
+                                                ref={register}
+                                                // value={input.lastName}
+                                                lableClassNames="text-gray-600"
+                                                isRequired
+                                                lable="Last Name"
+                                                placeholder="Last Name"
+                                            />
+                                        }
+                                        control={control}
+                                        rules={{ required: true }}
+                                        name="lastName"
+                                    />
+                                </>
                             )}
-                        </div>
+                            <Controller
+                                as={
+                                    <TextInput
+                                        lableClassNames="text-gray-600"
+                                        isRequired
+                                        lable="Email"
+                                        placeholder="Email"
+                                        name="email"
+                                        ref={register({ required: true })}
+                                    />
+                                }
+                                control={control}
+                                rules={{ required: true }}
+                                name="email"
+                            />
+                            <Controller
+                                as={
+                                    <TextInput
+                                        lableClassNames="text-gray-600"
+                                        isRequired
+                                        ref={register}
+                                        name="password"
+                                        secureTextEntry
+                                        lable="Password"
+                                        placeholder="Password"
+                                    />
+                                }
+                                control={control}
+                                rules={{ required: true }}
+                                name="password"
+                            />
+
+                            <div className="mt-6 relative ">
+                                <div className="w-full">
+                                    {isLoginSelected ? (
+                                        <Button title="Sign In" type="submit" isBusy={AuthState[Auth.Login].isBusy} />
+                                    ) : (
+                                        <Button title="Register" type="submit" />
+                                    )}
+                                </div>
+                            </div>
+                            <div className="relative mt-20 text-gray-600 w-full text-center border-b leading-tight mt-1">
+                                <span className="bg-white my-1 px-0">OR</span>
+                            </div>
+                            <div className="relative w-full">
+                                {isLoginSelected ? (
+                                    <Button
+                                        title="Register Here"
+                                        color="gray-600"
+                                        onClick={() => setLoginSelected(false)}
+                                    />
+                                ) : (
+                                    <Button
+                                        // isBusy
+                                        title="Login Here"
+                                        color="gray-600"
+                                        onClick={() => setLoginSelected(true)}
+                                    />
+                                )}
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>

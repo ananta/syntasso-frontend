@@ -15,10 +15,11 @@ const AuthLayout: React.FC<Props & RouteComponentProps> = (props) => {
     const { children } = props;
     const Auth = useSelector((state: RootStateOrAny) => state.Auth);
     useEffect(() => {
-        if (!Auth.isLoggedIn) {
+        if (!Auth.data.isLoggedIn) {
             props.history.push(routes.home);
         }
-    }, []);
+    }, [Auth]);
+
     return (
         <AppContainer>
             <Navbar />

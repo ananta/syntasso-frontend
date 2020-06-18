@@ -3,7 +3,9 @@ import { Link, NavLink } from 'react-router-dom';
 import Logo from 'shared/assets/images/logo-white.png';
 import { GiHamburgerMenu } from 'react-icons/gi';
 import { MdClose } from 'react-icons/md';
-import { useSelector, RootStateOrAny } from 'react-redux';
+import { useSelector, RootStateOrAny, useDispatch } from 'react-redux';
+import authAction from 'actions/AuthActions';
+import { Auth } from 'actions/ActionTypes';
 
 interface NavButtonProps {
     to: string;
@@ -40,8 +42,10 @@ const MobileNavButton: React.FC<NavButtonProps> = ({ to, title, className }) => 
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [isProfileDropdownVisible, setIsProfileDropdownVisible] = useState(false);
-    const { isLoggedIn } = useSelector((state: RootStateOrAny) => state.Auth);
-
+    const {
+        data: { isLoggedIn },
+    } = useSelector((state: RootStateOrAny) => state['Auth']);
+    const dispatch = useDispatch();
     return (
         <nav className="bg-gray-800">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -122,13 +126,13 @@ const Navbar = () => {
                                                 >
                                                     Settings
                                                 </a>
-                                                <a
-                                                    href="#"
-                                                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                                <button
+                                                    onClick={() => dispatch(authAction(Auth.Logout, {}))}
+                                                    className="w-full block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                                                     role="menuitem"
                                                 >
                                                     Sign out
-                                                </a>
+                                                </button>
                                             </div>
                                         </div>
                                     </>
