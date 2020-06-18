@@ -1,7 +1,9 @@
 import React from 'react';
-import TextInput from 'components/Form/TextInput';
-import SocialSignIn from 'components/Form/SocialSignIn';
+import TextInput from 'components/Common/TextInput';
+import SocialSignIn from 'components/Common/SocialSignIn';
 import { TitleText, MediumTitle, RegularText } from './CustomText';
+import Button from 'components/Common/Button';
+
 import useLocalStorage from 'hooks/useLocalStorage';
 
 const HeroWithForm = () => {
@@ -48,48 +50,29 @@ const HeroWithForm = () => {
                             placeholder="Password"
                         />
                         <div className="mt-6 relative ">
-                            {isLoginSelected ? (
-                                <button
-                                    className="shadow-md font-medium py-2 px-4 text-red-100
-                          cursor-pointer bg-pink-600 rounded text-lg tr-mt  absolute text-center w-full"
-                                >
-                                    Sign In
-                                </button>
-                            ) : (
-                                <button
-                                    className="shadow-md font-medium py-2 px-4 text-red-100
-                          cursor-pointer bg-pink-600 rounded text-lg tr-mt  absolute text-center w-full"
-                                >
-                                    Register
-                                </button>
-                            )}
+                            <div className="w-full">
+                                {isLoginSelected ? <Button title="Sign In" /> : <Button title="Register" />}
+                            </div>
                         </div>
                         <div className="relative mt-20 text-gray-600 w-full text-center border-b leading-tight mt-1">
-                            <span className="bg-white py-2 px-0">OR</span>
+                            <span className="bg-white my-1 px-0">OR</span>
                         </div>
-                        {isLoginSelected ? (
-                            <div className="w-full">
-                                <button
-                                    className="w-full btn focus:outline-none"
+                        <div className="relative w-full">
+                            {isLoginSelected ? (
+                                <Button
+                                    title="Register Here"
+                                    color="gray-600"
                                     onClick={() => setLoginSelected(false)}
-                                >
-                                    <RegularText classNames="text-pink-600 font-bold text-center md:text-xs uppercase">
-                                        Register here
-                                    </RegularText>
-                                </button>
-                            </div>
-                        ) : (
-                            <div className="w-full">
-                                <button
-                                    className="w-full btn focus:outline-none"
+                                />
+                            ) : (
+                                <Button
+                                    // isBusy
+                                    title="Login Here"
+                                    color="gray-600"
                                     onClick={() => setLoginSelected(true)}
-                                >
-                                    <RegularText classNames="text-pink-600 font-bold text-center md:text-xs uppercase">
-                                        Login here
-                                    </RegularText>
-                                </button>
-                            </div>
-                        )}
+                                />
+                            )}
+                        </div>
                     </div>
                 </div>
             </div>

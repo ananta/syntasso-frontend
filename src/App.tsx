@@ -8,6 +8,7 @@ import { Router, Route, Switch, Redirect } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
 
 import 'typeface-roboto';
+import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 
 import Routes from './routes';
 
