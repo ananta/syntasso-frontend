@@ -1,0 +1,49 @@
+- Refactor for js-file-upload test server
+- Fix Authenication flow
+- remove react-alert & add react-toastify
+- Add react-alert provider with Custom Alert
+- Create Button with loader and refactor.
+- Add react loader spinner
+- Add Login page.
+- Add useLocalStorage hook.
+- Refactor UI components.
+- Add Pricing table.
+- Restrucutre Public Layouts, Authenticated Layouts.
+- Add basic assets.
+- Add Building blocks for page layouts.
+- Add pages for public routes.
+- Update Layout arch.
+- Add dummy Info component.
+- Dummy FAQ component
+- Add hero with login form
+- Add public routes
+- Updates to Navbar component
+- Add hook to keep track of keyboard pressed sym.
+- Override scaling behaviour for tailwind.
+- Remove material ui
+- Add Card Component.
+- Update dynamic routing
+- Add a basic Header Component
+- Fix architecuture for pvt/public routes
+- Add framermotion with history
+- Fixes for tailwind css
+- Minor updates
+- Remove default propType config. and refactor
+- Add tailwind configurtion
+- Add PostCss Config.
+- Add Prettier and TailwindCss
+- Update Eslint config for prettier.
+- Add Material UI theme atom
+- Minor refactor.
+- Update Theme Toggle with Theme Atom
+- Add variation of themes
+- Refactor
+- Refactor.
+- Setup reducers structure.
+- Add Auth actions.
+- update the server address for cors integration
+- Update dark variant logo.
+- Update strictness for typescript.
+- Add libraries for redux integration.
+- Setup a basic api request pattern
+- Setup basic react project
