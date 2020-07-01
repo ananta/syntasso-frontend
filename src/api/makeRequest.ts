@@ -1,14 +1,8 @@
 import { BASE_URL } from './EndPoint';
-import axios from 'axios';
-
-const Method = {
-    Get: 'GET',
-    Post: 'POST',
-    Delete: 'DELETE',
-};
+import axios, { AxiosRequestConfig, Method } from 'axios';
 
 interface RequestObject {
-    method: string;
+    method: Method;
     path: string;
     data: Object;
     token?: string | string;
@@ -17,21 +11,36 @@ interface RequestObject {
 
 interface RequestResponse {
     isSuccess: boolean;
-    response: object;
+    response: {
+        message: string;
+        data: any;
+        isSuccess: boolean;
+    };
     message: string | null | undefined;
 }
 
 const makeRequest = async ({ method, path, data, token, ...rest }: RequestObject): Promise<RequestResponse> => {
     const request = axios;
-    const options: Object = {
+    const options: AxiosRequestConfig = {
         url: BASE_URL + path,
         method,
         data,
+        headers: {},
         ...rest,
     };
+    if (token && token.trim().length > 1) {
+        options.headers = {
+            // $FlowFixMe
+            Authorization: 'Bearer ' + token,
+            'Content-Type': 'application/json',
+        };
+    } else {
+        console.log('TOKEN NOT FOUND');
+    }
     try {
         console.log(options);
         const response = await request(options);
+        console.log(response.data);
         return {
             isSuccess: true,
             response: response.data,
@@ -41,11 +50,9 @@ const makeRequest = async ({ method, path, data, token, ...rest }: RequestObject
         return {
             isSuccess: false,
             response: err.response,
-            message: err.message,
+            message: (err.response.data && err.response.data.message && err.response.data.message) || err.message,
         };
     }
 };
-
-export { Method };
 
 export default makeRequest;

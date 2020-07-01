@@ -3,7 +3,7 @@ import { Auth } from '../actions/ActionTypes';
 interface authData {
     user: {
         token: string;
-        email: string;
+        username: string;
         password: string;
     };
     isLoggedIn: boolean;
@@ -12,7 +12,7 @@ interface authData {
 const data: authData = {
     user: {
         token: '',
-        email: '',
+        username: '',
         password: '',
     },
     isLoggedIn: false,
@@ -45,7 +45,7 @@ const authReducer = (
     state: authProps = initialState,
     action: {
         type: string;
-        data?: Object;
+        data?: any;
         message?: string | null | undefined;
         what: string;
     },
@@ -77,10 +77,7 @@ const authReducer = (
             if (action.what === Auth.Login) {
                 state.data = {
                     isLoggedIn: true,
-                    user: {
-                        token: action.data,
-                        ...data.user,
-                    },
+                    user: action.data.user,
                 };
             } else if (action.what === Auth.Logout) {
                 return {

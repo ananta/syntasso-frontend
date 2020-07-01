@@ -1,3 +1,5 @@
 import executeCode from './methods/executeCode';
+import login from './methods/login';
+import register from './methods/register';
 
-export { executeCode };
+export { executeCode, login, register };

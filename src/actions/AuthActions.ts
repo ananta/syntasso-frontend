@@ -1,13 +1,13 @@
 import { Auth } from './ActionTypes';
-import { persistor } from 'store';
+
 import { toast } from 'react-toastify';
+import { login } from 'api';
 
 interface authParams {
     input?: {
-        email: string;
+        username: string;
         password: string;
     };
-    token?: string;
 }
 
 const authAction = (action: string, params: authParams) => async (dispatch: Function) => {
@@ -15,17 +15,19 @@ const authAction = (action: string, params: authParams) => async (dispatch: Func
     switch (action) {
         case Auth.Login:
             try {
-                const { email, password } = params.input!;
-                await new Promise((resolve) => setTimeout(resolve, 5000));
-                toast.success('Logged In!');
+                const res = await login(params.input);
+                if (!res.isSuccess) {
+                    throw new Error((res.message && res.message) || 'Server under maintainance!');
+                }
+                toast.success(`Welcome ${res.response.data.username}`);
                 dispatch({
                     type: Auth.Success,
                     what: Auth.Login,
-                    data: { user: { token: 'testToken', email, password } },
+                    data: { user: { ...res.response.data } },
                 });
-
                 break;
             } catch (err) {
+                toast.error(err.message);
                 dispatch({
                     type: Auth.Failed,
                     what: Auth.Login,

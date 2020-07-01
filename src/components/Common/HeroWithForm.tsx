@@ -3,32 +3,29 @@ import TextInput from 'components/Common/TextInput';
 import SocialSignIn from 'components/Common/SocialSignIn';
 import { TitleText, MediumTitle, RegularText } from './CustomText';
 import Button from 'components/Common/Button';
+import { register as registerUser } from 'api';
 import { toast } from 'react-toastify';
 import { useDispatch, useSelector, RootStateOrAny } from 'react-redux';
 import { Auth } from 'actions/ActionTypes';
 import { useForm, Controller } from 'react-hook-form';
-
 import useLocalStorage from 'hooks/useLocalStorage';
 import authAction from 'actions/AuthActions';
 
 interface InputProps {
     firstName?: string;
     lastName?: string;
-    email: string;
+    email?: string;
+    username: string;
     password: string;
 }
 const HeroWithForm = () => {
-    // const [input, setInput] = useState({
-    //     email: '',
-    //     password: '',
-    //     firstName: '',
-    //     lastName: '',
-    // });
+    const [isRegistering, setIsRegistering] = useState(false);
     const dispatch = useDispatch();
     const [isLoginSelected, setLoginSelected] = useLocalStorage('isLoginSelected', true);
     const AuthState = useSelector((state: RootStateOrAny) => state.Auth);
     const { register, handleSubmit, control } = useForm<InputProps>({
         defaultValues: {
+            username: '',
             email: '',
             firstName: '',
             lastName: '',
@@ -38,9 +35,6 @@ const HeroWithForm = () => {
     // const alert = useAlert();
 
     const handleLogin = (data) => {
-        console.log('here is the data');
-        console.log(data);
-
         dispatch(
             authAction(Auth.Login, {
                 input: {
@@ -50,8 +44,20 @@ const HeroWithForm = () => {
         );
     };
 
-    const handleRegister = (data) => {
-        console.log(data);
+    const handleRegister = async (data) => {
+        console.log('Registering');
+        setIsRegistering(true);
+        try {
+            const res = await registerUser(data);
+            if (!res.isSuccess) {
+                throw new Error((res.message && res.message) || 'Server under maintainance!');
+            }
+            toast.success('Registration successful, Please check your email to verify your account!');
+            setIsRegistering(false);
+            setLoginSelected(true);
+        } catch (err) {
+            setIsRegistering(false);
+        }
     };
 
     return (
@@ -104,6 +110,21 @@ const HeroWithForm = () => {
                                         rules={{ required: true }}
                                         name="lastName"
                                     />
+                                    <Controller
+                                        as={
+                                            <TextInput
+                                                lableClassNames="text-gray-600"
+                                                isRequired
+                                                lable="Email"
+                                                placeholder="Email"
+                                                name="email"
+                                                ref={register({ required: true })}
+                                            />
+                                        }
+                                        control={control}
+                                        rules={{ required: true }}
+                                        name="email"
+                                    />
                                 </>
                             )}
                             <Controller
@@ -111,15 +132,15 @@ const HeroWithForm = () => {
                                     <TextInput
                                         lableClassNames="text-gray-600"
                                         isRequired
-                                        lable="Email"
-                                        placeholder="Email"
-                                        name="email"
+                                        lable="Username"
+                                        placeholder="Username"
+                                        name="username"
                                         ref={register({ required: true })}
                                     />
                                 }
                                 control={control}
                                 rules={{ required: true }}
-                                name="email"
+                                name="username"
                             />
                             <Controller
                                 as={
@@ -143,7 +164,7 @@ const HeroWithForm = () => {
                                     {isLoginSelected ? (
                                         <Button title="Sign In" type="submit" isBusy={AuthState[Auth.Login].isBusy} />
                                     ) : (
-                                        <Button title="Register" type="submit" />
+                                        <Button title="Register" type="submit" isBusy={isRegistering} />
                                     )}
                                 </div>
                             </div>

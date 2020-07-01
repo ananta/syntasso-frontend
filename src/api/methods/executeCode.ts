@@ -1,4 +1,4 @@
-import makeRequest, { Method } from 'api/makeRequest';
+import makeRequest from 'api/makeRequest';
 import EndPoint from 'api/EndPoint';
 
 interface ExecuteCodeType {
@@ -9,7 +9,7 @@ interface ExecuteCodeType {
 
 const executeCode = ({ code, socketId, dockerConfig }: ExecuteCodeType) => {
     return makeRequest({
-        method: Method.Post,
+        method: 'post',
         path: EndPoint.Execute,
         data: { code, socketId, dockerConfig },
     });
