@@ -19,6 +19,7 @@ import challengeAction from 'actions/ChallengeActions';
 import { Challenge } from 'actions/ActionTypes';
 import removeChallenge from 'api/methods/removeChallenge';
 import createSubmission from 'api/methods/codeSubmission';
+import TestCaseViewer from './Components/TestCaseViewer';
 
 interface ProblemInfoProps extends RouteComponentProps {
     challenge: {
@@ -106,6 +107,7 @@ const main = () => {
 
             console.log({ newSubmission });
             console.log(submissionRes);
+            if (!submissionRes.isSuccess) throw new Error(submissionRes.message);
             toast.success('Submitted code to the server');
             setIsSubmissionLoading(false);
         } catch (err) {
@@ -215,6 +217,9 @@ const main = () => {
                         <Terminal height={20} msg={msgTestLogs} socketId={socketId} topic={topic} />
                     </div>
                 </div>
+            </div>
+            <div className="pt-8">
+                <TestCaseViewer />
             </div>
         </div>
     );

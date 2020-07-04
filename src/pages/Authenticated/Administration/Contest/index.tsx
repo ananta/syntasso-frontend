@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Route, Switch, RouteComponentProps, useParams, useRouteMatch, NavLink, Redirect } from 'react-router-dom';
 
-import { MediumTitle, RegularText } from 'components/Common/CustomText';
 import CreateContest from './Create';
 import ManageContest from './Manage';
 
