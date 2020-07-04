@@ -6,6 +6,7 @@ module.exports = {
     separator: ':',
     theme: {
         screens: {
+            xs: '480px',
             sm: '640px',
             md: '768px',
             lg: '1024px',
@@ -316,6 +317,7 @@ module.exports = {
         inset: {
             '0': '0',
             auto: 'auto',
+            '-130': '-50rem',
         },
         letterSpacing: {
             tighter: '-0.05em',
@@ -367,6 +369,8 @@ module.exports = {
             '4xl': '56rem',
             '5xl': '64rem',
             '6xl': '72rem',
+            '7xl': '84rem',
+            '8xl': '98rem',
             full: '100%',
             ...breakpoints(theme('screens')),
         }),
