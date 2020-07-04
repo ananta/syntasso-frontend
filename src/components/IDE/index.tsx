@@ -21,8 +21,9 @@ const IDE: React.FC<IDEProps> = ({ height }) => {
     const serverUrl = 'http://localhost:8080',
         topic = 'docker-app-stdout';
 
-    const [msg, isConnected, socketId] = useSocket(serverUrl, topic);
-
+    const [msg, isConnected, socketId] = useSocket(serverUrl);
+    console.log(socketId);
+    console.log(isConnected);
     const handleExecution = async () => {
         const executionRes = await executeCode({
             code: editorCode,
