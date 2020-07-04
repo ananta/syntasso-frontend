@@ -4,7 +4,11 @@ import { MediumTitle } from 'components/Common/CustomText';
 import Button from 'components/Common/Button';
 import { history } from 'utils/History';
 
-const Moderaotrs: React.FC<RouteComponentProps> = (RouteProps) => {
+interface RouteWithProps extends RouteComponentProps {
+    challengeId: string;
+}
+
+const Moderaotrs: React.FC<RouteWithProps> = (RouteProps) => {
     const { url } = useRouteMatch();
     return (
         <div>

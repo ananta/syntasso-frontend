@@ -97,12 +97,36 @@ const Challenges: React.FC<EditChallengeParms> = (RouteProps) => {
                                 path={`${url}/details`}
                                 render={(props) => <Details challengeId={challengeId} {...props} />}
                             />
-                            <Route exact path={`${url}/codestub`} render={(props) => <CodeStubs {...props} />} />
-                            <Route exact path={`${url}/editorial`} render={(props) => <Editorial {...props} />} />
-                            <Route exact path={`${url}/testcase`} render={(props) => <Testcase {...props} />} />
-                            <Route exact path={`${url}/language`} render={(props) => <Language {...props} />} />
-                            <Route exact path={`${url}/moderator`} render={(props) => <Moderators {...props} />} />
-                            <Route exact path={`${url}/settings`} render={(props) => <Settings {...props} />} />
+                            <Route
+                                exact
+                                path={`${url}/codestub`}
+                                render={(props) => <CodeStubs challengeId={challengeId} {...props} />}
+                            />
+                            <Route
+                                exact
+                                path={`${url}/editorial`}
+                                render={(props) => <Editorial challengeId={challengeId} {...props} />}
+                            />
+                            <Route
+                                exact
+                                path={`${url}/testcase`}
+                                render={(props) => <Testcase challengeId={challengeId} {...props} />}
+                            />
+                            <Route
+                                exact
+                                path={`${url}/language`}
+                                render={(props) => <Language challengeId={challengeId} {...props} />}
+                            />
+                            <Route
+                                exact
+                                path={`${url}/moderator`}
+                                render={(props) => <Moderators challengeId={challengeId} {...props} />}
+                            />
+                            <Route
+                                exact
+                                path={`${url}/settings`}
+                                render={(props) => <Settings challengeId={challengeId} {...props} />}
+                            />
                             <Route
                                 exact
                                 path={`${url}/:challengeId/`}

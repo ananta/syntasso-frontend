@@ -6,7 +6,11 @@ import { MediumTitle } from 'components/Common/CustomText';
 import Button from 'components/Common/Button';
 import { history } from 'utils/History';
 
-const Editorial: React.FC<RouteComponentProps> = (RouteProps) => {
+interface RouteWithProps extends RouteComponentProps {
+    challengeId: string;
+}
+
+const Editorial: React.FC<RouteWithProps> = (RouteProps) => {
     const { url } = useRouteMatch();
     const [input, setInput] = useState({
         editorialContent: EditorState.createEmpty(),

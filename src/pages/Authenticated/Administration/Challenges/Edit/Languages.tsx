@@ -6,7 +6,11 @@ import NotFound from 'components/Common/NotFound';
 import Button from 'components/Common/Button';
 import { history } from 'utils/History';
 
-const Languages: React.FC<RouteComponentProps> = (RouteProps) => {
+interface RouteWithProps extends RouteComponentProps {
+    challengeId: string;
+}
+
+const Languages: React.FC<RouteWithProps> = (RouteProps) => {
     const { url } = useRouteMatch();
     return (
         <div>

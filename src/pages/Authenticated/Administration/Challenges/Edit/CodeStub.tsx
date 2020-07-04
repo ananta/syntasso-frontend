@@ -5,7 +5,11 @@ import Button from 'components/Common/Button';
 import { history } from 'utils/History';
 import NotFound from 'components/Common/NotFound';
 
-const CodeStubs: React.FC<RouteComponentProps> = (RouteProps) => {
+interface RouteWithProps extends RouteComponentProps {
+    challengeId: string;
+}
+
+const CodeStubs: React.FC<RouteWithProps> = (RouteProps) => {
     const { url } = useRouteMatch();
     return (
         <div>
