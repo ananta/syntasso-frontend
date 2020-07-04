@@ -20,10 +20,7 @@ const Manage: React.FC<RouteComponentProps> = (RouteProps) => {
     console.log(Challenges.data);
     const isBusy = Challenges[Challenge.Get].isBusy;
     useEffect(() => {
-        if (!Challenges.data || Challenges.data.length < 1) {
-            // get the data from the internet
-            dispatch(challengeAction(Challenge.Get, {}));
-        }
+        dispatch(challengeAction(Challenge.Get, {}));
     }, []);
     const AuthState = useSelector((state) => state['Auth'].data);
 
@@ -147,7 +144,9 @@ const Manage: React.FC<RouteComponentProps> = (RouteProps) => {
                                                 </div>
                                             </td>
                                             <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                                <p className="text-gray-900 whitespace-no-wrap">{`/challenges/${challenge.challengeId}`}</p>
+                                                <Link to={'/challenge/' + challenge.challengeId}>
+                                                    <p className="text-gray-900 whitespace-no-wrap">{`/challenge/${challenge.challengeId}`}</p>
+                                                </Link>
                                             </td>
                                             <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm uppercase">
                                                 <p className="text-gray-900 whitespace-no-wrap">
