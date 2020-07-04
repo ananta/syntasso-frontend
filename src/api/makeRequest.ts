@@ -13,7 +13,9 @@ interface RequestResponse {
     isSuccess: boolean;
     response: {
         message: string;
-        data: any;
+        data?: any;
+        challenge?: any;
+        challenges?: any;
         isSuccess: boolean;
     };
     message: string | null | undefined;
