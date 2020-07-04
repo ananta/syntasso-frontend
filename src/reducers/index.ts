@@ -2,8 +2,11 @@ import { combineReducers, CombinedState } from 'redux';
 import storage from 'redux-persist/lib/storage';
 
 import Auth from './Auth';
+import Challenge from './Challenges';
+
 const appReducer = combineReducers({
     Auth,
+    Challenge,
 });
 
 interface actionType {

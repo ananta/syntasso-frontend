@@ -20,7 +20,13 @@ const crudActions = (name: string) => ({
     Remove: `${name}_REMOVE`,
     Get: `${name}_GET`,
     Update: `${name}_UPDATE`,
+    Reset: `${name}_RESET`,
     Clear: `${name}_CLEAR`,
 });
 
-export { Auth };
+const Challenge = {
+    ...basicActions('CHALLENGE'),
+    ...crudActions('CHALLENGE'),
+};
+
+export { Auth, Challenge };
