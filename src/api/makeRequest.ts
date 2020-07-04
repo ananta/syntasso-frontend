@@ -17,6 +17,7 @@ interface RequestResponse {
         challenge?: any;
         challenges?: any;
         isSuccess: boolean;
+        testcases?: any;
     };
     message: string | null | undefined;
 }
