@@ -1,15 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { RouteComponentProps, Redirect, useRouteMatch } from 'react-router-dom';
-import { MediumTitle } from 'components/Common/CustomText';
+import { RouteComponentProps, useRouteMatch } from 'react-router-dom';
 import Button from 'components/Common/Button';
 import Modal from 'react-modal';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { createTestcase, getChallengeTestcase } from 'api';
+import { createTestcase, getChallengeTestcase, removeTestcase } from 'api';
 
-import { history } from 'utils/History';
 import InfoWithButton from 'components/Common/InfoWithButton';
-import { Auth } from 'actions/ActionTypes';
 import { toast } from 'react-toastify';
 
 const customStyles = {
@@ -49,6 +46,7 @@ const Testcase: React.FC<RouteWithProps> = (RouteProps) => {
         },
         isVisible: false,
     });
+
     function openModal() {
         setIsOpen(true);
     }
@@ -83,6 +81,20 @@ const Testcase: React.FC<RouteWithProps> = (RouteProps) => {
         } catch (err) {
             toast.error(err.message);
             setIsGettingTestcase(false);
+        }
+    };
+
+    const removeTest = async (testcaseId: string) => {
+        try {
+            const testCasesRes = await removeTestcase({
+                token: AuthState.user.token,
+                testcaseId,
+            });
+            if (!testCasesRes.isSuccess) throw new Error(testCasesRes.message);
+            getTestCase();
+            toast.success('Removed Testcase with id: ' + testcaseId);
+        } catch (err) {
+            toast.error(err.message);
         }
     };
 
@@ -162,7 +174,14 @@ const Testcase: React.FC<RouteWithProps> = (RouteProps) => {
                                                 </div>
                                             </td>
                                             <td className="text-left py-3 px-4">
-                                                <a className="hover:text-red-500 text-red-600 ">Remove</a>
+                                                <div
+                                                    onClick={() => {
+                                                        removeTest(testcase.testcaseId);
+                                                    }}
+                                                    className="hover:text-red-500 text-red-600 "
+                                                >
+                                                    Remove
+                                                </div>
                                             </td>
                                         </tr>
                                     ))}

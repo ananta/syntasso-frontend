@@ -7,6 +7,7 @@ import isUserAuthorizedToChallenge from './methods/isUserAuthorizedToChallenge';
 import updateChallenge from './methods/updateChallengeInfo';
 import createTestcase from './methods/createTestcase';
 import getChallengeTestcase from './methods/getChallengeTestcase';
+import removeTestcase from './methods/removeTestcase';
 
 export {
     executeCode,
@@ -18,4 +19,5 @@ export {
     updateChallenge,
     createTestcase,
     getChallengeTestcase,
+    removeTestcase,
 };
