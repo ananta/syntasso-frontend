@@ -4,12 +4,14 @@ import { MediumTitle, RegularText } from 'components/Common/CustomText';
 import Button from 'components/Common/Button';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
 
 import { history } from 'utils/History';
 import InfoWithButton from 'components/Common/InfoWithButton';
 import LogoWhite from 'shared/assets/images/logo-white.png';
 import challengeAction from 'actions/ChallengeActions';
 import { Challenge } from 'actions/ActionTypes';
+import removeChallenge from 'api/methods/removeChallenge';
 
 const Manage: React.FC<RouteComponentProps> = (RouteProps) => {
     const { url } = useRouteMatch();
@@ -23,6 +25,22 @@ const Manage: React.FC<RouteComponentProps> = (RouteProps) => {
             dispatch(challengeAction(Challenge.Get, {}));
         }
     }, []);
+    const AuthState = useSelector((state) => state['Auth'].data);
+
+    const removeChallengeInfo = async (challengeId: string) => {
+        try {
+            const challengeRemoveRes = await removeChallenge({
+                token: AuthState.user.token,
+                challengeId,
+            });
+            if (!challengeRemoveRes.isSuccess) throw new Error(challengeRemoveRes.message);
+            dispatch(challengeAction(Challenge.Get, {}));
+            toast.success('Removed Challenge Successfully ');
+        } catch (err) {
+            toast.error(err.message);
+        }
+    };
+
     return (
         <div>
             <InfoWithButton onClick={() => history.push(url + '/create')} title="Create Challenge">
@@ -99,7 +117,10 @@ const Manage: React.FC<RouteComponentProps> = (RouteProps) => {
                                             Slug
                                         </th>
                                         <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                                            Owner
+                                            Difficulty
+                                        </th>
+                                        <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                            Settings
                                         </th>
                                     </tr>
                                 </thead>
@@ -128,14 +149,21 @@ const Manage: React.FC<RouteComponentProps> = (RouteProps) => {
                                             <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                                 <p className="text-gray-900 whitespace-no-wrap">{`/challenges/${challenge.challengeId}`}</p>
                                             </td>
-                                            <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                            <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm uppercase">
                                                 <p className="text-gray-900 whitespace-no-wrap">
                                                     {challenge.difficulty || 'undefined'}
                                                 </p>
                                             </td>
+                                            <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                                <p
+                                                    className="text-red-600 whitespace-no-wrap cursor-pointer"
+                                                    onClick={() => removeChallengeInfo(challenge.challengeId)}
+                                                >
+                                                    Remove
+                                                </p>
+                                            </td>
                                         </tr>
                                     ))}
-                                    {/* Manage Table Table Rows to enter the data */}
                                 </tbody>
                             </table>
                             <div className="px-5 py-5 bg-white border-t flex flex-col xs:flex-row items-center xs:justify-between          ">

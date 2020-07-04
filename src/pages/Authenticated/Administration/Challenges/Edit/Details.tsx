@@ -2,12 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { RouteProps } from 'react-router-dom';
 import { EditorState, convertFromRaw, convertToRaw } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
+import { useDispatch } from 'react-redux';
 import Button from 'components/Common/Button';
 import Loader from 'react-loader-spinner';
 
 import { isUserAuthorizedToChallenge, updateChallenge } from 'api';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
+import challengeAction from 'actions/ChallengeActions';
+import { Challenge } from 'actions/ActionTypes';
 
 interface EditPageProps extends RouteProps {
     challengeId: string;
@@ -17,7 +20,7 @@ const Details: React.FC<EditPageProps> = (EditPageProps) => {
     const { challengeId } = EditPageProps;
     const [isDetailsLoading, setIsDetailsLoading] = useState(false);
     const [isDetailsUpdating, setIsDetailsUpdating] = useState(false);
-
+    const dispatch = useDispatch();
     const [input, setInput] = useState({
         name: '',
         description: '',
@@ -120,6 +123,7 @@ const Details: React.FC<EditPageProps> = (EditPageProps) => {
                     EditorState.createEmpty(),
             }));
             toast.success('Updated Challenge Information');
+            dispatch(challengeAction(Challenge.Get, {}));
             window.scrollTo(0, 0);
             setIsDetailsUpdating(false);
         } catch (err) {
