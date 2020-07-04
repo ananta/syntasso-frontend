@@ -160,11 +160,21 @@ const HeroWithForm = () => {
                             />
 
                             <div className="mt-6 relative ">
-                                <div className="w-full">
+                                <div className="w-full relative">
                                     {isLoginSelected ? (
-                                        <Button title="Sign In" type="submit" isBusy={AuthState[Auth.Login].isBusy} />
+                                        <Button
+                                            classNames="absolute"
+                                            title="Sign In"
+                                            type="submit"
+                                            isBusy={AuthState[Auth.Login].isBusy}
+                                        />
                                     ) : (
-                                        <Button title="Register" type="submit" isBusy={isRegistering} />
+                                        <Button
+                                            classNames="absolute"
+                                            title="Register"
+                                            type="submit"
+                                            isBusy={isRegistering}
+                                        />
                                     )}
                                 </div>
                             </div>

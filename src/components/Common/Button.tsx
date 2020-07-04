@@ -8,24 +8,27 @@ interface ButtonProps {
     title: string;
     isBusy?: boolean;
     classNames?: string;
+    disabled?: boolean;
     color?: string;
-    onClick?: () => void;
+    onClick?: (e) => void;
 }
 
 const Button: React.FC<ButtonProps & React.HTMLProps<HTMLButtonElement>> = ({
     title,
     isBusy,
     classNames,
+    disabled,
     onClick,
     color,
 }) => {
     return (
         <button
-            disabled={isBusy}
+            type="button"
+            disabled={disabled}
             className={classnames(
                 `outline-none focus:outline-none focus:shadow-outline shadow-md font-medium py-2 px-4 text-red-100  cursor-pointer bg-${
                     color ? color : 'pink-600'
-                }  rounded text-lg tr-mt  absolute text-center w-full`,
+                }  rounded text-md tr-mt  text-center w-full`,
                 classNames,
             )}
             onClick={onClick}
@@ -35,9 +38,7 @@ const Button: React.FC<ButtonProps & React.HTMLProps<HTMLButtonElement>> = ({
                     <Loader type="TailSpin" color="#FFF" height={25} width={25} />
                 </div>
             ) : (
-                <RegularText classNames="text-gray-100 font-bold text-center md:text-base uppercase">
-                    {title}
-                </RegularText>
+                <RegularText classNames="text-gray-100  text-center md:text-base ">{title}</RegularText>
             )}
         </button>
     );

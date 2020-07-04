@@ -6,7 +6,7 @@ interface CustomTextProps {
     children: React.ReactNode;
 }
 const TitleText: React.FC<CustomTextProps> = ({ classNames, children }) => (
-    <div className={classnames('text-center text-4xl text-black font-medium leading-snug tracking-wider', classNames)}>
+    <div className={classnames('text-left text-3xl text-black font-medium leading-snug tracking-wider', classNames)}>
         {children}
     </div>
 );
@@ -16,7 +16,7 @@ const RegularText: React.FC<CustomTextProps> = ({ classNames, children }) => (
 );
 
 const MediumTitle: React.FC<CustomTextProps> = ({ classNames, children }) => (
-    <div className={classnames('mt-2 px-6 text-xl text-black', classNames)}>{children}</div>
+    <div className={classnames('text-xl text-black align-middle', classNames)}>{children}</div>
 );
 
 export { TitleText, MediumTitle, RegularText };
