@@ -9,7 +9,7 @@ interface getChallengeProps {
 const getChallenge = ({ token, challengeId }: getChallengeProps) => {
     return makeRequest({
         method: 'get',
-        path: EndPoint.Challenges,
+        path: EndPoint.Challenges + `/${challengeId}`,
         token,
         data: {},
     });

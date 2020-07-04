@@ -24,6 +24,8 @@ import Dashboard from 'pages/Authenticated/Dashboard';
 import Contest from 'pages/Authenticated/Contest';
 import Jobs from 'pages/Authenticated/Jobs';
 import Leaderboard from 'pages/Authenticated/Leaderboard';
+import Challenge from 'pages/Authenticated/Challenge';
+
 import Certifications from 'pages/Authenticated/Certifications';
 import Administration from 'pages/Authenticated/Administration';
 // import CreateContest from 'pa'
@@ -78,6 +80,13 @@ const pages = [
         exact: false,
         path: Routes.dashboard,
         component: Dashboard,
+        layout: AuthLayout,
+    },
+    {
+        title: 'Challenge',
+        exact: false,
+        path: Routes.challenge,
+        component: Challenge,
         layout: AuthLayout,
     },
     {

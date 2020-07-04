@@ -10,6 +10,7 @@ export default {
     contest: '/contest',
     jobs: '/jobs',
     leaderboard: '/leaderboard',
+    challenge: '/challenge/:challengeId',
     administration: '/administration',
     createContest: '/administration/contest/create',
     manageContest: '/administration/contest',

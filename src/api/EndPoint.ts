@@ -11,7 +11,7 @@ const EndPoint = {
     Profile: '/profile',
     Challenges: '/challenges',
     Editorial: '/editorial',
-    Submission: '/submission',
+    Submission: '/submissions',
     Testcase: '/testcase',
 };
 
