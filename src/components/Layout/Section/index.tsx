@@ -1,14 +1,16 @@
 import React from 'react';
+import classnames from 'classnames';
 
 interface SectionProps {
     children: React.ReactNode;
     isInverted?: boolean;
+    className?: string;
     hasPattern?: boolean;
 }
 
-const Section: React.FC<SectionProps> = ({ children, isInverted, hasPattern }) => (
+const Section: React.FC<SectionProps> = ({ children, isInverted, hasPattern, className }) => (
     <div
-        className={isInverted ? 'bg-gray-900 text-white' : 'bg-white text-gray-900'}
+        className={classnames(`${isInverted ? 'bg-gray-900 text-white' : 'bg-white text-gray-900'}`, className)}
         style={{
             backgroundImage:
                 hasPattern &&

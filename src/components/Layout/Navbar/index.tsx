@@ -55,11 +55,19 @@ const Navbar = () => {
                             <img className="h-8 w-8" src={Logo} alt="Syntasso logo" />
                         </Link>
                         <div className="hidden md:block">
-                            {!isLoggedIn && (
+                            {!isLoggedIn ? (
                                 <div className="ml-10 flex items-baseline">
                                     <NavButton title="Features" to="/features" className="ml-0" />
                                     <NavButton title="Pricing" to="/pricing" />
                                     <NavButton title="About" to="/about" />
+                                </div>
+                            ) : (
+                                <div className="ml-10 flex items-baseline">
+                                    <NavButton title="Dashboard" to="/dashboard" className="ml-0" />
+                                    <NavButton title="Compete" to="/contest" />
+                                    <NavButton title="Certifications" to="/certifications" />
+                                    <NavButton title="Jobs" to="/jobs" />
+                                    <NavButton title="Leaderboard" to="/leaderboard" />
                                 </div>
                             )}
                         </div>
@@ -179,11 +187,22 @@ const Navbar = () => {
                 </div>
             </div>
             <div className={(isOpen ? 'block' : 'hidden') + ' md:hidden block'}>
-                <div className="px-2 pt-2 pb-3 sm:px-3">
-                    <MobileNavButton to="/features" title="Features" className="mt-0" />
-                    <MobileNavButton to="/pricing" title="Pricing" />
-                    <MobileNavButton to="/about" title="About" />
-                </div>
+                {!isLoggedIn ? (
+                    <div className="px-2 pt-2 pb-3 sm:px-3">
+                        <MobileNavButton to="/features" title="Features" className="mt-0" />
+                        <MobileNavButton to="/pricing" title="Pricing" />
+                        <MobileNavButton to="/about" title="About" />
+                    </div>
+                ) : (
+                    <div className="px-2 pt-2 pb-3 sm:px-3">
+                        <MobileNavButton title="Dashboard" to="/dashboard" className="ml-0" />
+                        <MobileNavButton title="Compete" to="/contest" />
+                        <MobileNavButton title="Certifications" to="/certifications" />
+                        <MobileNavButton title="Jobs" to="/jobs" />
+                        <MobileNavButton title="Leaderboard" to="/leaderboard" />
+                    </div>
+                )}
+
                 <div className="pt-4 pb-3 border-t border-gray-700">
                     {isLoggedIn ? (
                         <>
