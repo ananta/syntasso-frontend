@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ComponentProps } from 'react';
 import classnames from 'classnames';
 import Loader from 'react-loader-spinner';
 
@@ -13,13 +13,14 @@ interface ButtonProps {
     onClick?: (e) => void;
 }
 
-const Button: React.FC<ButtonProps & React.HTMLProps<HTMLButtonElement>> = ({
+const Button: React.FC<ButtonProps & ComponentProps<'button'>> = ({
     title,
     isBusy,
     classNames,
     disabled,
     onClick,
     color,
+    ...rest
 }) => {
     return (
         <button
@@ -32,6 +33,7 @@ const Button: React.FC<ButtonProps & React.HTMLProps<HTMLButtonElement>> = ({
                 classNames,
             )}
             onClick={onClick}
+            {...rest}
         >
             {isBusy ? (
                 <div style={{ display: 'flex', justifyContent: 'center' }}>

@@ -56,6 +56,7 @@ const HeroWithForm = () => {
             setIsRegistering(false);
             setLoginSelected(true);
         } catch (err) {
+            toast.error(err.message);
             setIsRegistering(false);
         }
     };
@@ -163,16 +164,16 @@ const HeroWithForm = () => {
                                 <div className="w-full relative">
                                     {isLoginSelected ? (
                                         <Button
+                                            type="submit"
                                             classNames="absolute"
                                             title="Sign In"
-                                            type="submit"
                                             isBusy={AuthState[Auth.Login].isBusy}
                                         />
                                     ) : (
                                         <Button
+                                            type="submit"
                                             classNames="absolute"
                                             title="Register"
-                                            type="submit"
                                             isBusy={isRegistering}
                                         />
                                     )}

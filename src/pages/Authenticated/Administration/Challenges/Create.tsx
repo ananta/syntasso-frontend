@@ -232,6 +232,7 @@ const Create: React.FC<RouteComponentProps> = () => {
                                 </div>
                                 <div>
                                     <Button
+                                        type="submit"
                                         title="Save Changes"
                                         onClick={() => handleSubmit(handleChallenge)}
                                         disabled={ChallengeState[Challenge.Add].isBusy}
