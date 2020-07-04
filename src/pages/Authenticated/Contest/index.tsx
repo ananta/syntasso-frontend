@@ -1,19 +1,25 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { MediumTitle } from 'components/Common/CustomText';
+import { useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
+
 import Logo from 'shared/assets/images/logo-white.png';
 import Section from 'components/Layout/Section';
 import SectionHeader from 'components/Common/SectionHeader';
 import Button from 'components/Common/Button';
 import { history } from 'utils/History';
+import searchChallenge from 'api/methods/searchChallenges';
 
 interface ListItemProps {
     title: string;
     description: string;
+    difficulty: string;
+    onClick: () => void;
 }
 
-const ListItem: React.FC<ListItemProps> = ({ title, description }) => (
-    <div className="bg-white px-4 py-2 rounded-l w-full lg:flex mb-10 cursor-pointer">
+const ListItem: React.FC<ListItemProps> = ({ title, description, onClick, difficulty }) => (
+    <div className="bg-white px-4 py-2 rounded-l w-full lg:flex mb-10 cursor-pointer" onClick={onClick}>
         <div className=" rounded px-4 flex flex-col justify-between leading-normal">
             <div>
                 <div className="mt-3 md:mt-0 text-gray-700 font-bold text-2xl mb-2">{title}</div>
@@ -31,40 +37,45 @@ const ListItem: React.FC<ListItemProps> = ({ title, description }) => (
 );
 
 const Contest: React.FC<RouteComponentProps> = () => {
-    const activeContests = [
-        {
-            title: 'Project Euler+',
-            description:
-                'Nam malesuada aliquet metus, ac commodo augue mollis sit amet. Nam bibendum risus sit amet metus semper consectetur. Proin consequat ullamcorper eleifend. Nam bibendum risus sit amet metus semper consectetur.',
-        },
-        {
-            title: 'Project Euler+',
-            description:
-                'Nam malesuada aliquet metus, ac commodo augue mollis sit amet. Nam bibendum risus sit amet metus semper consectetur. Proin consequat ullamcorper eleifend. Nam bibendum risus sit amet metus semper consectetur.',
-        },
-        {
-            title: 'Project Euler+',
-            description:
-                'Nam malesuada aliquet metus, ac commodo augue mollis sit amet. Nam bibendum risus sit amet metus semper consectetur. Proin consequat ullamcorper eleifend. Nam bibendum risus sit amet metus semper consectetur.',
-        },
-    ];
-    const archivedContests = [
-        {
-            title: 'Project Euler+',
-            description:
-                'Nam malesuada aliquet metus, ac commodo augue mollis sit amet. Nam bibendum risus sit amet metus semper consectetur. Proin consequat ullamcorper eleifend. Nam bibendum risus sit amet metus semper consectetur.',
-        },
-        {
-            title: 'Project Euler+',
-            description:
-                'Nam malesuada aliquet metus, ac commodo augue mollis sit amet. Nam bibendum risus sit amet metus semper consectetur. Proin consequat ullamcorper eleifend. Nam bibendum risus sit amet metus semper consectetur.',
-        },
-        {
-            title: 'Project Euler+',
-            description:
-                'Nam malesuada aliquet metus, ac commodo augue mollis sit amet. Nam bibendum risus sit amet metus semper consectetur. Proin consequat ullamcorper eleifend. Nam bibendum risus sit amet metus semper consectetur.',
-        },
-    ];
+    const AuthState = useSelector((state) => state['Auth']);
+    const [searchQuery, setSearchQuery] = useState('');
+    const [difficulty, setDifficulty] = useState('');
+    const [challenges, setChallenges] = useState([]);
+
+    const [isChallengeLoading, setIsChallengeLoading] = useState(false);
+
+    const getChallengeInfo = async () => {
+        try {
+            setIsChallengeLoading(true);
+            const options = {
+                token: AuthState.data.user.token,
+                limit: 20,
+                page: 1,
+            };
+            if (searchQuery.length > 0) {
+                options['query'] = searchQuery;
+            }
+            if (difficulty.length > 0) {
+                options['difficulty'] = difficulty;
+            }
+            const challengesRes = await searchChallenge(options);
+            console.log(challengesRes);
+            if (!challengesRes.isSuccess) throw new Error(challengesRes.message);
+            setChallenges(challengesRes.response.data.challenges);
+            setIsChallengeLoading(true);
+        } catch (err) {
+            toast.error(err.message);
+            setIsChallengeLoading(true);
+        }
+    };
+
+    useEffect(() => {
+        getChallengeInfo();
+    }, []);
+
+    useEffect(() => {
+        getChallengeInfo();
+    }, [searchQuery, difficulty]);
 
     return (
         <div className="max-w-screen-xl mx-auto">
@@ -118,17 +129,26 @@ const Contest: React.FC<RouteComponentProps> = () => {
                                         </span>
                                         <input
                                             placeholder="Search"
+                                            onChange={(e) => setSearchQuery(e.target.value)}
                                             className="appearance-none rounded-r rounded-l sm:rounded-l-none border border-gray-400 border-b block pl-8 pr-6 py-2 w-full bg-white text-sm placeholder-gray-400 text-gray-700 focus:bg-white focus:placeholder-gray-600 focus:text-gray-700 focus:outline-none"
                                         />
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div>
-                            {activeContests.map(({ title, description }, indx) => (
-                                <ListItem key={indx.toString()} title={title} description={description} />
-                            ))}
-                        </div>
+                        {challenges.length > 0 && (
+                            <div>
+                                {challenges.map((challenge, indx) => (
+                                    <ListItem
+                                        key={indx.toString()}
+                                        difficulty={challenge.Challenge_difficulty}
+                                        onClick={() => history.push('/challenge/' + challenge.Challenge_challengeId)}
+                                        title={challenge.Challenge_name}
+                                        description={challenge.Challenge_description}
+                                    />
+                                ))}
+                            </div>
+                        )}
                     </div>
                     <div className="border border-dotted my-10"></div>
                     {/* <div>
@@ -159,31 +179,38 @@ const Contest: React.FC<RouteComponentProps> = () => {
                             />
                         </div>
                         <div className="border border-dotted"></div>
-                        <h5 className="font-bold text-lg uppercase text-gray-700 px-1 mb-2">Tags</h5>
+                        <h5 className="font-bold text-lg uppercase text-gray-700 px-1 mb-2">Difficulty</h5>
                         <ul>
-                            <li className="px-1 py-4 border-b border-t border-white hover:border-gray-200 transition duration-300">
-                                <a href="#" className="flex items-center text-gray-600 cursor-pointer">
+                            <li
+                                onClick={() => setDifficulty('easy')}
+                                className="cursor-pointer px-1 py-4 border-b border-t border-white hover:border-gray-200 transition duration-300"
+                            >
+                                <div className="flex items-center text-gray-600 cursor-pointer">
                                     <span className="inline-block h-4 w-4 bg-green-300 mr-3"></span>
-                                    Algorithms
-                                    <span className="text-gray-500 ml-auto">23 contests</span>
+                                    Easy
                                     <i className="text-gray-500 bx bx-right-arrow-alt ml-1"></i>
-                                </a>
+                                </div>
                             </li>
-                            <li className="px-1 py-4 border-b border-t border-white hover:border-gray-200 transition duration-300">
-                                <a href="#" className="flex items-center text-gray-600 cursor-pointer">
+                            <li
+                                onClick={() => setDifficulty('medium')}
+                                className=" cursor-pointer px-1 py-4 border-b border-t border-white hover:border-gray-200 transition duration-300"
+                            >
+                                <div className="flex items-center text-gray-600 cursor-pointer">
                                     <span className="inline-block h-4 w-4 bg-indigo-300 mr-3"></span>
-                                    Data Structures
-                                    <span className="text-gray-500 ml-auto">18 contest</span>
+                                    Medium
                                     <i className="text-gray-500 bx bx-right-arrow-alt ml-1"></i>
-                                </a>
+                                </div>
                             </li>
-                            <li className="px-1 py-4 border-b border-t border-white hover:border-gray-200 transition duration-300">
-                                <a href="#" className="flex items-center text-gray-600 cursor-pointer">
+                            <li
+                                onClick={() => setDifficulty('hard')}
+                                className=" cursor-pointer px-1 py-4 border-b border-t border-white hover:border-gray-200 transition duration-300"
+                            >
+                                <div className="flex items-center text-gray-600 cursor-pointer">
                                     <span className="inline-block h-4 w-4 bg-yellow-300 mr-3"></span>
-                                    Regex
+                                    Hard
                                     <span className="text-gray-500 ml-auto">10 contests</span>
                                     <i className="text-gray-500 bx bx-right-arrow-alt ml-1"></i>
-                                </a>
+                                </div>
                             </li>
                         </ul>
                     </div>
