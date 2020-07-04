@@ -5,10 +5,13 @@ import Navbar from 'components/Layout/Navbar';
 import { useSelector, RootStateOrAny } from 'react-redux';
 import routes from 'routes';
 
-import { RouteComponentProps, RouteProps } from 'react-router-dom';
+import { RouteComponentProps } from 'react-router-dom';
+import Footer from 'components/Layout/Footer';
+import Header from 'components/Layout/PageHeader';
 
 interface Props {
     children: React.ReactNode;
+    title: string;
 }
 
 const AuthLayout: React.FC<Props & RouteComponentProps> = (props) => {
@@ -23,23 +26,17 @@ const AuthLayout: React.FC<Props & RouteComponentProps> = (props) => {
     return (
         <AppContainer>
             <Navbar />
-
             <div>
-                <header className="bg-white shadow">
-                    <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                        <h1 className="text-3xl font-bold leading-tight text-gray-900">Dashboard</h1>
-                    </div>
-                </header>
+                <Header title={props.title} subTitle="Home" />
                 <main>
-                    <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-                        {/* <!-- Replace with your content --> */}
-                        <div className="px-4 py-6 sm:px-0">
-                            <div className="border-4 border-dashed border-gray-200 rounded-lg h-96">{children}</div>
+                    <div className="bg-gray-200">
+                        <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+                            <div>{children}</div>
                         </div>
-                        {/* <!-- /End replace --> */}
                     </div>
                 </main>
             </div>
+            <Footer />
         </AppContainer>
     );
 };

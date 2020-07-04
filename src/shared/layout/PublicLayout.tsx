@@ -12,6 +12,7 @@ import Footer from 'components/Layout/Footer';
 
 interface Props {
     children: React.ReactNode;
+    title: string;
 }
 
 const PublicLayout: React.FC<Props & RouteComponentProps> = (props) => {
@@ -21,7 +22,6 @@ const PublicLayout: React.FC<Props & RouteComponentProps> = (props) => {
     const Auth = useSelector((state: RootStateOrAny) => state.Auth);
 
     useEffect(() => {
-        console.log('Component did mount');
         if (Auth.data.isLoggedIn) {
             props.history.push(routes.dashboard);
         }
