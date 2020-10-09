@@ -37,7 +37,6 @@ const Challenge: React.FC<ChallengeParams> = (RouteProps) => {
     const Auth = useSelector((state) => state['Auth']);
 
     const checkIfChallengeExists = async () => {
-        console.log('Checking if challenge exists');
         try {
             setIsLoading(true);
             const challengeRes = await getChallengeInfo({

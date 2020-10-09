@@ -8,6 +8,7 @@ import routes from 'routes';
 import { RouteComponentProps } from 'react-router-dom';
 import Footer from 'components/Layout/Footer';
 import Header from 'components/Layout/PageHeader';
+import { toast } from 'react-toastify';
 
 interface Props {
     children: React.ReactNode;
@@ -18,11 +19,16 @@ const AuthLayout: React.FC<Props & RouteComponentProps> = (props) => {
     const { children } = props;
     const Auth = useSelector((state: RootStateOrAny) => state.Auth);
     useEffect(() => {
+        toast.error('Please Loging to continue');
         if (!Auth.data.isLoggedIn) {
             props.history.push(routes.home);
         }
     }, [Auth]);
-
+    useEffect(() => {
+        if (!Auth.data.isLoggedIn) {
+            props.history.push(routes.home);
+        }
+    }, []);
     return (
         <AppContainer>
             <Navbar />

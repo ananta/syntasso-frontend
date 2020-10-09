@@ -111,10 +111,10 @@ const Navbar = () => {
                                 </div>
                                 {isProfileDropdownVisible && (
                                     <>
-                                        <button
+                                        {/* <button
                                             onClick={() => setIsProfileDropdownVisible(false)}
                                             className="fixed top-0 right-0 bottom-0 left-0 bg-black opacity-50 h-full w-full cursor-default"
-                                        ></button>
+                                        ></button> */}
                                         <div className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white">
                                             <div
                                                 className="py-1 rounded-md bg-white shadow-xs"
