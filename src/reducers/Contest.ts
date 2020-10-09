@@ -1,4 +1,4 @@
-import { Challenge } from '../actions/ActionTypes';
+import { Contest } from '../actions/ActionTypes';
 
 const data = [];
 
@@ -16,17 +16,17 @@ const commonState: commonStateProps = {
     data: null,
 };
 
-export interface challengeProps {
+export interface contestProps {
     [index: string]: commonStateProps | any;
 }
 
-const initialState: challengeProps = { data };
+const initialState: contestProps = { data };
 
-initialState[Challenge.Add] = { ...commonState };
-initialState[Challenge.Get] = { ...commonState };
+initialState[Contest.Add] = { ...commonState };
+initialState[Contest.Get] = { ...commonState };
 
-const challengeReducer = (
-    state: challengeProps = initialState,
+const contestReducer = (
+    state: contestProps = initialState,
     action: {
         type: string;
         data?: any;
@@ -36,7 +36,7 @@ const challengeReducer = (
 ) => {
     const oldState = <commonStateProps>state[action.what];
     switch (action.type) {
-        case Challenge.Start:
+        case Contest.Start:
             oldState.isBusy = true;
             oldState.isSuccess = false;
             oldState.message = null;
@@ -46,7 +46,7 @@ const challengeReducer = (
                     ...oldState,
                 },
             };
-        case Challenge.Reset:
+        case Contest.Reset:
             return {
                 ...state,
                 data,
@@ -54,11 +54,11 @@ const challengeReducer = (
                     ...commonState,
                 },
             };
-        case Challenge.Success:
+        case Contest.Success:
             oldState.isBusy = false;
             oldState.isSuccess = true;
             oldState.message = null;
-            if (action.what === Challenge.Get) {
+            if (action.what === Contest.Get) {
                 state.data = [...action.data];
             }
             return {
@@ -67,7 +67,7 @@ const challengeReducer = (
                     ...oldState,
                 },
             };
-        case Challenge.Fail:
+        case Contest.Fail:
             oldState.isBusy = false;
             oldState.message = action.message;
             oldState.isSuccess = false;
@@ -82,4 +82,4 @@ const challengeReducer = (
     }
 };
 
-export default challengeReducer;
+export default contestReducer;

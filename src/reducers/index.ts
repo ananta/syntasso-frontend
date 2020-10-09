@@ -3,10 +3,12 @@ import storage from 'redux-persist/lib/storage';
 
 import Auth from './Auth';
 import Challenge from './Challenges';
+import Contest from './Contest';
 
 const appReducer = combineReducers({
     Auth,
     Challenge,
+    Contest,
 });
 
 interface actionType {
