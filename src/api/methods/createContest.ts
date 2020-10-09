@@ -1,7 +1,7 @@
 import makeRequest from 'api/makeRequest';
 import EndPoint from 'api/EndPoint';
 
-interface newChallenge {
+interface newContest {
     name: string;
     description: string;
     problemStatement: string;
@@ -11,16 +11,16 @@ interface newChallenge {
     sampleOutput: string;
 }
 
-interface createChallengeProps {
-    challenge: newChallenge;
+interface createContestProps {
+    contest: newContest;
     token: string;
 }
 
-const createChallenge = ({ challenge, token }: createChallengeProps) => {
+const createChallenge = ({ contest, token }: createContestProps) => {
     return makeRequest({
         method: 'post',
-        path: EndPoint.Challenges,
-        data: { ...challenge },
+        path: EndPoint.Contest,
+        data: { ...contest },
         token,
     });
 };

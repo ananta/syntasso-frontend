@@ -5,6 +5,7 @@ interface codeInfo {
     content: string;
     language: string;
 }
+
 interface newSubmission {
     challengeId: number;
     socketId: string | boolean;
