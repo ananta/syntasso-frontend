@@ -29,4 +29,9 @@ const Challenge = {
     ...crudActions('CHALLENGE'),
 };
 
-export { Auth, Challenge };
+const Contest = {
+    ...basicActions('CONTEST'),
+    ...crudActions('CONTEST'),
+};
+
+export { Auth, Challenge, Contest };
