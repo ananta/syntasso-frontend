@@ -15,6 +15,8 @@ interface RequestResponse {
         message: string;
         data?: any;
         challenge?: any;
+        contest?: any;
+        contests?: any;
         challenges?: any;
         isSuccess: boolean;
         testcases?: any;
@@ -38,7 +40,7 @@ const makeRequest = async ({ method, path, data, token, ...rest }: RequestObject
             'Content-Type': 'application/json',
         };
     } else {
-        console.log('TOKEN NOT FOUND');
+        throw new Error('Please Login to proceed');
     }
     try {
         console.log(options);
