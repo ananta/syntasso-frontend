@@ -6,12 +6,12 @@ import { history } from 'utils/History';
 import NotFound from 'components/Common/NotFound';
 
 interface RouteWithProps extends RouteComponentProps {
-    challengeId: string;
+  challengeId: string;
 }
 
 const Settings: React.FC<RouteWithProps> = (RouteProps) => {
-    const { url } = useRouteMatch();
-    return <NotFound />;
+  const { url } = useRouteMatch();
+  return <NotFound />;
 };
 
 export default Settings;

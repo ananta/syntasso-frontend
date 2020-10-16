@@ -5,18 +5,18 @@ import Button from 'components/Common/Button';
 import { history } from 'utils/History';
 
 interface RouteWithProps extends RouteComponentProps {
-    challengeId: string;
+  challengeId: string;
 }
 
 const Moderaotrs: React.FC<RouteWithProps> = (RouteProps) => {
-    const { url } = useRouteMatch();
-    return (
-        <div>
-            <div>
-                <MediumTitle>Moderaotrs</MediumTitle>
-            </div>
-        </div>
-    );
+  const { url } = useRouteMatch();
+  return (
+    <div>
+      <div>
+        <MediumTitle>Moderaotrs</MediumTitle>
+      </div>
+    </div>
+  );
 };
 
 export default Moderaotrs;

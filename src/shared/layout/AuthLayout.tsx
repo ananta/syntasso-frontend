@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import AppContainer from 'components/Layout/AppContainer';
 import Navbar from 'components/Layout/Navbar';
 // import Container from 'components/Layout/Container';
 import { useSelector, RootStateOrAny } from 'react-redux';
 import routes from 'routes';
-
+import Loader from 'react-loader-spinner';
 import { RouteComponentProps } from 'react-router-dom';
 import Footer from 'components/Layout/Footer';
 import Header from 'components/Layout/PageHeader';
@@ -18,16 +18,19 @@ interface Props {
 const AuthLayout: React.FC<Props & RouteComponentProps> = (props) => {
     const { children } = props;
     const Auth = useSelector((state: RootStateOrAny) => state.Auth);
-    useEffect(() => {
-        toast.error('Please Loging to continue');
+    const [isLoading, setIsLoading] = useState(true);
+    const handleAuthentication = () => {
         if (!Auth.data.isLoggedIn) {
             props.history.push(routes.home);
+        } else {
+            setIsLoading(false);
         }
+    };
+    useEffect(() => {
+        handleAuthentication();
     }, [Auth]);
     useEffect(() => {
-        if (!Auth.data.isLoggedIn) {
-            props.history.push(routes.home);
-        }
+        handleAuthentication();
     }, []);
     return (
         <AppContainer>
@@ -37,7 +40,15 @@ const AuthLayout: React.FC<Props & RouteComponentProps> = (props) => {
                 <main>
                     <div className="bg-gray-200">
                         <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-                            <div>{children}</div>
+                            {isLoading ? (
+                                <div className="inputs w-full p-6">
+                                    <div style={{ display: 'flex', justifyContent: 'center' }}>
+                                        <Loader type="Bars" color="#d53f8c" height={60} width={60} />
+                                    </div>
+                                </div>
+                            ) : (
+                                <div>{children}</div>
+                            )}
                         </div>
                     </div>
                 </main>

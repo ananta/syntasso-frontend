@@ -17,25 +17,35 @@ import removeContest from './methods/removeContest';
 import searchChallenges from './methods/searchChallenges';
 import addChallengeToContest from './methods/addChallengeToContest';
 import getContestChallenges from './methods/getContestChallenges';
+import getContestInfo from './methods/getContestInfo';
+import doesChallengeAndContestExists from './methods/doesChallengeAndContestExists';
+import enrollTheUser from './methods/enrollTheUser';
+import getContestEnrollments from './methods/getContestEnrollments';
+import searchContest from './methods/searchContest';
 
 export {
-    executeCode,
-    login,
-    register,
-    createChallenge,
-    getChallenge,
-    isUserAuthorizedToChallenge,
-    updateChallenge,
-    createTestcase,
-    isUserAuthorizedToContest,
-    getChallengeTestcase,
-    removeTestcase,
-    getChallengeInfo,
-    getContest,
-    createContest,
-    updateContest,
-    removeContest,
-    searchChallenges,
-    addChallengeToContest,
-    getContestChallenges,
+  executeCode,
+  login,
+  register,
+  createChallenge,
+  getChallenge,
+  isUserAuthorizedToChallenge,
+  updateChallenge,
+  createTestcase,
+  isUserAuthorizedToContest,
+  getChallengeTestcase,
+  removeTestcase,
+  getChallengeInfo,
+  getContest,
+  createContest,
+  updateContest,
+  removeContest,
+  searchChallenges,
+  addChallengeToContest,
+  getContestChallenges,
+  getContestInfo,
+  doesChallengeAndContestExists,
+  enrollTheUser,
+  getContestEnrollments,
+  searchContest,
 };

@@ -6,16 +6,16 @@ import { history } from 'utils/History';
 import NotFound from 'components/Common/NotFound';
 
 interface RouteWithProps extends RouteComponentProps {
-    challengeId: string;
+  challengeId: string;
 }
 
 const CodeStubs: React.FC<RouteWithProps> = (RouteProps) => {
-    const { url } = useRouteMatch();
-    return (
-        <div>
-            <NotFound />
-        </div>
-    );
+  const { url } = useRouteMatch();
+  return (
+    <div>
+      <NotFound />
+    </div>
+  );
 };
 
 export default CodeStubs;

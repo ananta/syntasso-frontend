@@ -7,16 +7,16 @@ import Button from 'components/Common/Button';
 import { history } from 'utils/History';
 
 interface RouteWithProps extends RouteComponentProps {
-    challengeId: string;
+  challengeId: string;
 }
 
 const Languages: React.FC<RouteWithProps> = (RouteProps) => {
-    const { url } = useRouteMatch();
-    return (
-        <div>
-            <NotFound />
-        </div>
-    );
+  const { url } = useRouteMatch();
+  return (
+    <div>
+      <NotFound />
+    </div>
+  );
 };
 
 export default Languages;
