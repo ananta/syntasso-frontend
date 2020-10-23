@@ -22,6 +22,7 @@ import doesChallengeAndContestExists from './methods/doesChallengeAndContestExis
 import enrollTheUser from './methods/enrollTheUser';
 import getContestEnrollments from './methods/getContestEnrollments';
 import searchContest from './methods/searchContest';
+import isUserEnrolled from './methods/isUserEnrolled';
 
 export {
   executeCode,
@@ -48,4 +49,5 @@ export {
   enrollTheUser,
   getContestEnrollments,
   searchContest,
+  isUserEnrolled,
 };

@@ -20,6 +20,7 @@ interface RequestResponse {
     challenges?: any;
     isSuccess: boolean;
     testcases?: any;
+    isEnrolled?: any;
     enrollments?: any;
   };
   message: string | null | undefined;
