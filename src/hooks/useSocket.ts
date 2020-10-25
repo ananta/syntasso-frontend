@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 interface socketStateType {
   msg1?: string;
   msg2?: string;
+  msg3?: string;
   socketId: string;
   isConnected: boolean;
 }
@@ -13,6 +14,7 @@ const useSocket = (serverURL: string) => {
   const [socketState, setSocketState] = useState<socketStateType>({
     msg1: '',
     msg2: '',
+    msg3: '',
     socketId: '',
     isConnected: false,
   });
@@ -44,10 +46,28 @@ const useSocket = (serverURL: string) => {
     });
   };
 
-  const handleTopic2 = (data: { process: string; testStatus: boolean }) => {
+  const handleTopic2 = (data: any) => {
+    const allInfo = data;
+    console.log({ allInfo });
     setSocketState((state: socketStateType) => {
       const newState = Object.assign({}, state);
-      newState.msg2 = data ? `For Testcase: ${data.process + 1}, status: ${data.testStatus}` : '>';
+      // newState.msg2 = data ? `For Testcase: ${data.process + 1}, status: ${data.testStatus}` : '>';
+      newState.msg2 = {
+        ...data,
+        process: data.process + 1,
+      };
+      return newState;
+    });
+  };
+
+  const handleTopic3 = (data: any) => {
+    const containerStatus = data;
+    console.log({ containerStatus });
+    setSocketState((state: socketStateType) => {
+      const newState = Object.assign({}, state);
+      newState.msg3 = {
+        ...data,
+      };
       return newState;
     });
   };
@@ -64,10 +84,11 @@ const useSocket = (serverURL: string) => {
     });
     client.on('disconnect', handleDisconnection);
     client.on('test-status', handleTopic2);
+    client.on('container-init-status', handleTopic3);
     client.on('docker-app-stdout', handleTopic1);
   }, [serverURL]);
-  const { msg1, msg2, isConnected, socketId } = socketState;
-  return [msg1, msg2, isConnected, socketId];
+  const { msg1, msg2, msg3, isConnected, socketId } = socketState;
+  return [msg1, msg2, msg3, isConnected, socketId];
 };
 
 export default useSocket;
