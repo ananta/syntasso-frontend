@@ -11,6 +11,8 @@ interface newSubmission {
   socketId: string | boolean;
   code: codeInfo;
   token: string;
+  isContest?: boolean;
+  contestId?: number;
 }
 
 const createSubmission = ({ token, ...submission }: newSubmission) => {

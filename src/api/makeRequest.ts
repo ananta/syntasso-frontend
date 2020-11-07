@@ -17,6 +17,7 @@ interface RequestResponse {
     challenge?: any;
     contest?: any;
     contests?: any;
+    submissions?: any;
     challenges?: any;
     isSuccess: boolean;
     testcases?: any;
