@@ -23,6 +23,10 @@ import enrollTheUser from './methods/enrollTheUser';
 import getContestEnrollments from './methods/getContestEnrollments';
 import searchContest from './methods/searchContest';
 import isUserEnrolled from './methods/isUserEnrolled';
+import getChallengeLeaderboard from './methods/getChallengeLeaderboard';
+import getContestChallengeLeaderboard from './methods/getContestChallengeLeaderboard';
+import getContestLeaderboard from './methods/getContestLeaderboard';
+import getContestSubmission from './methods/getContestSubmissions';
 
 export {
   executeCode,
@@ -50,4 +54,8 @@ export {
   getContestEnrollments,
   searchContest,
   isUserEnrolled,
+  getChallengeLeaderboard,
+  getContestChallengeLeaderboard,
+  getContestLeaderboard,
+  getContestSubmission,
 };

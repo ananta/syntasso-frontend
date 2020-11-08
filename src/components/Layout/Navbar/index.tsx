@@ -1,12 +1,9 @@
 import React, { useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import Logo from 'shared/assets/images/logo-white.png';
-import { GiHamburgerMenu } from 'react-icons/gi';
-import { MdClose } from 'react-icons/md';
 import { useSelector, RootStateOrAny, useDispatch } from 'react-redux';
 import authAction from 'actions/AuthActions';
 import { Auth } from 'actions/ActionTypes';
-import { pages } from '../../../App';
 
 interface NavButtonProps {
   to: string;

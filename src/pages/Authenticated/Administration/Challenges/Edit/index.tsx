@@ -1,8 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Route, Switch, RouteComponentProps, useParams, useRouteMatch, NavLink, Redirect } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Route, Switch, RouteComponentProps, useRouteMatch, NavLink } from 'react-router-dom';
 import { isUserAuthorizedToChallenge } from 'api';
-
-import { MediumTitle, RegularText } from 'components/Common/CustomText';
 
 import Details from './Details';
 import Settings from './Settings';
@@ -14,6 +12,7 @@ import CodeStubs from './CodeStub';
 
 import { history } from 'utils/History';
 import { useSelector } from 'react-redux';
+import CustomLoader from 'components/Common/CustomLoader';
 
 interface MatchParams {
   challengeId: string;
@@ -75,6 +74,7 @@ const Challenges: React.FC<EditChallengeParms> = (RouteProps) => {
     checkAuthorization();
     // check if user has privelages to the given challenge or not
   }, []);
+  if (isLoading) return <CustomLoader />;
   return (
     <div>
       <div className="bg-white ">

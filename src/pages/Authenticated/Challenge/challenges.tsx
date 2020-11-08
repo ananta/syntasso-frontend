@@ -56,7 +56,6 @@ const Contest: React.FC<RouteComponentProps> = () => {
       options['difficulty'] = difficulty;
     }
     const challengesRes = await searchChallenge(options);
-    console.log(challengesRes);
     if (!challengesRes.isSuccess) throw new Error(challengesRes.message);
     setChallenges(challengesRes.response.data.challenges);
     setIsChallengeLoading(true);

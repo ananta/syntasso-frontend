@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import LogoWhite from 'shared/assets/images/logo-white.png';
-import getChallengeSubmissions from 'api/methods/getChallengeSubmissions';
-import CustomLoader from 'components/Common/CustomLoader';
 
-interface ISubmissionsState {
+import { toast } from 'react-toastify';
+import LogoWhite from 'shared/assets/images/logo-white.png';
+import CustomLoader from 'components/Common/CustomLoader';
+import { getChallengeLeaderboard, getContestChallengeLeaderboard } from 'api';
+
+interface ILeaderboardState {
   isLoading: boolean;
   submissions: any;
 }
 
-interface ISubmissions {
+interface ILeaderboard {
   challenge: {
     challengeId: string;
     name: string;
@@ -24,6 +26,7 @@ interface ISubmissions {
     createdAt: string;
   };
   isContestBased?: boolean;
+  contestId?: number;
 }
 
 const SubmissionRow = ({
@@ -71,11 +74,13 @@ const SubmissionRow = ({
     </tr>
   );
 };
-const Submissions: React.FC<ISubmissions> = (SubmissionInfo) => {
+const Leaderboard: React.FC<ILeaderboard> = (SubmissionInfo) => {
   const {
     challenge: { challengeId },
+    isContestBased,
+    contestId,
   } = SubmissionInfo;
-  const [submissionState, setSubmissionState] = useState<ISubmissionsState>({
+  const [submissionState, setSubmissionState] = useState<ILeaderboardState>({
     isLoading: false,
     submissions: [],
   });
@@ -83,12 +88,23 @@ const Submissions: React.FC<ISubmissions> = (SubmissionInfo) => {
   const token = AuthState.user.token.toString();
 
   const getSubmissions = async () => {
-    const submissionRes = await getChallengeSubmissions({
-      challengeId: parseInt(challengeId),
-      token,
-    });
-    if (!submissionRes.isSuccess) throw new Error(submissionRes.message || 'Cannot get submission');
-    return submissionRes.response.submissions;
+    if (isContestBased) {
+      // handle the conteste submissisons of the rebororyt
+      const submissionRes = await getContestChallengeLeaderboard({
+        challengeId: Number(challengeId),
+        contestId: Number(contestId),
+        token,
+      });
+      if (!submissionRes.isSuccess) throw new Error(submissionRes.message || 'Cannot get submission');
+      return submissionRes.response.submissions;
+    } else {
+      const submissionRes = await getChallengeLeaderboard({
+        challengeId: parseInt(challengeId),
+        token,
+      });
+      if (!submissionRes.isSuccess) throw new Error(submissionRes.message || 'Cannot get submission');
+      return submissionRes.response.submissions;
+    }
   };
 
   const handleInitialization = async () => {
@@ -104,6 +120,7 @@ const Submissions: React.FC<ISubmissions> = (SubmissionInfo) => {
         submissions,
       }));
     } catch (err) {
+      toast.error(err.message);
       setSubmissionState((state) => ({
         ...state,
         isLoading: false,
@@ -120,9 +137,9 @@ const Submissions: React.FC<ISubmissions> = (SubmissionInfo) => {
       <div className="bg-white shadow-xl">
         <div className="mx-auto">
           <div className="inputs w-full max-w-6xl p-6">
-            <h2 className="text-3xl text-gray-900">Submissions</h2>
+            <h2 className="text-3xl text-gray-900">Leaderboard</h2>
             <p className="text-sm md:text-base text-gray-600 italic mt-2 mb-4">
-              List of submissions made on this challenge
+              Current Leaderbord of the challenge based upon the points
             </p>
             {submissionState.isLoading ? (
               <CustomLoader />
@@ -172,4 +189,4 @@ const Submissions: React.FC<ISubmissions> = (SubmissionInfo) => {
   );
 };
 
-export default Submissions;
+export default Leaderboard;

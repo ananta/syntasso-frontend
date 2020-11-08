@@ -1,11 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
-import { MediumTitle } from 'components/Common/CustomText';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
 import Logo from 'shared/assets/images/logo-white.png';
-import Section from 'components/Layout/Section';
 import SectionHeader from 'components/Common/SectionHeader';
 import Button from 'components/Common/Button';
 import { history } from 'utils/History';

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import TextInput from 'components/Common/TextInput';
 import SocialSignIn from 'components/Common/SocialSignIn';
-import { TitleText, MediumTitle, RegularText } from './CustomText';
+import { TitleText, MediumTitle } from './CustomText';
 import Button from 'components/Common/Button';
 import { register as registerUser } from 'api';
 import { toast } from 'react-toastify';

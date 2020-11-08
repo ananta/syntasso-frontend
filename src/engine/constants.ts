@@ -7,57 +7,40 @@ export interface ILanguage {
 export const codeStub: ILanguage = {
   js: `
   "use strict";
-
-process.stdin.setEncoding("utf-8");
-let rawInputString = "",
-    jsonInputString = {},
-    sampleInputId = "",
-    currentLine = 0,
-    sampleInputFileContents = [];
-
-const { SECRET_DIVIDER_TOKEN } = process.env;
-
-process.stdin.on("data", data => {
-    if (data.toString().trim() !== "") rawInputString += data;
-});
-
-process.stdin.on("end", () => {
-    if (rawInputString.trim() !== "") {
-        jsonInputString = JSON.parse(rawInputString);
-        sampleInputId = jsonInputString.sampleInputId;
-        sampleInputFileContents = JSON.parse(jsonInputString.fileContents);
-
-        // remove any empty elements from the array sampleInputFileContents
-        sampleInputFileContents = sampleInputFileContents.filter(el => el.trim() !== "");
-    }
-    try {
-        main();
-    } catch (err) {
-        process.stdout.write(SECRET_DIVIDER_TOKEN);
-        process.stdout.write(JSON.stringify({ errorName: err.name, errorMessage: err.message, errorStack: err.stack }));
-    }
-});
-
-// use this function to read each line ot sample input
-const readLine = () => sampleInputFileContents[currentLine++];
-
-// write your function here:
-// example:
-// function calcArea(length, breadth) {
-//        return length * breadh;
-// }
-
-const main = () => {
-    if (rawInputString.trim() === "") {
-        process.stdout.write("No Input Provided");
-        return;
-    }
-    // invoke your function here
-    // example:
-    // let output = calcArea(length, breadth);
-    process.stdout.write(output.toString());
-
-}
+  let rawSampleInput,
+	  parsedInput = [],
+	  currentLine = 0;
+  // TODO:
+  // write your function here:
+  // example:
+  function calcArea(length, breadth) {
+  	return length * breadth;
+  }
+  // use this function to read individual lines of the sample input, ...
+  // ... incrementing the line-pointer on each read
+  const readLine = () => parsedInput[currentLine++];
+  const main = () => {
+	  if (process.argv.length == 3) {
+		  rawSampleInput = process.argv[2];
+		  parsedInput = rawSampleInput.split("\\n");
+		  // TODO:
+		  // invoke your function here:
+		  // example:
+		  try {
+			  let length = parseInt(readLine());
+			  let breadth = parseInt(readLine());
+			  let output = calcArea(length, breadth);
+			  process.stdout.write(output.toString());
+		  } catch (error) {
+			  process.stderr.write(error);
+		  }
+	  } else if (process.argv.length > 3) {
+		  throw new Error("Too many inputs provided");
+	  } else {
+		  throw new Error("No input provided");
+	  }
+  };
+  main();
   `,
   c: `
 

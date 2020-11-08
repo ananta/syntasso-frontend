@@ -3,9 +3,8 @@ import { Link, useRouteMatch } from 'react-router-dom';
 
 const Sidebar = () => {
   const { url } = useRouteMatch();
-  console.log({ url });
   return (
-    <div className="w-full lg:w-1/3 px-3">
+    <div className="w-full lg:w-1/4 px-3">
       <div className="p-1 mb-4 relative">
         <h5 className="font-bold text-lg uppercase text-gray-700 mb-2">Contest info</h5>
         <ul>

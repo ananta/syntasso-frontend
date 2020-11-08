@@ -1,4 +1,3 @@
-import React from 'react';
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 import { createLogger } from 'redux-logger';
@@ -9,8 +8,8 @@ import reduxReset from 'redux-reset';
 import rootReducer from 'reducers';
 
 const persistConfig = {
-    key: 'root',
-    storage,
+  key: 'root',
+  storage,
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

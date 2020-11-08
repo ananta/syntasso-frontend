@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import SplitPane, { Pane } from 'react-split-pane';
-import axios from 'axios';
 import useSocket from 'hooks/useSocket';
 
 import { executeCode } from 'api';
@@ -9,7 +8,6 @@ import SaveIcon from '@material-ui/icons/Save';
 import ShareIcon from '@material-ui/icons/Share';
 import IconButton from '@material-ui/core/IconButton';
 
-import Editor from './Editor';
 import Terminal from './Terminal';
 
 interface IDEProps {

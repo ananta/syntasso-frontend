@@ -27,6 +27,8 @@ const SocketTerminal = ({ msg, socketId, topic, height }: SocketTerminalType) =>
     function prompt() {
       xterm.write('\r\n' + shellprompt);
     }
+    xterm.writeln('');
+    xterm.writeln('--------------------------------------------------------');
     xterm.writeln('Welcome to Syntasso.io');
     xterm.writeln('You will be able to access the container report in real time.');
     xterm.writeln('--------------------------------------------------------');
@@ -69,16 +71,34 @@ const SocketTerminal = ({ msg, socketId, topic, height }: SocketTerminalType) =>
   }, []);
 
   return (
-    <div style={{ position: 'relative' }}>
+    <div className="bg-white shadow-xl" style={{ position: 'relative' }}>
       <ReactResizeDetector handleWidth handleHeight onResize={onResize} />
-      <XTerm
-        ref={terminalRef}
-        addons={['fit', 'fullscreen', 'search']}
-        style={{
-          overflow: 'hidden',
-          position: 'relative',
-        }}
-      />
+      <div className="flex justify-start px-2 bg-gray-700">
+        <div className="">
+          <div className="my-2 flex sm:flex-row flex-col">
+            <div className="flex flex-row mb-1 sm:mb-0">
+              <div className="relative">
+                <p className="text-white font-bold">Engine Logs</p>
+                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                  <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                    <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="bg-black pl-2">
+        <XTerm
+          ref={terminalRef}
+          addons={['fit', 'fullscreen', 'search']}
+          style={{
+            overflow: 'hidden',
+            position: 'relative',
+          }}
+        />
+      </div>
     </div>
   );
 };

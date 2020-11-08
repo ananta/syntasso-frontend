@@ -1,13 +1,14 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { RouteComponentProps, useRouteMatch } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { RouteComponentProps } from 'react-router-dom';
 import Button from 'components/Common/Button';
 import Modal from 'react-modal';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import { createTestcase, getChallengeTestcase, removeTestcase } from 'api';
 
 import InfoWithButton from 'components/Common/InfoWithButton';
 import { toast } from 'react-toastify';
+import CustomLoader from 'components/Common/CustomLoader';
 
 const customStyles = {
   overlay: {
@@ -28,9 +29,6 @@ interface RouteWithProps extends RouteComponentProps {
 const Testcase: React.FC<RouteWithProps> = (RouteProps) => {
   const { challengeId } = RouteProps;
 
-  const dispatch = useDispatch();
-  const { url } = useRouteMatch();
-  let subtitle;
   const [isAddingTestcase, setIsAddingTestcase] = useState(false);
   const [testcases, setTestcases] = useState([]);
 
@@ -129,6 +127,7 @@ const Testcase: React.FC<RouteWithProps> = (RouteProps) => {
   useEffect(() => {
     getTestCase();
   }, []);
+  if (isGettingTestcase) return <CustomLoader />;
   return (
     <div>
       <InfoWithButton onClick={() => openModal()} title="Create Testcase">

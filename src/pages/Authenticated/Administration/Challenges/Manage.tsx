@@ -1,8 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { RouteComponentProps, Redirect, useRouteMatch } from 'react-router-dom';
-import { MediumTitle, RegularText } from 'components/Common/CustomText';
+import React, { useEffect } from 'react';
+import { RouteComponentProps, useRouteMatch, Link } from 'react-router-dom';
 import Button from 'components/Common/Button';
-import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 

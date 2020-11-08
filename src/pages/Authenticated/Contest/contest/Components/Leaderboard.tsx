@@ -1,82 +1,83 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { RouteComponentProps, Link } from 'react-router-dom';
-import { EditorState, convertFromRaw, convertToRaw } from 'draft-js';
-import { Editor } from 'react-draft-wysiwyg';
-import { useDispatch, RootStateOrAny, useSelector } from 'react-redux';
-import { AiFillLeftCircle } from 'react-icons/ai';
-import { history } from 'utils/History';
-import Validator from 'utils/Validator';
-import Button from 'components/Common/Button';
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+
+import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import LogoWhite from 'shared/assets/images/logo-white.png';
 import { IRoutePropsForContest } from './types';
-import { useForm, Controller } from 'react-hook-form';
-import classnames from 'classnames';
 
-import { MediumTitle } from 'components/Common/CustomText';
-import { Challenge } from 'actions/ActionTypes';
-import challengeAction from 'actions/ChallengeActions';
+import { getContestLeaderboard } from 'api';
 
-const Create: React.FC<IRoutePropsForContest> = () => {
-  const [input, setInput] = useState({
-    problemStatement: EditorState.createEmpty(),
-    inputFormat: EditorState.createEmpty(),
-    constraints: EditorState.createEmpty(),
-    outputFormat: EditorState.createEmpty(),
+interface ILeaderboardState {
+  isLoading: boolean;
+  leaderboard: any;
+}
+
+interface ILeaderboardItem {
+  username: string;
+  points: string;
+}
+
+const LeaderboardItem: React.FC<ILeaderboardItem> = ({ username, points }) => (
+  <tr>
+    <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+      <div className="flex items-center">
+        <div className="flex-shrink-0 w-10 h-10">
+          <img className="w-full h-full rounded-full" src={LogoWhite} alt="" />
+        </div>
+        <div className="ml-3">
+          <Link to={`/edit/details`}>
+            <p className="text-gray-900 whitespace-no-wrap">{username}</p>
+          </Link>
+        </div>
+      </div>
+    </td>
+    <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+      <p className="text-gray-900 whitespace-no-wrap"> {`${points} `}Points</p>
+    </td>
+  </tr>
+);
+
+const Leaderboard: React.FC<IRoutePropsForContest> = ({ contestId }) => {
+  const [submissionState, setSubmissionState] = useState<ILeaderboardState>({
+    isLoading: false,
+    leaderboard: [],
   });
-  const dispatch = useDispatch();
-  const { register, handleSubmit, errors } = useForm();
-
-  const ChallengeState = useSelector((state: RootStateOrAny) => state.Challenge);
-  const handleChange = (name, value) => {
-    setInput((input) => ({
-      ...input,
-      [name]: value,
-    }));
+  const AuthState = useSelector((state) => state['Auth'].data);
+  const token = AuthState.user.token.toString();
+  const getLeaderboard = async () => {
+    const leaderboardRes = await getContestLeaderboard({
+      contestId: Number(contestId),
+      token,
+    });
+    console.log('Here is the response');
+    if (!leaderboardRes.isSuccess) throw new Error(leaderboardRes.message || 'Cannot get leaderboard');
+    return leaderboardRes.response.submissions;
+  };
+  const handleInitialization = async () => {
+    try {
+      setSubmissionState((state) => ({
+        ...state,
+        isLoading: true,
+      }));
+      const leaderboard = await getLeaderboard();
+      setSubmissionState((state) => ({
+        ...state,
+        isLoading: false,
+        leaderboard,
+      }));
+    } catch (err) {
+      toast.error(err.message);
+      setSubmissionState((state) => ({
+        ...state,
+        isLoading: false,
+      }));
+    }
   };
 
-  const handleChallenge = (data) => {
-    let hasErrors = false;
-    if (!input.problemStatement.getCurrentContent().hasText()) {
-      hasErrors = true;
-      toast.error('Empty Problem Statement');
-    }
-    if (!input.inputFormat.getCurrentContent().hasText()) {
-      hasErrors = true;
-      toast.error('Empty Input Format');
-    }
-    if (!input.constraints.getCurrentContent().hasText()) {
-      hasErrors = true;
-      toast.error('Empty Constraints');
-    }
-    if (!input.outputFormat.getCurrentContent().hasText()) {
-      hasErrors = true;
-      toast.error('Empty Output Format');
-    }
-    if (hasErrors) return;
-    dispatch(
-      challengeAction(Challenge.Add, {
-        input: {
-          name: data.name,
-          description: data.description,
-          problemStatement: JSON.stringify(convertToRaw(input.problemStatement.getCurrentContent())),
-          constraints: JSON.stringify(convertToRaw(input.constraints.getCurrentContent())),
-          sampleInput: JSON.stringify(convertToRaw(input.inputFormat.getCurrentContent())),
-          sampleOutput: JSON.stringify(convertToRaw(input.outputFormat.getCurrentContent())),
-        },
-      }),
-    );
-    const _input = {
-      name: data.name,
-      description: data.description,
-      problemStatement: convertToRaw(input.problemStatement.getCurrentContent()),
-      constraints: convertToRaw(input.constraints.getCurrentContent()),
-      sampleInput: convertToRaw(input.inputFormat.getCurrentContent()),
-      sampleOutput: convertToRaw(input.outputFormat.getCurrentContent()),
-    };
-    console.log(_input);
-  };
-
+  useEffect(() => {
+    handleInitialization();
+  }, []);
   return (
     <div>
       <div className="bg-white ">
@@ -84,8 +85,8 @@ const Create: React.FC<IRoutePropsForContest> = () => {
           <div className="inputs w-full max-w-6xl p-6">
             <h2 className="text-3xl text-gray-900">Leaderboard</h2>
             <p className="text-sm md:text-base text-gray-600 italic mt-2 mb-4">Leader of the contest at the moment</p>
-            <form className="border-t border-gray-400 pt-8" onSubmit={handleSubmit(handleChallenge)}>
-              <div className="flex flex-wrap -mx-3 mb-6">
+            <form className="border-t border-gray-400 pt-8">
+              <div className=" -mx-3 mb-6">
                 <table className="min-w-full leading-normal">
                   <thead>
                     <tr>
@@ -98,23 +99,15 @@ const Create: React.FC<IRoutePropsForContest> = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                        <div className="flex items-center">
-                          <div className="flex-shrink-0 w-10 h-10">
-                            <img className="w-full h-full rounded-full" src={LogoWhite} alt="" />
-                          </div>
-                          <div className="ml-3">
-                            {/* <Link to={`/edit/details`}> */}
-                            <p className="text-gray-900 whitespace-no-wrap">Ananta Bastola</p>
-                            {/* </Link> */}
-                          </div>
-                        </div>
-                      </td>
-                      <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                        <p className="text-gray-900 whitespace-no-wrap">100 Points</p>
-                      </td>
-                    </tr>
+                    {submissionState.isLoading ? (
+                      <p>Loading info</p>
+                    ) : submissionState.leaderboard.length > 0 ? (
+                      submissionState.leaderboard.map((item, index) => (
+                        <LeaderboardItem key={index} username={item['user_username']} points={item['totalPoints']} />
+                      ))
+                    ) : (
+                      <p>Empty at the moment :) </p>
+                    )}
                   </tbody>
                 </table>
               </div>
@@ -126,4 +119,4 @@ const Create: React.FC<IRoutePropsForContest> = () => {
   );
 };
 
-export default Create;
+export default Leaderboard;

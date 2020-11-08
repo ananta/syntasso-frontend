@@ -1,10 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { RouteComponentProps, Redirect, useRouteMatch } from 'react-router-dom';
-import { MediumTitle } from 'components/Common/CustomText';
+import React from 'react';
+import { RouteComponentProps, useRouteMatch } from 'react-router-dom';
 import NotFound from 'components/Common/NotFound';
-
-import Button from 'components/Common/Button';
-import { history } from 'utils/History';
 
 interface RouteWithProps extends RouteComponentProps {
   challengeId: string;

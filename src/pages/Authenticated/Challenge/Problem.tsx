@@ -1,27 +1,24 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { RouteComponentProps, Redirect, useRouteMatch } from 'react-router-dom';
-import { MediumTitle, RegularText } from 'components/Common/CustomText';
+import React, { useState, useEffect } from 'react';
+import { RouteComponentProps, useRouteMatch } from 'react-router-dom';
 import Button from 'components/Common/Button';
-import { EditorState, convertFromRaw, convertToRaw } from 'draft-js';
-import { Editor } from 'react-draft-wysiwyg';
-import { Link } from 'react-router-dom';
+import { convertFromRaw } from 'draft-js';
 import { useSelector, useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 // import { stateToHTML } from 'draft-js-export-html';
 import { stateToHTML } from 'draft-js-export-html';
 import ReactHtmlParser from 'react-html-parser';
-import useSocket from 'hooks/useSocket';
 
 import AceEditor from 'components/IDE/Editor';
 import Terminal from 'components/IDE/Terminal';
 
-import challengeAction from 'actions/ChallengeActions';
-import { Challenge } from 'actions/ActionTypes';
-import removeChallenge from 'api/methods/removeChallenge';
 import createSubmission from 'api/methods/codeSubmission';
-import TestCaseViewer from './Components/TestCaseViewer';
 import useEngine from 'hooks/useEngine';
 import { codeStub } from 'engine/constants';
+import TestCaseStatus from './Components/TestCaseStatus';
+import { getChallengeTestcase } from 'api';
+import VisibilityIcon from '@material-ui/icons/Visibility';
+import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
+import ContainerStatus, { IContainerStatus } from './Components/ContainerStatus';
 
 interface ProblemInfoProps extends RouteComponentProps {
   challenge: {
@@ -37,31 +34,85 @@ interface ProblemInfoProps extends RouteComponentProps {
     createdAt: string;
   };
   isContestBased?: boolean;
+  contestId?: number;
 }
+
+interface ITestCaseSync {
+  observedOutputTooLong: boolean;
+  process: Number;
+  testStatus: Boolean;
+  timedOut: Boolean;
+}
+
+interface ISubmissionStreaming {
+  isStreaming: boolean;
+  testCases?: any[] | undefined;
+}
+
+const InitialContainerStatus = {
+  status: 'idle' as IContainerStatus['status'],
+  message: [],
+  error: [],
+};
+
+const InitialSubmissionStreaming = {
+  isStreaming: false,
+  testCases: undefined,
+};
+
 const Problem: React.FC<ProblemInfoProps> = (ProblemInfo) => {
+  const [isDebugMode, setIsDebugMode] = useState(false);
   const [isSubmissionLoading, setIsSubmissionLoading] = useState(false);
+  const [containerStatus, setContainerStatus] = useState<IContainerStatus>(InitialContainerStatus);
+  const [submissionStreaming, setIsSubmissionStreaming] = useState<ISubmissionStreaming>(InitialSubmissionStreaming);
   const [currentLanguage, setCurrentLanguage] = useState<'js' | 'c' | 'cpp'>('js');
   const [editorCode, setEditorCode] = useState(codeStub[currentLanguage]);
 
   const { url } = useRouteMatch();
   const dispatch = useDispatch();
   const { challenge } = ProblemInfo;
-  console.log(ProblemInfo.challenge);
+
   const AuthState = useSelector((state) => state['Auth'].data);
   // const serverUrl = 'http://localhost:8080',
   //     topic = 'docker-app-stdout';
-  const [topic, msgBuildLogs, msgTestLogs, isConnected, socketId] = useEngine(currentLanguage);
-  // console.log(socketId);
-  // console.log(isConnected);
-  // console.log(msgBuildLogs);
-  // console.log(msgTestLogs);
+  const [topic, msgBuildLogs, msgTestLogs, msgContainerStatus, isConnected, socketId] = useEngine(currentLanguage);
+
+  const handleStreaming = (testCases: [any]) => {
+    console.log({ before: testCases });
+    const formattedTestCases = testCases.map((test, index) => ({
+      ...test,
+      observedOutputTooLong: false,
+      process: Number(index + 1),
+      testStatus: false,
+      timedOut: false,
+      isLoading: true,
+    }));
+    console.log({ formattedTestCases });
+    setIsSubmissionStreaming((state) => ({
+      ...state,
+      isStreaming: true,
+      testCases: formattedTestCases,
+    }));
+  };
 
   const handleCodeSubmission = async () => {
     try {
       setIsSubmissionLoading(true);
+      // set code submission = true;
+      // generate  the testcases grid and wait for the socket connection to fulfull
+      /// update the testcases with the testcase socket connection
+      const token = AuthState.user.token.toString();
+      const challengeId = challenge.challengeId;
+      const testCases = await getChallengeTestcase({ challengeId, token });
+      if (!(testCases.response.testcases || testCases.response.testcases.length > 0)) {
+        throw new Error('Testcases unavailable for the challenge!');
+      }
+      handleStreaming(testCases.response.testcases);
       const newSubmission = {
-        token: AuthState.user.token.toString(),
-        challengeId: Number(challenge.challengeId),
+        isContest: ProblemInfo.isContestBased,
+        contestId: ProblemInfo.contestId,
+        token,
+        challengeId: Number(challengeId),
         socketId,
         code: {
           content: editorCode,
@@ -72,13 +123,12 @@ const Problem: React.FC<ProblemInfoProps> = (ProblemInfo) => {
         ...newSubmission,
       });
 
-      console.log({ newSubmission });
-      console.log(submissionRes);
       if (!submissionRes.isSuccess) throw new Error(submissionRes.message);
-      toast.success('Submitted code to the server');
+      toast.success('Execution completed');
       setIsSubmissionLoading(false);
     } catch (err) {
       setIsSubmissionLoading(false);
+      setIsSubmissionStreaming(InitialSubmissionStreaming);
       toast.error(err.message);
     }
   };
@@ -88,81 +138,112 @@ const Problem: React.FC<ProblemInfoProps> = (ProblemInfo) => {
     setCurrentLanguage(language);
   };
 
+  const handleContainerStatusUpdates = (msgLog: any) => {
+    if (msgLog && (msgLog.status || msgLog.message || msgLog.error)) {
+      setContainerStatus((state) => ({
+        ...state,
+        ...msgLog,
+      }));
+    }
+  };
+
+  const handleTestCaseUpdates = (msgLog: any) => {
+    const testCases = submissionStreaming.testCases;
+    console.log('Here');
+    console.log({ msgLog });
+    if (submissionStreaming.testCases && submissionStreaming.testCases.length > 0) {
+      const updatedTestProcessId = submissionStreaming.testCases.findIndex((tst) => tst.process === msgLog.process);
+      console.log({ process: msgLog.process });
+      console.log({ updatedTestProcessId });
+      testCases[updatedTestProcessId] = {
+        ...testCases[updatedTestProcessId],
+        ...msgLog,
+        isLoading: false,
+      };
+      setIsSubmissionStreaming((state) => ({
+        ...state,
+        testCases,
+      }));
+    }
+  };
+
+  useEffect(() => {
+    handleTestCaseUpdates(msgTestLogs);
+  }, [msgTestLogs]);
+
+  useEffect(() => {
+    handleContainerStatusUpdates(msgContainerStatus);
+  }, [msgContainerStatus]);
+
   return (
     <div>
-      <div className="flex justify-between">
-        <div className="flex-1 flex items-center">
-          <div className="text-center italic">
-            Difficulty&nbsp;
-            <span className="text-pink-600 cursor-pointer underline uppercase">{challenge.difficulty}</span>.
-          </div>
+      <div className="bg-white shadow-xl  border-l  border-r py-4 px-4 ">
+        <div className="inputs w-full px-6 my-4">
+          <h2 className="text-3xl text-gray-900 -mx-3">{challenge.name}</h2>
+          <form className="border-t border-gray-400 pt-8 ">
+            <div className="flex flex-wrap -mx-3 mb-6">
+              <div className="md:flex w-full md:w-full  mb-6 items-center">
+                <label
+                  className="block tracking-wide text-gray-700 text-sm mb-2 w-full md:w-1/5 font-bold"
+                  htmlFor="grid-text-1"
+                >
+                  Description
+                </label>
+                <div className="flex flex-1 appearance-none block w-full text-gray-700  rounded-md py-3 px-4 leading-tight ">
+                  {challenge.description}
+                </div>
+              </div>
+              <div className="md:flex w-full md:w-full  mb-6">
+                <label
+                  className="block tracking-wide text-gray-700 text-sm mb-2 w-full md:w-1/5 font-bold"
+                  htmlFor="grid-text-1"
+                >
+                  Problem Statement
+                </label>
+                <div className="flex flex-1 mb-32 md:mb-2 bg-gray-200 py-8 px-4">
+                  {ReactHtmlParser(stateToHTML(convertFromRaw(JSON.parse(challenge.problemStatement))))}
+                </div>
+              </div>
+              <div className="md:flex w-full md:w-full  mb-6 ">
+                <label
+                  className="block tracking-wide text-gray-700 text-sm mb-2 w-full md:w-1/5 font-bold"
+                  htmlFor="grid-text-1"
+                >
+                  Input Format
+                </label>
+
+                <div className="flex flex-1 mb-32 md:mb-2 bg-gray-200 py-8 px-4">
+                  {ReactHtmlParser(stateToHTML(convertFromRaw(JSON.parse(challenge.sampleInput))))}
+                </div>
+              </div>
+              <div className="md:flex w-full md:w-full  mb-6 ">
+                <label
+                  className="block tracking-wide text-gray-700 text-sm mb-2 w-full md:w-1/5 font-bold"
+                  htmlFor="grid-text-1"
+                >
+                  Constraints
+                </label>
+
+                <div className="flex flex-1 mb-32 md:mb-2 bg-gray-200 py-8 px-4">
+                  {ReactHtmlParser(stateToHTML(convertFromRaw(JSON.parse(challenge.constraints))))}
+                </div>
+              </div>
+              <div className="md:flex w-full md:w-full  mb-6 ">
+                <label
+                  className="block tracking-wide text-gray-700 text-sm mb-2 w-full md:w-1/5 font-bold"
+                  htmlFor="grid-text-1"
+                >
+                  Output Format
+                </label>
+                <div className="flex flex-1 mb-32 md:mb-2 bg-gray-200 py-8 px-4">
+                  {ReactHtmlParser(stateToHTML(convertFromRaw(JSON.parse(challenge.sampleOutput))))}
+                </div>
+              </div>
+            </div>
+          </form>
         </div>
       </div>
-      <div className="inputs w-full p-6">
-        <h2 className="text-3xl text-gray-900 -mx-3">{challenge.name}</h2>
-        <form className="border-t border-gray-400 pt-8 ">
-          <div className="flex flex-wrap -mx-3 mb-6">
-            <div className="md:flex w-full md:w-full  mb-6 items-center">
-              <label
-                className="block tracking-wide text-gray-700 text-sm mb-2 w-full md:w-1/5 font-bold"
-                htmlFor="grid-text-1"
-              >
-                Description
-              </label>
-              <div className="flex flex-1 appearance-none block w-full text-gray-700  rounded-md py-3 px-4 leading-tight ">
-                {challenge.description}
-              </div>
-            </div>
-            <div className="md:flex w-full md:w-full  mb-6">
-              <label
-                className="block tracking-wide text-gray-700 text-sm mb-2 w-full md:w-1/5 font-bold"
-                htmlFor="grid-text-1"
-              >
-                Problem Statement
-              </label>
-              <div className="flex flex-1 mb-32 md:mb-2 bg-gray-200 py-8 px-4">
-                {ReactHtmlParser(stateToHTML(convertFromRaw(JSON.parse(challenge.problemStatement))))}
-              </div>
-            </div>
-            <div className="md:flex w-full md:w-full  mb-6 ">
-              <label
-                className="block tracking-wide text-gray-700 text-sm mb-2 w-full md:w-1/5 font-bold"
-                htmlFor="grid-text-1"
-              >
-                Input Format
-              </label>
-
-              <div className="flex flex-1 mb-32 md:mb-2 bg-gray-200 py-8 px-4">
-                {ReactHtmlParser(stateToHTML(convertFromRaw(JSON.parse(challenge.sampleInput))))}
-              </div>
-            </div>
-            <div className="md:flex w-full md:w-full  mb-6 ">
-              <label
-                className="block tracking-wide text-gray-700 text-sm mb-2 w-full md:w-1/5 font-bold"
-                htmlFor="grid-text-1"
-              >
-                Constraints
-              </label>
-
-              <div className="flex flex-1 mb-32 md:mb-2 bg-gray-200 py-8 px-4">
-                {ReactHtmlParser(stateToHTML(convertFromRaw(JSON.parse(challenge.constraints))))}
-              </div>
-            </div>
-            <div className="md:flex w-full md:w-full  mb-6 ">
-              <label
-                className="block tracking-wide text-gray-700 text-sm mb-2 w-full md:w-1/5 font-bold"
-                htmlFor="grid-text-1"
-              >
-                Output Format
-              </label>
-              <div className="flex flex-1 mb-32 md:mb-2 bg-gray-200 py-8 px-4">
-                {ReactHtmlParser(stateToHTML(convertFromRaw(JSON.parse(challenge.sampleOutput))))}
-              </div>
-            </div>
-          </div>
-        </form>
-      </div>
-      <div className="border-t border-b border-gray-400 pt-8 ">
+      <div className="mt-10 bg-white shadow-xl border-t border-b border-gray-400 ">
         <div>
           <AceEditor
             language={currentLanguage}
@@ -173,31 +254,45 @@ const Problem: React.FC<ProblemInfoProps> = (ProblemInfo) => {
           />
         </div>
       </div>
-      <div className="pt-8 ">
-        <div className="flex justify-end">
+      <div className="pt-6">
+        <div className="flex justify-between items-center">
           <div>
-            <Button
-              title="Submit Code"
-              isBusy={isSubmissionLoading}
-              disabled={isSubmissionLoading}
-              onClick={handleCodeSubmission}
-            />
+            <ContainerStatus {...containerStatus} />
+          </div>
+          <div className="flex">
+            <div className="shadow-xl mr-4">
+              <Button flat color="purple-600" title="Debug" onClick={() => setIsDebugMode(!isDebugMode)}>
+                {isDebugMode ? <VisibilityOffIcon /> : <VisibilityIcon />}
+              </Button>
+            </div>
+
+            <div className="shadow-xl">
+              <Button
+                flat
+                title="Submit Code"
+                isBusy={isSubmissionLoading}
+                disabled={isSubmissionLoading || containerStatus.status !== 'ready'}
+                onClick={handleCodeSubmission}
+              />
+            </div>
           </div>
         </div>
       </div>
-      <div className="pt-8 ">
-        <div className="flex justify-between">
-          <div className="flex-1">
-            <Terminal height={20} msg={msgBuildLogs} socketId={socketId} topic={topic} />
-          </div>
-          <div className="flex-1">
-            <Terminal height={20} msg={msgTestLogs} socketId={socketId} topic={topic} />
+
+      {isDebugMode && (
+        <div className="mt-8 bg-white shadow-xl">
+          <div className="flex justify-between">
+            <div className="flex-1 bg-white ">
+              <Terminal height={20} msg={msgBuildLogs} socketId={socketId} topic={topic} />
+            </div>
           </div>
         </div>
-      </div>
-      <div className="pt-8">
-        <TestCaseViewer />
-      </div>
+      )}
+      {submissionStreaming.isStreaming && (
+        <div className="pt-8">
+          <TestCaseStatus testCases={submissionStreaming.testCases} />
+        </div>
+      )}
     </div>
   );
 };

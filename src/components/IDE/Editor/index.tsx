@@ -42,13 +42,11 @@ const Editor: React.FC<EditorInterface> = ({ currentCode, setCurrentCode, height
   useEffect(() => {
     formatLanguageForEditor();
   }, [language, setLanguage]);
-  console.log({ selectedLanguage });
 
   return (
     <div style={{}}>
       <ReactResizeDetector handleWidth handleHeight onResize={onResize} />
-      <div className="flex justify-between px-8 py-2 bg-gray-700">
-        <div className="text-white items-center flex">Code Editor</div>
+      <div className="flex justify-end px-2 bg-gray-700">
         <div className="">
           <div className="my-2 flex sm:flex-row flex-col">
             <div className="flex flex-row mb-1 sm:mb-0">
@@ -56,7 +54,7 @@ const Editor: React.FC<EditorInterface> = ({ currentCode, setCurrentCode, height
                 <select
                   value={language}
                   onChange={handleLanguageChange}
-                  className="appearance-none h-full rounded-l rounded-r border-t sm:rounded-r-none sm:border-r-0 border-r border-b block appearance-none w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:border-l focus:border-r focus:bg-white focus:border-gray-500"
+                  className="appearance-none h-full border-t sm:rounded-r-none sm:border-r-0 border-r border-b block appearance-none w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:border-l focus:border-r focus:bg-white focus:border-gray-500"
                 >
                   <option value="js">Javascript</option>
                   <option value="c">C</option>

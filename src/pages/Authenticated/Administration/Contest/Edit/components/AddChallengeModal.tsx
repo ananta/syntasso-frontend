@@ -2,9 +2,8 @@ import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import Button from 'components/Common/Button';
 import AsyncSelect from 'react-select/async';
-import { searchChallenges } from 'api';
 import { toast } from 'react-toastify';
-import { addChallengeToContest } from 'api';
+import { addChallengeToContest, searchChallenges } from 'api';
 
 interface IAddChallengeModa {
   contestId: string;
@@ -73,10 +72,7 @@ const AddChallengeModal: React.FC<IAddChallengeModa> = ({ handleCloseModal, cont
       toast.error(err.message);
       setIsAddingChallenge(false);
     }
-
-    // add the logic to add challenge
   };
-  console.log({ AuthState });
   return (
     <div className="modal-content py-4 text-left px-6 w-full">
       <div className="flex justify-between items-center pb-3 w-full">

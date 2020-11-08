@@ -1,21 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { RouteComponentProps, Link } from 'react-router-dom';
-import { EditorState, convertFromRaw, convertToRaw } from 'draft-js';
-import { Editor } from 'react-draft-wysiwyg';
-import { useDispatch, RootStateOrAny, useSelector } from 'react-redux';
-import { AiFillLeftCircle } from 'react-icons/ai';
-import { history } from 'utils/History';
-import Validator from 'utils/Validator';
-import Button from 'components/Common/Button';
+import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import LogoWhite from 'shared/assets/images/logo-white.png';
 import { IRoutePropsForContest } from './types';
-import { useForm, Controller } from 'react-hook-form';
-import classnames from 'classnames';
 import { IEnrolledUser } from 'constants/';
-import { MediumTitle } from 'components/Common/CustomText';
-import { Challenge } from 'actions/ActionTypes';
-import challengeAction from 'actions/ChallengeActions';
 import CustomLoader from 'components/Common/CustomLoader';
 import NotFound from 'components/Common/NotFound';
 import { getContestEnrollments } from 'api';
@@ -57,7 +45,7 @@ const Enrollments: React.FC<IRoutePropsForContest> = ({ contestId }) => {
             <h2 className="text-3xl text-gray-900">Enrollments</h2>
             <p className="text-sm md:text-base text-gray-600 italic mt-2 mb-4">Total Enrollments</p>
             <form className="border-t border-gray-400 pt-8">
-              <div className="flex flex-wrap -mx-3 mb-6">
+              <div className=" -mx-3 mb-6">
                 <table className="min-w-full leading-normal">
                   <thead>
                     <tr>
@@ -80,7 +68,7 @@ const Enrollments: React.FC<IRoutePropsForContest> = ({ contestId }) => {
                               </div>
                               <div className="ml-3">
                                 {/* <Link to={`/edit/details`}> */}
-                                <p className="text-gray-900 whitespace-no-wrap">
+                                <p className="text-gray-900 whitespace-no-wrap capitalize">
                                   {enrollment.firstName + ' ' + enrollment.lastName}
                                 </p>
                                 {/* </Link> */}

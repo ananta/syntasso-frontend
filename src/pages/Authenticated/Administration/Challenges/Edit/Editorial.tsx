@@ -1,17 +1,14 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { RouteComponentProps, Redirect, useRouteMatch } from 'react-router-dom';
-import { EditorState, convertFromRaw, convertToRaw } from 'draft-js';
+import React, { useState } from 'react';
+import { RouteComponentProps, useRouteMatch } from 'react-router-dom';
+import { EditorState } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
-import { MediumTitle } from 'components/Common/CustomText';
 import Button from 'components/Common/Button';
-import { history } from 'utils/History';
 
 interface RouteWithProps extends RouteComponentProps {
   challengeId: string;
 }
 
-const Editorial: React.FC<RouteWithProps> = (RouteProps) => {
-  const { url } = useRouteMatch();
+const Editorial: React.FC<RouteWithProps> = () => {
   const [input, setInput] = useState({
     editorialContent: EditorState.createEmpty(),
   });

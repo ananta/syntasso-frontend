@@ -1,7 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Route, Switch, RouteComponentProps, useParams, useRouteMatch, NavLink, Redirect } from 'react-router-dom';
+import React from 'react';
+import { Route, Switch, RouteComponentProps, useRouteMatch } from 'react-router-dom';
 
-import { MediumTitle, RegularText } from 'components/Common/CustomText';
 import CreateChallenges from './Create';
 import ManageChallenges from './Manage';
 import EditChallenges from './Edit';

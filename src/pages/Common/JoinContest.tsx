@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import moment from 'moment';
 import { useRouteMatch } from 'react-router-dom';
-import { enrollTheUser, getContestInfo } from 'api';
+import { enrollTheUser, getContestInfo, isUserEnrolled } from 'api';
 import CustomLoader from 'components/Common/CustomLoader';
 import { useSelector } from 'react-redux';
 import NotFound from 'components/Common/NotFound';
@@ -9,28 +9,25 @@ import { toast } from 'react-toastify';
 import Button from 'components/Common/Button';
 import { history } from 'utils/History';
 
-import { isUserEnrolled } from 'api';
-
-interface IContestInfo {
-  contestId: number;
+type IContestInfo = {
+  contestId: string;
   name: string;
   description: string;
   authorId: string;
   difficulty: string;
   startTime: string;
   endTime: string;
-}
+};
 
 const Contest = () => {
   const [isPageLoading, setIsPageLoading] = useState(true);
   const [isEnrolling, setIsEnrolling] = useState(false);
   const [enrolled, setEnrolled] = useState(false);
   const {
-    url,
     params: { contestId },
-  } = useRouteMatch();
+  } = useRouteMatch<IContestInfo>();
   const [contestInfo, setContestInfo] = useState<IContestInfo>({
-    contestId: 0,
+    contestId: '0',
     name: '',
     description: '',
     authorId: '',
@@ -61,18 +58,19 @@ const Contest = () => {
   const handleContestNavigation = () => {
     history.push(`/contest/${contestId}`);
   };
+
   const enrollUserInContest = async () => {
     if (!token) throw new Error('Please Login to enroll in contest!');
     const enrollUserResponse = await enrollTheUser({
       token,
-      contestId,
+      contestId: parseInt(contestId),
     });
     if (!enrollUserResponse.isSuccess) throw new Error(enrollUserResponse.message || 'Something went wrong');
   };
 
   const initializeContestInfo = async () => {
     const contestInfoResponse = await getContestInfo({
-      contestId,
+      contestId: parseInt(contestId),
     });
     if (!contestInfoResponse.isSuccess) throw new Error(contestInfoResponse.message || 'Something went wrong');
     return contestInfoResponse.response.contest;

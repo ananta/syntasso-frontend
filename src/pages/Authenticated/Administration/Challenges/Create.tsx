@@ -1,18 +1,15 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
-import { EditorState, convertFromRaw, convertToRaw } from 'draft-js';
+import { EditorState, convertToRaw } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
 import { useDispatch, RootStateOrAny, useSelector } from 'react-redux';
-import { AiFillLeftCircle } from 'react-icons/ai';
 import { history } from 'utils/History';
-import Validator from 'utils/Validator';
 import Button from 'components/Common/Button';
 import { toast } from 'react-toastify';
 
-import { useForm, Controller } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import classnames from 'classnames';
 
-import { MediumTitle } from 'components/Common/CustomText';
 import { Challenge } from 'actions/ActionTypes';
 import challengeAction from 'actions/ChallengeActions';
 
