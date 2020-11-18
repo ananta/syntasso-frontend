@@ -75,7 +75,7 @@ const Testcase: React.FC<RouteWithProps> = (RouteProps) => {
       if (!testCasesRes.isSuccess) throw new Error(testCasesRes.message);
       setTestcases(testCasesRes.response.testcases);
       console.log(testCasesRes);
-      setIsGettingTestcase(true);
+      setIsGettingTestcase(false);
     } catch (err) {
       toast.error(err.message);
       setIsGettingTestcase(false);
