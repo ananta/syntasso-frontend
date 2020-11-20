@@ -116,7 +116,7 @@ const Problem: React.FC<ProblemInfoProps> = (ProblemInfo) => {
       handleStreaming(testCases.response.testcases);
       const newSubmission = {
         isContest: ProblemInfo.isContestBased,
-        contestId: ProblemInfo.contestId,
+
         token,
         challengeId: Number(challengeId),
         socketId,
@@ -125,6 +125,7 @@ const Problem: React.FC<ProblemInfoProps> = (ProblemInfo) => {
           language: currentLanguage,
         },
       };
+      if (ProblemInfo.isContestBased) newSubmission['contestId'] = ProblemInfo.contestId;
       const submissionRes = await createSubmission({
         ...newSubmission,
       });
