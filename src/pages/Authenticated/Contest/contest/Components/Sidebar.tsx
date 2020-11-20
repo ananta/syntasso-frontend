@@ -1,12 +1,26 @@
 import React from 'react';
 import { Link, useRouteMatch } from 'react-router-dom';
+import Countdown from 'react-countdown';
+import CustomCountdownTimer from 'components/Common/CustomCountdownTimer';
 
-const Sidebar = () => {
+interface ISidebar {
+  endTime?: string;
+}
+
+const Sidebar: React.FC<ISidebar> = ({ endTime }) => {
   const { url } = useRouteMatch();
   return (
     <div className="w-full lg:w-1/4 px-3">
       <div className="p-1 mb-4 relative">
-        <h5 className="font-bold text-lg uppercase text-gray-700 mb-2">Contest info</h5>
+        <h5 className="font-bold text-lg uppercase text-gray-700 mb-2">Ends In</h5>
+        {endTime && (
+          <div>
+            <CustomCountdownTimer endTime={endTime} />
+          </div>
+        )}
+      </div>
+      <div className="p-1 mb-4 relative">
+        <h5 className="font-bold text-lg uppercase text-gray-700 mb-2">Navigation</h5>
         <ul>
           <li className=" cursor-pointer px-1 py-4 border-b border-t border-white hover:border-gray-200 transition duration-300">
             <Link to={`${url}`}>

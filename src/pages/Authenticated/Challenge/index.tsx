@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import Problem from './Problem';
 import Leaderboard from './Leaderboard';
 import Submissions from './Submissions';
-import { doesChallengeAndContestExists, getChallengeInfo } from 'api';
+import { doesChallengeAndContestExists, getChallengeInfo, getContestInfo } from 'api';
 import { history } from 'utils/History';
 import { toast } from 'react-toastify';
 import NotFound from 'components/Common/NotFound';
@@ -26,6 +26,11 @@ const Challenge: React.FC<ChallengeParams> = (RouteProps) => {
   const isContest = url.toString().includes('contest');
 
   const [error, setError] = useState(false);
+
+  const [contestInfo, setContestInfo] = useState({
+    endTime: '',
+  });
+
   const [currentChallenge, setCurrentChallenge] = useState({
     challengeId: '',
     name: '',
@@ -56,6 +61,16 @@ const Challenge: React.FC<ChallengeParams> = (RouteProps) => {
     if (!checkerResponse.response.isSuccess)
       throw new Error(checkerResponse.response.message || 'Problem loading challenge of the contest');
   };
+
+  const getInfoAboutContest = async (contestId: string) => {
+    const contestInfoRes = await getContestInfo({
+      contestId: parseInt(contestId),
+    });
+    setContestInfo({
+      ...contestInfoRes.response.contest,
+    });
+  };
+
   const checkIfChallengeExists = async () => {
     const challengeRes = await getChallengeInfo({
       token: Auth.data.user.token,
@@ -76,7 +91,10 @@ const Challenge: React.FC<ChallengeParams> = (RouteProps) => {
   const handleChallengeInitiation = async () => {
     try {
       setIsLoading(true);
-      if (isContest) await checkChallengeContestRelationship();
+      if (isContest) {
+        await checkChallengeContestRelationship();
+        await getInfoAboutContest(contestId);
+      }
       await checkIfChallengeExists();
       setIsLoading(false);
     } catch (err) {
@@ -144,6 +162,7 @@ const Challenge: React.FC<ChallengeParams> = (RouteProps) => {
                           challenge={currentChallenge}
                           isContestBased={isContest}
                           contestId={parseInt(contestId)}
+                          contestInfo={contestInfo}
                         />
                       )}
                     />

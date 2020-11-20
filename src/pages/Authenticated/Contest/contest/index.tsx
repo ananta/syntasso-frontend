@@ -107,7 +107,7 @@ const Contest: React.FC<RouteComponentProps> = (RouteProps) => {
           </Switch>
           {/* <Challenges /> */}
         </div>
-        <Sidebar />
+        <Sidebar endTime={contestInfo.endTime} />
       </div>
     </div>
   );

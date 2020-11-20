@@ -19,6 +19,7 @@ import { getChallengeTestcase } from 'api';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import ContainerStatus, { IContainerStatus } from './Components/ContainerStatus';
+import { IsTimeInPast } from 'utils/TimeStatus';
 
 interface ProblemInfoProps extends RouteComponentProps {
   challenge: {
@@ -35,6 +36,9 @@ interface ProblemInfoProps extends RouteComponentProps {
   };
   isContestBased?: boolean;
   contestId?: number;
+  contestInfo?: {
+    endTime: string;
+  };
 }
 
 interface ITestCaseSync {
@@ -70,7 +74,7 @@ const Problem: React.FC<ProblemInfoProps> = (ProblemInfo) => {
 
   const { url } = useRouteMatch();
   const dispatch = useDispatch();
-  const { challenge } = ProblemInfo;
+  const { challenge, contestInfo, isContestBased } = ProblemInfo;
 
   const AuthState = useSelector((state) => state['Auth'].data);
   // const serverUrl = 'http://localhost:8080',
@@ -98,6 +102,8 @@ const Problem: React.FC<ProblemInfoProps> = (ProblemInfo) => {
   const handleCodeSubmission = async () => {
     try {
       setIsSubmissionLoading(true);
+      if (isContestBased && IsTimeInPast(contestInfo.endTime))
+        throw new Error('You cannot submit because the contest is over!');
       // set code submission = true;
       // generate  the testcases grid and wait for the socket connection to fulfull
       /// update the testcases with the testcase socket connection
