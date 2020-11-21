@@ -10,7 +10,11 @@ interface ITestCaseItem {
   sampleOutput: string;
   testcaseId: number;
   timedOut: boolean;
-  compilerMessage?: string;
+  observedOutput?: string;
+  error?: {
+    lineNumber: number;
+    fullError: string;
+  };
   weightage: number;
   challengeId: number;
   createdAt?: string;
@@ -26,7 +30,17 @@ interface testI {
 
 const TestCaseModal: React.FC<testI> = ({
   close,
-  test: { title, testStatus, observedOutputTooLong, sampleInput, sampleOutput, timedOut, compilerMessage, weightage },
+  test: {
+    title,
+    testStatus,
+    observedOutputTooLong,
+    sampleInput,
+    sampleOutput,
+    timedOut,
+    observedOutput,
+    error,
+    weightage,
+  },
 }) => (
   <div className="">
     <div className="flex flex-row">
@@ -88,6 +102,18 @@ const TestCaseModal: React.FC<testI> = ({
             </dd>
           </div>
         )}
+        {observedOutput && (
+          <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <dt className="text-sm leading-5 font-medium text-gray-500">Observed Output</dt>
+            <dd className="mt-1 text-sm leading-5 text-gray-900 sm:mt-0 sm:col-span-2 bg-gray-100 rounded px-5 py-2">
+              {observedOutput.split('\n').map((item, key) => (
+                <p className="block" key={key}>
+                  {item}
+                </p>
+              ))}
+            </dd>
+          </div>
+        )}
         <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
           <dt className="text-sm leading-5 font-medium text-gray-500">Execution Message</dt>
           <dd className="mt-1 text-sm leading-5 text-gray-900 sm:mt-0 sm:col-span-2">
@@ -107,14 +133,11 @@ const TestCaseModal: React.FC<testI> = ({
                     />
                   </svg>
                   <div>
-                    <span className="ml-2 flex-1 w-0 truncate">Compiler Message: </span>
+                    <span className="ml-2 flex-1 w-0 truncate font-bold">Compiler Message: </span>
                     <div className="ml-2 flex-shrink-0">
-                      <a
-                        href="#"
-                        className="font-medium text-indigo-600 hover:text-indigo-500 transition duration-150 ease-in-out"
-                      >
-                        {compilerMessage ? compilerMessage : '--'}
-                      </a>
+                      <p className="font-medium  text-red-500 transition duration-150 ease-in-out">
+                        {error && error.fullError ? error.fullError : '--'}
+                      </p>
                     </div>
                   </div>
                 </div>

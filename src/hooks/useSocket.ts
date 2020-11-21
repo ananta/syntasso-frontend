@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 interface socketStateType {
   msg1?: string;
   msg2?: string;
-  msg3?: string;
+  msg3?: any;
   socketId: string;
   isConnected: boolean;
 }
@@ -48,7 +48,6 @@ const useSocket = (serverURL: string) => {
 
   const handleTopic2 = (data: any) => {
     const allInfo = data;
-    console.log({ allInfo });
     setSocketState((state: socketStateType) => {
       const newState = Object.assign({}, state);
       // newState.msg2 = data ? `For Testcase: ${data.process + 1}, status: ${data.testStatus}` : '>';
@@ -62,7 +61,6 @@ const useSocket = (serverURL: string) => {
 
   const handleTopic3 = (data: any) => {
     const containerStatus = data;
-    console.log({ containerStatus });
     setSocketState((state: socketStateType) => {
       const newState = Object.assign({}, state);
       newState.msg3 = {

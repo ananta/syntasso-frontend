@@ -17,7 +17,11 @@ interface ITestCaseItem {
   sampleInput: string;
   sampleOutput: string;
   testcaseId: number;
-  compilermessage?: string;
+  observedOutput?: string;
+  error?: {
+    lineNumber: number;
+    fullError: string;
+  };
   weightage: number;
   // status: 'success' | 'busy' | 'failed';
 }
@@ -27,10 +31,8 @@ interface IItem {
 }
 
 const TestCaseItem: React.FC<IItem> = ({ test, key }) => {
-  const { title, isLoading, testStatus, observedOutputTooLong, compilermessage, weightage } = test;
+  const { title, isLoading, testStatus, observedOutputTooLong, weightage } = test;
   const status = isLoading ? 'busy' : testStatus ? 'success' : 'failed';
-
-  console.log({ test: test.sampleInput.split('↵') });
   return (
     <li className="col-span-1 flex items-center bg-white border border-gray-200 rounded-md shadow-sm overflow-hidden">
       <div
@@ -74,7 +76,6 @@ const TestCaseItem: React.FC<IItem> = ({ test, key }) => {
 };
 
 const TestCaseStatus = ({ testCases }) => {
-  console.log({ testCases });
   return (
     <div>
       <div>

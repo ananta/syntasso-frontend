@@ -61,7 +61,7 @@ const InitialContainerStatus = {
 
 const InitialSubmissionStreaming = {
   isStreaming: false,
-  testCases: undefined,
+  testCases: [],
 };
 
 const Problem: React.FC<ProblemInfoProps> = (ProblemInfo) => {
@@ -71,7 +71,7 @@ const Problem: React.FC<ProblemInfoProps> = (ProblemInfo) => {
   const [submissionStreaming, setIsSubmissionStreaming] = useState<ISubmissionStreaming>(InitialSubmissionStreaming);
   const [currentLanguage, setCurrentLanguage] = useState<'js' | 'c' | 'cpp'>('js');
   const [editorCode, setEditorCode] = useState(codeStub[currentLanguage]);
-
+  const [postMsgUpdate, setPostMsgUpdate] = useState({});
   const { url } = useRouteMatch();
   const dispatch = useDispatch();
   const { challenge, contestInfo, isContestBased } = ProblemInfo;
@@ -82,7 +82,6 @@ const Problem: React.FC<ProblemInfoProps> = (ProblemInfo) => {
   const [topic, msgBuildLogs, msgTestLogs, msgContainerStatus, isConnected, socketId] = useEngine(currentLanguage);
 
   const handleStreaming = (testCases: [any]) => {
-    console.log({ before: testCases });
     const formattedTestCases = testCases.map((test, index) => ({
       ...test,
       observedOutputTooLong: false,
@@ -91,7 +90,6 @@ const Problem: React.FC<ProblemInfoProps> = (ProblemInfo) => {
       timedOut: false,
       isLoading: true,
     }));
-    console.log({ formattedTestCases });
     setIsSubmissionStreaming((state) => ({
       ...state,
       isStreaming: true,
@@ -131,6 +129,18 @@ const Problem: React.FC<ProblemInfoProps> = (ProblemInfo) => {
       });
 
       if (!submissionRes.isSuccess) throw new Error(submissionRes.message);
+      const toBeUpdated = submissionRes.response.submission.processes.map((process, index) => {
+        return {
+          ...process,
+          process: index + 1,
+          sampleOutput: process['expectedOutput'],
+          type: 'test-status',
+        };
+      });
+      // dispatch the result to be updated
+      for (let i = 0; i < toBeUpdated.length; i++) {
+        setPostMsgUpdate(toBeUpdated[i]);
+      }
       toast.success('Execution completed');
       setIsSubmissionLoading(false);
     } catch (err) {
@@ -156,12 +166,8 @@ const Problem: React.FC<ProblemInfoProps> = (ProblemInfo) => {
 
   const handleTestCaseUpdates = (msgLog: any) => {
     const testCases = submissionStreaming.testCases;
-    console.log('Here');
-    console.log({ msgLog });
     if (submissionStreaming.testCases && submissionStreaming.testCases.length > 0) {
       const updatedTestProcessId = submissionStreaming.testCases.findIndex((tst) => tst.process === msgLog.process);
-      console.log({ process: msgLog.process });
-      console.log({ updatedTestProcessId });
       testCases[updatedTestProcessId] = {
         ...testCases[updatedTestProcessId],
         ...msgLog,
@@ -177,6 +183,10 @@ const Problem: React.FC<ProblemInfoProps> = (ProblemInfo) => {
   useEffect(() => {
     handleTestCaseUpdates(msgTestLogs);
   }, [msgTestLogs]);
+
+  useEffect(() => {
+    handleTestCaseUpdates(postMsgUpdate);
+  }, [postMsgUpdate]);
 
   useEffect(() => {
     handleContainerStatusUpdates(msgContainerStatus);
