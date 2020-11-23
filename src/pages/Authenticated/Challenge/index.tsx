@@ -46,6 +46,7 @@ const Challenge: React.FC<ChallengeParams> = (RouteProps) => {
     sampleOutput: '',
     createdAt: '',
   });
+
   const {
     location: { pathname },
   } = RouteProps;
@@ -80,9 +81,9 @@ const Challenge: React.FC<ChallengeParams> = (RouteProps) => {
     if (!challengeRes.isSuccess) throw new Error(challengeRes.message);
     if (url === pathname) {
       if (url[url.length - 1] === '/') {
-        history.push(url + 'problem');
+        history.replace(url + 'problem');
       } else {
-        history.push(url + '/problem');
+        history.replace(url + '/problem');
       }
     }
     setCurrentChallenge(challengeRes.response.challenge);

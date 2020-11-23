@@ -11,6 +11,51 @@ interface NavButtonProps {
   className?: string;
 }
 
+export const NavBarElements = [
+  {
+    title: 'Features',
+    location: '/features',
+    isProtected: false,
+    extraClass: 'ml-0',
+  },
+  {
+    title: 'Pricing',
+    location: '/pricing',
+    isProtected: false,
+  },
+  {
+    title: 'About',
+    location: '/about',
+    isProtected: false,
+  },
+  {
+    title: 'Dashboard',
+    location: '/dashboard',
+    isProtected: true,
+    extraClass: 'ml-0',
+  },
+  {
+    title: 'Challenges',
+    location: '/challenges',
+    isProtected: true,
+  },
+  {
+    title: 'Compete',
+    location: '/contests',
+    isProtected: true,
+  },
+  {
+    title: 'Jobs',
+    location: '/jobs',
+    isProtected: true,
+  },
+  {
+    title: 'Leaderboard',
+    location: '/leaderboard',
+    isProtected: true,
+  },
+];
+
 const NavButton: React.FC<NavButtonProps> = ({ to, title, className }) => (
   <NavLink
     activeClassName={'bg-gray-900'}
@@ -55,17 +100,15 @@ const Navbar = () => {
             <div className="hidden md:block">
               {!isLoggedIn ? (
                 <div className="ml-10 flex items-baseline">
-                  <NavButton title="Features" to="/features" className="ml-0" />
-                  <NavButton title="Pricing" to="/pricing" />
-                  <NavButton title="About" to="/about" />
+                  {NavBarElements.filter((item) => !item.isProtected).map((item) => (
+                    <NavButton title={item.title} to={item.location} className={item.extraClass} />
+                  ))}
                 </div>
               ) : (
                 <div className="ml-10 flex items-baseline">
-                  <NavButton title="Dashboard" to="/dashboard" className="ml-0" />
-                  <NavButton title="Challenges" to="/challenges" />
-                  <NavButton title="Compete" to="/contests" />
-                  <NavButton title="Jobs" to="/jobs" />
-                  <NavButton title="Leaderboard" to="/leaderboard" />
+                  {NavBarElements.filter((item) => item.isProtected).map((item) => (
+                    <NavButton title={item.title} to={item.location} className={item.extraClass} />
+                  ))}
                 </div>
               )}
             </div>
