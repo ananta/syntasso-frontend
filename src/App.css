@@ -100,3 +100,8 @@ body {
     transform: rotate(360deg);
   }
 }
+
+.errorMarkerTextEditor {
+  position: absolute;
+  background-color: rgba(255, 0, 0, 0.1);
+}

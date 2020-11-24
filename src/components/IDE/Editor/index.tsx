@@ -12,9 +12,10 @@ interface EditorInterface {
   height: number;
   language: 'js' | 'c' | 'cpp';
   setLanguage: any | Dispatch<SetStateAction<'js' | 'c' | 'cpp'>>;
+  errors?: any[];
 }
 
-const Editor: React.FC<EditorInterface> = ({ currentCode, setCurrentCode, height, language, setLanguage }) => {
+const Editor: React.FC<EditorInterface> = ({ currentCode, setCurrentCode, height, language, setLanguage, errors }) => {
   const [editorSize, setEditorSize] = useState({
     width: 0,
   });
@@ -42,7 +43,8 @@ const Editor: React.FC<EditorInterface> = ({ currentCode, setCurrentCode, height
   useEffect(() => {
     formatLanguageForEditor();
   }, [language, setLanguage]);
-
+  console.log('Here are the errors editor is serving');
+  console.log({ errors });
   return (
     <div style={{}}>
       <ReactResizeDetector handleWidth handleHeight onResize={onResize} />
@@ -80,6 +82,7 @@ const Editor: React.FC<EditorInterface> = ({ currentCode, setCurrentCode, height
         onLoad={() => false}
         onChange={setCurrentCode}
         fontSize={15}
+        markers={errors}
         showPrintMargin={true}
         showGutter={true}
         highlightActiveLine={true}

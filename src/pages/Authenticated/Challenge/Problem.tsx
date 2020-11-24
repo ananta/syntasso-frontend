@@ -267,6 +267,19 @@ const Problem: React.FC<ProblemInfoProps> = (ProblemInfo) => {
             setLanguage={handleLanguageChange}
             height={50}
             currentCode={editorCode}
+            errors={
+              submissionStreaming.testCases.length > 0 &&
+              submissionStreaming.testCases
+                .filter((testCases) => !!testCases.error)
+                .map((error) => ({
+                  type: 'screenLine',
+                  startRow: error.error.lineNumber - 1,
+                  endRow: error.error.lineNumber + 2,
+                  startCol: error.error.columnNumber ? error.error.columnNumber : 10,
+                  endCol: 100,
+                  className: 'errorMarkerTextEditor',
+                }))
+            }
             setCurrentCode={setEditorCode}
           />
         </div>
