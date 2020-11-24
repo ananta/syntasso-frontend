@@ -5,42 +5,46 @@ export interface ILanguage {
 }
 
 export const codeStub: ILanguage = {
-  js: `
-  "use strict";
-  let rawSampleInput,
-	  parsedInput = [],
-	  currentLine = 0;
-  // TODO:
-  // write your function here:
-  // example:
-  function calcArea(length, breadth) {
-  	return length * breadth;
-  }
-  // use this function to read individual lines of the sample input, ...
-  // ... incrementing the line-pointer on each read
-  const readLine = () => parsedInput[currentLine++];
-  const main = () => {
-	  if (process.argv.length == 3) {
-		  rawSampleInput = process.argv[2];
-		  parsedInput = rawSampleInput.split("\\n");
-		  // TODO:
-		  // invoke your function here:
-		  // example:
-		  try {
-			  let length = parseInt(readLine());
-			  let breadth = parseInt(readLine());
-			  let output = calcArea(length, breadth);
-			  process.stdout.write(output.toString());
-		  } catch (error) {
-			  process.stderr.write(error);
-		  }
-	  } else if (process.argv.length > 3) {
-		  throw new Error("Too many inputs provided");
-	  } else {
-		  throw new Error("No input provided");
-	  }
-  };
-  main();
+  js: `"use strict";
+let rawSampleInput,
+	parsedInput = [],
+	currentLine = 0;
+
+// TODO:
+// write your function here:
+// example:
+function calcArea(length, breadth) {
+	return length * breadth;
+}
+
+// use this function to read individual lines of the sample input, ...
+// ... incrementing the line-pointer on each read
+const readLine = () => parsedInput[currentLine++];
+
+const main = () => {
+	if (process.argv.length == 3) {
+		rawSampleInput = process.argv[2];
+		parsedInput = rawSampleInput.split("\\n");
+
+		// TODO:
+		// invoke your function here:
+		// example:
+		try {
+			let length = parseInt(readLine());
+			let breadth = parseInt(readLine());
+			let output = calcArea(length, breadth);
+			process.stdout.write(output.toString());
+		} catch (error) {
+			process.stderr.write(error.stack);
+		}
+	} else if (process.argv.length > 3) {
+		throw new Error("Too many inputs provided");
+	} else {
+		throw new Error("No input provided");
+	}
+};
+
+main();
   `,
   c: `
 
