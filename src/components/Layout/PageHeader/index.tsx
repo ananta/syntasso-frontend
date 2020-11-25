@@ -1,5 +1,6 @@
 import React from 'react';
-import { useLocation, useHistory } from 'react-router-dom';
+import { useLocation, useHistory, NavLink } from 'react-router-dom';
+import useBreadcrumbs from 'use-react-router-breadcrumbs';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 
 import { NavBarElements } from 'components/Layout/Navbar';
@@ -12,7 +13,8 @@ interface PageHeaderProps {
 const PageHeader: React.FC<PageHeaderProps> = ({ title, subTitle }) => {
   const location = useLocation();
   const history = useHistory();
-
+  const breadcrumbs = useBreadcrumbs();
+  breadcrumbs.shift();
   return (
     <div>
       <header className="bg-white shadow">
@@ -25,8 +27,14 @@ const PageHeader: React.FC<PageHeaderProps> = ({ title, subTitle }) => {
                 className="cursor-pointer"
               />
             )}
-            <p className="text-md leading-tight text-gray-500">{subTitle}</p>
+            {breadcrumbs.map(({ match, breadcrumb }) => (
+              <p className="text-md leading-tight text-gray-500" key={match.url}>
+                <NavLink to={match.url}>/ {breadcrumb}</NavLink>
+                &nbsp;
+              </p>
+            ))}
           </div>
+
           <h1 className="text-3xl font-bold leading-tight text-gray-900">{title}</h1>
         </div>
       </header>
