@@ -146,7 +146,6 @@ const Problem: React.FC<ProblemInfoProps> = (ProblemInfo) => {
     } catch (err) {
       toast.error(err.message);
     }
-    setIsSubmissionStreaming(InitialSubmissionStreaming);
     setIsSubmissionLoading(false);
     setShowError(true);
   };
@@ -271,16 +270,7 @@ const Problem: React.FC<ProblemInfoProps> = (ProblemInfo) => {
             errors={
               showError
                 ? submissionStreaming.testCases.length > 0 &&
-                  submissionStreaming.testCases
-                    .filter((testCases) => !!testCases.error)
-                    .map((error) => ({
-                      type: 'screenLine',
-                      startRow: error.error.lineNumber - 1,
-                      endRow: error.error.lineNumber + 2,
-                      startCol: error.error.columnNumber ? error.error.columnNumber : 10,
-                      endCol: 100,
-                      className: 'errorMarkerTextEditor',
-                    }))
+                  submissionStreaming.testCases.filter((testCases) => !!testCases.error)
                 : []
             }
             setCurrentCode={(code) => {

@@ -15,6 +15,24 @@ interface EditorInterface {
   errors?: any[];
 }
 
+const genearateMarkerAndAnnotations = (errors: any) => {
+  return {
+    markers: errors.map((error) => ({
+      type: 'screenLine',
+      startRow: error.error.lineNumber - 1,
+      endRow: error.error.lineNumber + 2,
+      startCol: error.error.columnNumber ? error.error.columnNumber : 10,
+      endCol: 100,
+      className: 'errorMarkerTextEditor',
+    })),
+    annotations: errors.map((error) => ({
+      type: 'error',
+      row: error.error.lineNumber - 1,
+      text: error.error.fullError,
+    })),
+  };
+};
+
 const Editor: React.FC<EditorInterface> = ({ currentCode, setCurrentCode, height, language, setLanguage, errors }) => {
   const [editorSize, setEditorSize] = useState({
     width: 0,
@@ -45,6 +63,7 @@ const Editor: React.FC<EditorInterface> = ({ currentCode, setCurrentCode, height
   }, [language, setLanguage]);
   console.log('Here are the errors editor is serving');
   console.log({ errors });
+  const MarkersAndAnnotations = genearateMarkerAndAnnotations(errors);
   return (
     <div style={{}}>
       <ReactResizeDetector handleWidth handleHeight onResize={onResize} />
@@ -82,7 +101,8 @@ const Editor: React.FC<EditorInterface> = ({ currentCode, setCurrentCode, height
         onLoad={() => false}
         onChange={setCurrentCode}
         fontSize={15}
-        markers={errors}
+        markers={MarkersAndAnnotations.markers}
+        annotations={MarkersAndAnnotations.annotations}
         showPrintMargin={true}
         showGutter={true}
         highlightActiveLine={true}
