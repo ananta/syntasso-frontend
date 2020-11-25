@@ -67,10 +67,11 @@ const InitialSubmissionStreaming = {
 const Problem: React.FC<ProblemInfoProps> = (ProblemInfo) => {
   const [isDebugMode, setIsDebugMode] = useState(false);
   const [isSubmissionLoading, setIsSubmissionLoading] = useState(false);
+  const [showError, setShowError] = useState(false);
   const [containerStatus, setContainerStatus] = useState<IContainerStatus>(InitialContainerStatus);
   const [submissionStreaming, setIsSubmissionStreaming] = useState<ISubmissionStreaming>(InitialSubmissionStreaming);
   const [currentLanguage, setCurrentLanguage] = useState<'js' | 'c' | 'cpp'>('js');
-  const [editorCode, setEditorCode] = useState(codeStub[currentLanguage]);
+  const [editorCode, setEditorCode] = useState<string>(codeStub[currentLanguage]);
   const [postMsgUpdate, setPostMsgUpdate] = useState({});
   const { url } = useRouteMatch();
   const dispatch = useDispatch();
@@ -100,6 +101,7 @@ const Problem: React.FC<ProblemInfoProps> = (ProblemInfo) => {
   const handleCodeSubmission = async () => {
     try {
       setIsSubmissionLoading(true);
+      setShowError(false);
       if (isContestBased && IsTimeInPast(contestInfo.endTime))
         throw new Error('You cannot submit because the contest is over!');
       // set code submission = true;
@@ -114,7 +116,6 @@ const Problem: React.FC<ProblemInfoProps> = (ProblemInfo) => {
       handleStreaming(testCases.response.testcases);
       const newSubmission = {
         isContest: ProblemInfo.isContestBased,
-
         token,
         challengeId: Number(challengeId),
         socketId,
@@ -142,12 +143,12 @@ const Problem: React.FC<ProblemInfoProps> = (ProblemInfo) => {
         setPostMsgUpdate(toBeUpdated[i]);
       }
       toast.success('Execution completed');
-      setIsSubmissionLoading(false);
     } catch (err) {
-      setIsSubmissionLoading(false);
-      setIsSubmissionStreaming(InitialSubmissionStreaming);
       toast.error(err.message);
     }
+    setIsSubmissionStreaming(InitialSubmissionStreaming);
+    setIsSubmissionLoading(false);
+    setShowError(true);
   };
 
   const handleLanguageChange = (language: 'c' | 'js' | 'cpp') => {
@@ -191,7 +192,7 @@ const Problem: React.FC<ProblemInfoProps> = (ProblemInfo) => {
   useEffect(() => {
     handleContainerStatusUpdates(msgContainerStatus);
   }, [msgContainerStatus]);
-
+  console.log({ showError });
   return (
     <div>
       <div className="bg-white shadow-xl  border-l  border-r py-4 px-4 ">
@@ -268,19 +269,24 @@ const Problem: React.FC<ProblemInfoProps> = (ProblemInfo) => {
             height={50}
             currentCode={editorCode}
             errors={
-              submissionStreaming.testCases.length > 0 &&
-              submissionStreaming.testCases
-                .filter((testCases) => !!testCases.error)
-                .map((error) => ({
-                  type: 'screenLine',
-                  startRow: error.error.lineNumber - 1,
-                  endRow: error.error.lineNumber + 2,
-                  startCol: error.error.columnNumber ? error.error.columnNumber : 10,
-                  endCol: 100,
-                  className: 'errorMarkerTextEditor',
-                }))
+              showError
+                ? submissionStreaming.testCases.length > 0 &&
+                  submissionStreaming.testCases
+                    .filter((testCases) => !!testCases.error)
+                    .map((error) => ({
+                      type: 'screenLine',
+                      startRow: error.error.lineNumber - 1,
+                      endRow: error.error.lineNumber + 2,
+                      startCol: error.error.columnNumber ? error.error.columnNumber : 10,
+                      endCol: 100,
+                      className: 'errorMarkerTextEditor',
+                    }))
+                : []
             }
-            setCurrentCode={setEditorCode}
+            setCurrentCode={(code) => {
+              setShowError(false);
+              setEditorCode(code);
+            }}
           />
         </div>
       </div>
