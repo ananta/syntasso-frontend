@@ -17,19 +17,25 @@ interface EditorInterface {
 
 const genearateMarkerAndAnnotations = (errors: any) => {
   return {
-    markers: errors.map((error) => ({
-      type: 'screenLine',
-      startRow: error.error.lineNumber - 1,
-      endRow: error.error.lineNumber + 2,
-      startCol: error.error.columnNumber ? error.error.columnNumber : 10,
-      endCol: 100,
-      className: 'errorMarkerTextEditor',
-    })),
-    annotations: errors.map((error) => ({
-      type: 'error',
-      row: error.error.lineNumber - 1,
-      text: error.error.fullError,
-    })),
+    markers:
+      errors &&
+      errors.length > 0 &&
+      errors.map((error) => ({
+        type: 'screenLine',
+        startRow: error.error.lineNumber - 1,
+        endRow: error.error.lineNumber + 2,
+        startCol: error.error.columnNumber ? error.error.columnNumber : 10,
+        endCol: 100,
+        className: 'errorMarkerTextEditor',
+      })),
+    annotations:
+      errors &&
+      errors.length > 0 &&
+      errors.map((error) => ({
+        type: 'error',
+        row: error.error.lineNumber - 1,
+        text: error.error.fullError,
+      })),
   };
 };
 
