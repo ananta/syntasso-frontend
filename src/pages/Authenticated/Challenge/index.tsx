@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Route, Switch, RouteComponentProps, useRouteMatch, NavLink, Link } from 'react-router-dom';
+import { Route, Switch, RouteComponentProps, useRouteMatch, NavLink, Link, Redirect } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 import Problem from './Problem';
@@ -110,6 +110,7 @@ const Challenge: React.FC<ChallengeParams> = (RouteProps) => {
   }, []);
 
   if (isLoading) return <CustomLoader />;
+  console.log({ error });
   if (error) return <NotFound />;
 
   return (
@@ -184,7 +185,7 @@ const Challenge: React.FC<ChallengeParams> = (RouteProps) => {
                         <Submissions {...props} challenge={currentChallenge} isContestBased={isContest} />
                       )}
                     />
-                    <Route component={() => <div>NOT FOUND</div>} />
+                    <Route component={() => <Redirect to={`${url}/problem`} />} />
                   </Switch>
                 </div>
               </div>
