@@ -129,9 +129,9 @@ const Contest: React.FC<RouteComponentProps> = () => {
                 {challenges.map((contest, indx) => (
                   <ListItem
                     key={indx.toString()}
-                    difficulty={contest.Contest_difficulty}
-                    onClick={() => history.push('/join/' + contest.Contest_contestId)}
-                    title={contest.Contest_name}
+                    difficulty={contest.contest_difficulty}
+                    onClick={() => history.push('/join/' + contest.contest_contestId)}
+                    title={contest.contest_name}
                   />
                 ))}
               </div>
