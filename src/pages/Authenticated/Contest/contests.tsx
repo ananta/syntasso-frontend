@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Dispatch, SetStateAction } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
-
+import classnames from 'classnames';
 import Logo from 'shared/assets/images/logo-white.png';
 import SectionHeader from 'components/Common/SectionHeader';
 import Button from 'components/Common/Button';
@@ -14,6 +14,24 @@ interface ListItemProps {
   difficulty?: string;
   onClick: () => void;
 }
+interface IContestTab {
+  name: 'enrolled' | 'active' | 'archived';
+  selected: 'enrolled' | 'active' | 'archived';
+  title: 'Enrolled' | 'Active' | 'Archived';
+  onPress: any;
+}
+const ContestTab: React.FC<IContestTab> = ({ name, title, selected, onPress }) => (
+  <p
+    onClick={() => onPress(name)}
+    className={classnames('w-1/3 py-4 px-1 text-center border-b-2  font-medium text-sm leading-5 cursor-pointer', {
+      'border-indigo-500 text-indigo-600 focus:text-indigo-800 focus:border-indigo-700': name === selected,
+      'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300':
+        name !== selected,
+    })}
+  >
+    {title}
+  </p>
+);
 
 const ListItem: React.FC<ListItemProps> = ({ title, onClick, difficulty }) => (
   <div className="bg-white px-4 py-2 rounded-l w-full lg:flex mb-10 cursor-pointer" onClick={onClick}>
@@ -34,6 +52,7 @@ const ListItem: React.FC<ListItemProps> = ({ title, onClick, difficulty }) => (
 
 const Contest: React.FC<RouteComponentProps> = () => {
   const AuthState = useSelector((state) => state['Auth']);
+  const [selectedTab, setSelectedTab] = useState<'enrolled' | 'active' | 'archived'>('enrolled');
   const [searchQuery, setSearchQuery] = useState('');
   const [difficulty, setDifficulty] = useState('');
   const [challenges, setChallenges] = useState([]);
@@ -46,6 +65,7 @@ const Contest: React.FC<RouteComponentProps> = () => {
       limit: 20,
       page: 1,
       type: 'contests',
+      status: selectedTab,
     };
     if (searchQuery.length > 0) {
       options['query'] = searchQuery;
@@ -72,13 +92,38 @@ const Contest: React.FC<RouteComponentProps> = () => {
   useEffect(() => {
     handlePageInitiaiton();
   }, [searchQuery, difficulty]);
-
+  useEffect(() => {
+    handlePageInitiaiton();
+  }, [setSelectedTab, selectedTab]);
   return (
     <div className="max-w-screen-xl mx-auto">
       <div className="block lg:flex lg:space-x-2 px-2 lg:p-0 mb-10 ">
         <div className="w-full lg:w-2/3 mx-auto ">
           <div>
-            <SectionHeader title="Active Contests" />
+            <div className="sm:hidden">
+              <select className="form-select block w-full">
+                <option selected={selectedTab === 'enrolled'} onClick={() => setSelectedTab('enrolled')}>
+                  Enrolled
+                </option>
+                <option selected={selectedTab === 'active'} onClick={() => setSelectedTab('active')}>
+                  Active
+                </option>
+                <option selected={selectedTab === 'archived'} onClick={() => setSelectedTab('archived')}>
+                  Archived
+                </option>
+              </select>
+            </div>
+            <div className="hidden sm:block">
+              <div className="border-b border-gray-200">
+                <nav className="-mb-px flex">
+                  <ContestTab name="enrolled" title="Enrolled" onPress={setSelectedTab} selected={selectedTab} />
+                  <ContestTab name="active" title="Active" onPress={setSelectedTab} selected={selectedTab} />
+                  <ContestTab name="archived" title="Archived" onPress={setSelectedTab} selected={selectedTab} />
+                </nav>
+              </div>
+            </div>
+          </div>
+          <div>
             <div className="mb-5">
               <div className="py-1">
                 <div className="my-2 flex sm:flex-row flex-col ">
@@ -136,7 +181,7 @@ const Contest: React.FC<RouteComponentProps> = () => {
                 ))}
               </div>
             ) : (
-              <h2>There are not Active Contests running at the moment.</h2>
+              <h2>Contests Not Available</h2>
             )}
           </div>
           <div className="border border-dotted my-10"></div>
