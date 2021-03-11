@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, SyntheticEvent, ChangeEventHandler, ChangeEvent } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
@@ -8,6 +8,7 @@ import SectionHeader from 'components/Common/SectionHeader';
 import Button from 'components/Common/Button';
 import { history } from 'utils/History';
 import searchChallenge from 'api/methods/searchChallenges';
+import CustomPaginate from 'components/Common/CustomPaginaton';
 
 interface ListItemProps {
   title: string;
@@ -38,15 +39,26 @@ const Contest: React.FC<RouteComponentProps> = () => {
   const AuthState = useSelector((state) => state['Auth']);
   const [searchQuery, setSearchQuery] = useState('');
   const [difficulty, setDifficulty] = useState('');
+  const [pagination, setPagination] = useState(5);
   const [challenges, setChallenges] = useState([]);
+  const [totalPages, setTotalPages] = useState(0);
+  const [currentPage, setCurrentPages] = useState(1);
   const [contests, setContests] = useState([]);
   const [isChallengeLoading, setIsChallengeLoading] = useState(false);
+
+  const handlePagination = (event: ChangeEvent<HTMLSelectElement>) => {
+    setPagination(parseInt(event.target.value));
+  };
+
+  const handlePageClick = (data) => {
+    setCurrentPages(parseInt(data.selected) + 1);
+  };
 
   const getChallengeInfo = async () => {
     const options = {
       token: AuthState.data.user.token,
-      limit: 20,
-      page: 1,
+      limit: pagination,
+      page: currentPage,
       type: 'challenges',
     };
     if (searchQuery.length > 0) {
@@ -57,7 +69,9 @@ const Contest: React.FC<RouteComponentProps> = () => {
     }
     const challengesRes = await searchChallenge(options);
     if (!challengesRes.isSuccess) throw new Error(challengesRes.message);
-    setChallenges(challengesRes.response.data.challenges);
+    const { challenges, totalPages } = challengesRes.response.data;
+    setChallenges(challenges);
+    setTotalPages(totalPages);
     setIsChallengeLoading(true);
   };
 
@@ -76,7 +90,7 @@ const Contest: React.FC<RouteComponentProps> = () => {
 
   useEffect(() => {
     handlePageInitiaiton();
-  }, [searchQuery, difficulty]);
+  }, [searchQuery, difficulty, pagination, currentPage]);
 
   return (
     <div className="max-w-screen-xl mx-auto">
@@ -89,10 +103,14 @@ const Contest: React.FC<RouteComponentProps> = () => {
                 <div className="my-2 flex sm:flex-row flex-col ">
                   <div className="flex flex-row mb-1 sm:mb-0 ">
                     <div className="relative">
-                      <select className="appearance-none h-full rounded-l border block appearance-none w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
-                        <option>5</option>
-                        <option>10</option>
-                        <option>20</option>
+                      <select
+                        value={pagination}
+                        onChange={handlePagination}
+                        className="appearance-none h-full rounded-l border block appearance-none w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                      >
+                        <option value={5}>5</option>
+                        <option value={10}>10</option>
+                        <option value={20}>20</option>
                       </select>
                       <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
                         <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
@@ -144,6 +162,9 @@ const Contest: React.FC<RouteComponentProps> = () => {
             ) : (
               <h2>There are not Active Contests running at the moment.</h2>
             )}
+          </div>
+          <div className="flex flex-row  items-center m-0 justify-center content-center ">
+            <CustomPaginate totalPages={totalPages} handlePageClick={handlePageClick} />
           </div>
           <div className="border border-dotted my-10"></div>
         </div>
