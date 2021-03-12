@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, forwardRef } from 'react';
+import React, { useState, useEffect, useRef, forwardRef, SyntheticEvent } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import Logo from 'shared/assets/images/default.png';
 import classnames from 'classnames';
@@ -95,21 +95,30 @@ function NavContainer(props) {
 }
 
 function NavItem({ open, setOpen, ...props }) {
+  const { icon, children, ...rem } = props;
   return (
     <li className="nav-item">
-      <a href="#" className="icon-button" tabIndex={0} onClick={() => setOpen(!open)}>
-        {props.icon}
-      </a>
-      {open && props.children}
+      <p
+        className="icon-button focus:outline-none"
+        tabIndex={0}
+        {...rem}
+        onClick={() => {
+          console.log('Setting the menu');
+          setOpen(!open);
+        }}
+      >
+        {icon}
+      </p>
+      {open && children}
     </li>
   );
 }
 
 interface IDropdownMenu {
   isMobile?: boolean;
-  handleOnBlur?: any;
 }
-const DropdownMenu = forwardRef<HTMLDivElement, IDropdownMenu>(({ isMobile, handleOnBlur }, ref) => {
+
+const DropdownMenu = forwardRef<HTMLDivElement, IDropdownMenu>(({ isMobile }, ref) => {
   const dispatch = useDispatch();
   const [activeMenu, setActiveMenu] = useState('main');
   const [menuHeight, setMenuHeight] = useState(null);
@@ -137,7 +146,6 @@ const DropdownMenu = forwardRef<HTMLDivElement, IDropdownMenu>(({ isMobile, hand
   return (
     <div
       ref={ref}
-      onBlur={handleOnBlur}
       className={classnames(isMobile ? 'dropdown-mobile' : 'dropdown')}
       style={{ height: !isMobile && menuHeight }}
     >
@@ -184,11 +192,16 @@ const Navbar = () => {
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef(null);
 
-  const handleDropdownClick = (e: Event) => {
-    if (dropdownRef.current && dropdownRef.current.contains(e.target)) {
-      return;
-    }
-    setOpen(false);
+  const handleDropdownClick = (e: any) => {
+    if (
+      !(
+        (dropdownRef.current && dropdownRef.current.contains(e.target)) ||
+        e.target.tagName === 'P' ||
+        e.target.tagName === 'svg' ||
+        e.target.tagName === 'path'
+      )
+    )
+      setOpen(false);
   };
 
   const {
@@ -233,7 +246,7 @@ const Navbar = () => {
                 <div>
                   {isLoggedIn ? (
                     <NavContainer>
-                      <NavItem open={open} setOpen={setOpen} icon={<CaretIcon />}>
+                      <NavItem id="caret" open={open} setOpen={setOpen} icon={<CaretIcon id="caret" />}>
                         <DropdownMenu ref={dropdownRef}></DropdownMenu>
                       </NavItem>
                     </NavContainer>
@@ -282,7 +295,6 @@ const Navbar = () => {
             <MobileNavButton title="Compete" to="/contests" />
             <MobileNavButton title="Certifications" to="/certifications" />
             <MobileNavButton title="Jobs" to="/jobs" />
-            <MobileNavButton title="Leaderboard" to="/leaderboard" />
           </div>
         )}
         <DropdownMenu isMobile />
