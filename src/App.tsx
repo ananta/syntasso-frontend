@@ -23,7 +23,6 @@ import CommonLayout from 'shared/layout/CommonLayout';
 import Dashboard from 'pages/Authenticated/Dashboard';
 import { Contest, Contests } from 'pages/Authenticated/Contest/';
 import Jobs from 'pages/Authenticated/Jobs';
-import Leaderboard from 'pages/Authenticated/Leaderboard';
 import Challenge from 'pages/Authenticated/Challenge';
 
 import Certifications from 'pages/Authenticated/Certifications';
@@ -138,13 +137,6 @@ export const pages = [
     exact: false,
     path: Routes.jobs,
     component: Jobs,
-    layout: AuthLayout,
-  },
-  {
-    title: 'Leaderboard',
-    exact: false,
-    path: Routes.leaderboard,
-    component: Leaderboard,
     layout: AuthLayout,
   },
   {

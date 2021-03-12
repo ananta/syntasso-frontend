@@ -19,6 +19,8 @@ interface IContestTab {
   selected: 'enrolled' | 'active' | 'archived';
   title: 'Enrolled' | 'Active' | 'Archived';
   onPress: any;
+  left?: boolean;
+  right?: boolean;
 }
 const ContestTab: React.FC<IContestTab> = ({ name, title, selected, onPress }) => (
   <p
@@ -30,6 +32,25 @@ const ContestTab: React.FC<IContestTab> = ({ name, title, selected, onPress }) =
     })}
   >
     {title}
+  </p>
+);
+
+const ContestTabPill: React.FC<IContestTab> = ({ name, title, selected, onPress, left, right }) => (
+  <p
+    onClick={() => onPress(name)}
+    aria-current="page"
+    className={classnames(
+      selected === name ? 'text-gray-900' : 'text-gray-500',
+      'group relative min-w-0 flex-1 overflow-hidden bg-white cursor-pointer py-4 px-4 text-sm font-medium text-center hover:bg-gray-50 focus:z-10',
+      left && 'rounded-l-lg',
+      right && 'rounded-r-lg',
+    )}
+  >
+    <span>{title}</span>
+    <span
+      aria-hidden="true"
+      className={classnames('absolute inset-x-0 bottom-0 h-1', name === selected ? 'bg-primary' : 'bg-transparent')}
+    ></span>
   </p>
 );
 
@@ -116,7 +137,19 @@ const Contest: React.FC<RouteComponentProps> = () => {
         <div className="w-full lg:w-2/3 mx-auto ">
           <div>
             <div className="sm:hidden">
-              <select className="form-select block w-full">
+              <label htmlFor="tabs" className="sr-only">
+                Select a tab
+              </label>
+              <select
+                id="tabs"
+                name="tabs"
+                className="block w-full focus:ring-indigo-500 focus:border-indigo-500 border-gray-300 rounded-md"
+              >
+                <option selected={selectedTab === 'enrolled'}>Enrolled</option>
+                <option selected={selectedTab === 'active'}>Active</option>
+                <option selected={selectedTab === 'archived'}>Archieved</option>
+              </select>
+              {/* <select className="form-select block w-full">
                 <option selected={selectedTab === 'enrolled'} onClick={() => setSelectedTab('enrolled')}>
                   Enrolled
                 </option>
@@ -126,9 +159,22 @@ const Contest: React.FC<RouteComponentProps> = () => {
                 <option selected={selectedTab === 'archived'} onClick={() => setSelectedTab('archived')}>
                   Archived
                 </option>
-              </select>
+              </select> */}
             </div>
             <div className="hidden sm:block">
+              <nav className="relative z-0 rounded-lg shadow flex divide-x divide-gray-200" aria-label="Tabs">
+                <ContestTabPill left name="enrolled" title="Enrolled" onPress={setSelectedTab} selected={selectedTab} />
+                <ContestTabPill name="active" title="Active" onPress={setSelectedTab} selected={selectedTab} />
+                <ContestTabPill
+                  right
+                  name="archived"
+                  title="Archived"
+                  onPress={setSelectedTab}
+                  selected={selectedTab}
+                />
+              </nav>
+            </div>
+            {/* <div className="hidden sm:block">
               <div className="border-b border-gray-200">
                 <nav className="-mb-px flex">
                   <ContestTab name="enrolled" title="Enrolled" onPress={setSelectedTab} selected={selectedTab} />
@@ -136,7 +182,7 @@ const Contest: React.FC<RouteComponentProps> = () => {
                   <ContestTab name="archived" title="Archived" onPress={setSelectedTab} selected={selectedTab} />
                 </nav>
               </div>
-            </div>
+            </div> */}
           </div>
           <div>
             <div className="mt-5">

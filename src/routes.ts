@@ -12,7 +12,6 @@ export default {
   contestChallenge: '/contest/:contestId/challenge/:challengeId',
   joinContest: '/join/:contestId',
   jobs: '/jobs',
-  leaderboard: '/leaderboard',
   challenge: '/challenge/:challengeId',
   challenges: '/challenges',
   administration: '/administration',

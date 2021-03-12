@@ -47,11 +47,6 @@ const Footer = () => {
             <FooterLink title="Support" to="/support" isNew />
           </div>
           <div className="p-5 w-48 ">
-            <FooterTitle title="Product" />
-            <FooterLink title="Our Products" to="/products" />
-            <FooterLink title="Analytics" to="/analytics" />
-          </div>
-          <div className="p-5 w-48 ">
             <FooterTitle title="Support" />
             <FooterLink title="Help Center" to="/help" />
             <FooterLink title="Privacy Policy" to="/privary" />

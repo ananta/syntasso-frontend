@@ -216,7 +216,6 @@ const Contest: React.FC<RouteComponentProps> = () => {
                 <div className="flex items-center text-gray-600 cursor-pointer">
                   <span className="inline-block h-4 w-4 bg-yellow-300 mr-3"></span>
                   Hard
-                  <span className="text-gray-500 ml-auto">10 contests</span>
                   <i className="text-gray-500 bx bx-right-arrow-alt ml-1"></i>
                 </div>
               </li>
