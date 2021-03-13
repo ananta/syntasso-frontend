@@ -1,4 +1,4 @@
-import { ILanguage, codeStub, engineURL } from './constants';
+import { ILanguage, codeStub, engineURL } from 'engine/constants';
 
 export class Engine {
   private static instance: Engine;

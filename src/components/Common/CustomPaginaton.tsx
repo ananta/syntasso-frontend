@@ -1,8 +1,5 @@
 import React, { ChangeEvent, ComponentProps } from 'react';
 import ReactPaginate from 'react-paginate';
-import classnames from 'classnames';
-
-import { RegularText } from 'components/Common/CustomText';
 
 interface PaginationProps {
   totalPages: number;

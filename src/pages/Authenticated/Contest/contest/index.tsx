@@ -2,10 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { RouteComponentProps, useRouteMatch, Switch, Route } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
-import SectionHeader from 'components/Common/SectionHeader';
+
 import { getContestChallenges, getContestInfo } from 'api';
+
+import SectionHeader from 'components/Common/SectionHeader';
 import NotFound from 'components/Common/NotFound';
 import CustomLoader from 'components/Common/CustomLoader';
+
 import Sidebar from './Components/Sidebar';
 import Challenges from './Components/Challenges';
 import Submissions from './Components/Submissions';

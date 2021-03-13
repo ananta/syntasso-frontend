@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { RouteComponentProps, useRouteMatch } from 'react-router-dom';
+import { RouteComponentProps } from 'react-router-dom';
 import { EditorState } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
+
 import Button from 'components/Common/Button';
 
 interface RouteWithProps extends RouteComponentProps {

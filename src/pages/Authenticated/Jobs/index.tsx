@@ -1,5 +1,6 @@
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
+
 import HireBanner from './components/HireBanner';
 
 const Jobs: React.FC<RouteComponentProps> = () => {

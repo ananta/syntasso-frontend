@@ -1,5 +1,6 @@
 import React from 'react';
-import { RouteComponentProps, useRouteMatch } from 'react-router-dom';
+import { RouteComponentProps } from 'react-router-dom';
+
 import { MediumTitle } from 'components/Common/CustomText';
 
 interface RouteWithProps extends RouteComponentProps {
@@ -7,7 +8,6 @@ interface RouteWithProps extends RouteComponentProps {
 }
 
 const Moderaotrs: React.FC<RouteWithProps> = (RouteProps) => {
-  const { url } = useRouteMatch();
   return (
     <div>
       <div>

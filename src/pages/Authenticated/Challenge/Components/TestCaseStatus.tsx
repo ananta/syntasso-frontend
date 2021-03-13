@@ -1,11 +1,12 @@
 import React from 'react';
+import Loader from 'react-loader-spinner';
+import Popup from 'reactjs-popup';
+
+import TestCaseModal from './TestCaseModal';
 
 import DoneIcon from '@material-ui/icons/Done';
 import CloseIcon from '@material-ui/icons/Close';
-import Loader from 'react-loader-spinner';
 import VisibilityIcon from '@material-ui/icons/Visibility';
-import TestCaseModal from './TestCaseModal';
-import Popup from 'reactjs-popup';
 
 interface ITestCaseItem {
   title: string;

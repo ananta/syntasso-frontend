@@ -3,15 +3,15 @@ import { RouteComponentProps } from 'react-router-dom';
 import { EditorState, convertToRaw } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
 import { useDispatch, RootStateOrAny, useSelector } from 'react-redux';
-import { history } from 'utils/History';
-import Button from 'components/Common/Button';
 import { toast } from 'react-toastify';
-
 import { useForm } from 'react-hook-form';
 import classnames from 'classnames';
 
+import { history } from 'utils/History';
 import { Challenge } from 'actions/ActionTypes';
 import challengeAction from 'actions/ChallengeActions';
+
+import Button from 'components/Common/Button';
 
 const Create: React.FC<RouteComponentProps> = () => {
   const [input, setInput] = useState({

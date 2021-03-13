@@ -1,42 +1,39 @@
 import React from 'react';
-
 import { PersistGate } from 'redux-persist/integration/react';
-import './styles/app.css';
-import './App.css';
-import { persistor } from 'store';
 import { Router, Route, Switch, Redirect } from 'react-router-dom';
-
-import 'typeface-roboto';
-import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
-import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
-
-import Routes from './routes';
 import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 
+import { persistor } from 'store';
+import Routes from './routes';
 import { history } from 'utils/History';
+
 // Layouts and Routes
 import PublicLayout from 'shared/layout/PublicLayout';
 import AuthLayout from 'shared/layout/AuthLayout';
 import CommonLayout from 'shared/layout/CommonLayout';
-// Public Pages
+// Authenticated Pages
 import Dashboard from 'pages/Authenticated/Dashboard';
 import { Contest, Contests } from 'pages/Authenticated/Contest/';
 import Jobs from 'pages/Authenticated/Jobs';
+import Challenges from 'pages/Authenticated/Challenge/challenges';
 import Challenge from 'pages/Authenticated/Challenge';
-
 import Certifications from 'pages/Authenticated/Certifications';
 import Administration from 'pages/Authenticated/Administration';
-// import CreateContest from 'pa'
+// Public Pages
 import About from 'pages/Public/About';
 import Features from 'pages/Public/Features';
 import Pricing from 'pages/Public/Pricing';
 import Home from 'pages/Public/Home';
 import Login from 'pages/Public/Login';
+// Common Pages
 import JoinContest from 'pages/Common/JoinContest';
-import Challenges from 'pages/Authenticated/Challenge/challenges';
 
-// Authenticated Pages
+import './styles/app.css';
+import './App.css';
+import 'typeface-roboto';
+import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
+import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+import 'react-toastify/dist/ReactToastify.css';
 
 export const pages = [
   // Public pages

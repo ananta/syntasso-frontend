@@ -10,6 +10,7 @@ interface InputProps {
   lableClassNames?: string;
   classNames?: string;
 }
+
 const TextInput: React.FC<InputProps & React.HTMLProps<HTMLInputElement>> = ({
   secureTextEntry,
   classNames,

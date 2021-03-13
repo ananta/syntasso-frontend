@@ -2,16 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { useRouteMatch, RouteProps, Link } from 'react-router-dom';
 import Modal from 'react-modal';
 import { useSelector } from 'react-redux';
-import Button from 'components/Common/Button';
-
-import { history } from 'utils/History';
-
-import InfoWithButton from 'components/Common/InfoWithButton';
-import AddChallengeModal from './components/AddChallengeModal';
-import LogoWhite from 'shared/assets/images/logo-white.png';
-import { getContestChallenges } from 'api';
 import { toast } from 'react-toastify';
 import Loader from 'react-loader-spinner';
+
+import { getContestChallenges } from 'api';
+import { history } from 'utils/History';
+
+import Button from 'components/Common/Button';
+import InfoWithButton from 'components/Common/InfoWithButton';
+import LogoWhite from 'shared/assets/images/logo-white.png';
+import AddChallengeModal from './components/AddChallengeModal';
 
 const customStyles = {
   overlay: {

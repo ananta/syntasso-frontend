@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useRouteMatch } from 'react-router-dom';
-import Countdown from 'react-countdown';
+
 import CustomCountdownTimer from 'components/Common/CustomCountdownTimer';
 
 interface ISidebar {

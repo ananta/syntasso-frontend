@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { RouteProps } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import Button from 'components/Common/Button';
 import Loader from 'react-loader-spinner';
-
-import { isUserAuthorizedToContest, updateContest } from 'api';
 import { toast } from 'react-toastify';
 
+import { isUserAuthorizedToContest, updateContest } from 'api';
 import contestAction from 'actions/ContestActions';
 import { Contest } from 'actions/ActionTypes';
 import { getInitialDateInfo } from 'utils/DateInfo';
+
+import Button from 'components/Common/Button';
 
 interface EditPageProps extends RouteProps {
   contestId: string;
@@ -58,7 +58,6 @@ const Details: React.FC<EditPageProps> = (EditPageProps) => {
   const updateContestInfo = async () => {
     try {
       setIsDetailsUpdating(true);
-
       const updateRes = await updateContest({
         token: AuthState.user.token,
         contestId: Number(contestId),

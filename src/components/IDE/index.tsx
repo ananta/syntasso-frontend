@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 import SplitPane, { Pane } from 'react-split-pane';
-import useSocket from 'hooks/useSocket';
-
-import { executeCode } from 'api';
 import PlayArrow from '@material-ui/icons/PlayArrow';
 import SaveIcon from '@material-ui/icons/Save';
 import ShareIcon from '@material-ui/icons/Share';
 import IconButton from '@material-ui/core/IconButton';
 
+import { executeCode } from 'api';
+import useSocket from 'hooks/useSocket';
 import Terminal from './Terminal';
 
 interface IDEProps {
@@ -15,20 +14,17 @@ interface IDEProps {
 }
 
 const IDE: React.FC<IDEProps> = ({ height }) => {
-  const [editorCode, setEditorCode] = useState("console.log('Hello World');");
+  const [editorCode] = useState("console.log('Hello World');");
   const serverUrl = 'http://localhost:8080',
     topic = 'docker-app-stdout';
 
   const [msg, isConnected, socketId] = useSocket(serverUrl);
-  console.log(socketId);
-  console.log(isConnected);
   const handleExecution = async () => {
     const executionRes = await executeCode({
       code: editorCode,
       socketId: socketId.toString(),
       dockerConfig: '0',
     });
-    console.log(executionRes);
     if (executionRes.isSuccess) {
       console.log('COMPLETED');
     }

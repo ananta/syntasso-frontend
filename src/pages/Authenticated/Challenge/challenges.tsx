@@ -1,14 +1,16 @@
-import React, { useState, useEffect, SyntheticEvent, ChangeEventHandler, ChangeEvent } from 'react';
+import React, { useState, useEffect, ChangeEvent } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
-import Logo from 'shared/assets/images/logo-white.png';
-import SectionHeader from 'components/Common/SectionHeader';
-import Button from 'components/Common/Button';
 import { history } from 'utils/History';
 import searchChallenge from 'api/methods/searchChallenges';
+
+import SectionHeader from 'components/Common/SectionHeader';
+import Button from 'components/Common/Button';
 import CustomPaginate from 'components/Common/CustomPaginaton';
+
+import Logo from 'shared/assets/images/logo-white.png';
 
 interface ListItemProps {
   title: string;
@@ -43,7 +45,6 @@ const Contest: React.FC<RouteComponentProps> = () => {
   const [challenges, setChallenges] = useState([]);
   const [totalPages, setTotalPages] = useState(0);
   const [currentPage, setCurrentPages] = useState(1);
-  const [contests, setContests] = useState([]);
   const [isChallengeLoading, setIsChallengeLoading] = useState(false);
 
   const handlePagination = (event: ChangeEvent<HTMLSelectElement>) => {

@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { TitleText, MediumTitle } from 'components/Common/CustomText';
 
 const PricingTable = () => {

@@ -1,6 +1,5 @@
 import React from 'react';
 import Countdown from 'react-countdown';
-import moment from 'moment';
 
 interface ICustomCountdownTimer {
   endTime: string;

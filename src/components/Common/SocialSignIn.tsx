@@ -1,6 +1,6 @@
 import React from 'react';
-
 import { FaGoogle, FaGithub, FaFacebook } from 'react-icons/fa';
+
 import { RegularText } from 'components/Common/CustomText';
 
 const SocialSignIn = () => {

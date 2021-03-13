@@ -1,8 +1,8 @@
 import React from 'react';
-import AppContainer from 'components/Layout/AppContainer';
-import Navbar from 'components/Layout/Navbar';
 import { RouteComponentProps } from 'react-router-dom';
 
+import AppContainer from 'components/Layout/AppContainer';
+import Navbar from 'components/Layout/Navbar';
 import Footer from 'components/Layout/Footer';
 
 interface Props {

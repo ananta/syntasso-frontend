@@ -1,5 +1,6 @@
-import { SocketHandler } from 'engine/Socket';
 import { useState, useEffect } from 'react';
+
+import { SocketHandler } from 'engine/Socket';
 
 interface socketStateType {
   msg1?: string;

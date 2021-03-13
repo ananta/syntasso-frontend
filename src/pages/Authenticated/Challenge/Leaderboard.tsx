@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-
 import { toast } from 'react-toastify';
-import LogoWhite from 'shared/assets/images/logo-white.png';
-import CustomLoader from 'components/Common/CustomLoader';
+
 import { getChallengeLeaderboard, getContestChallengeLeaderboard } from 'api';
+
+import CustomLoader from 'components/Common/CustomLoader';
+
+import LogoWhite from 'shared/assets/images/logo-white.png';
 
 interface ILeaderboardState {
   isLoading: boolean;

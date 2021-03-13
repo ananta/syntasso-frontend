@@ -1,5 +1,5 @@
 import { Engine } from 'engine';
-import useSocket from './useSocket';
+import useSocket from 'hooks/useSocket';
 
 const useEngine = (engineType: 'c' | 'cpp' | 'js') => {
   const engine = Engine.getInstance();

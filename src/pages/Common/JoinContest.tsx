@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import moment from 'moment';
 import { useRouteMatch } from 'react-router-dom';
-import { enrollTheUser, getContestInfo, isUserEnrolled } from 'api';
-import CustomLoader from 'components/Common/CustomLoader';
 import { useSelector } from 'react-redux';
-import NotFound from 'components/Common/NotFound';
 import { toast } from 'react-toastify';
-import Button from 'components/Common/Button';
+
+import { enrollTheUser, getContestInfo, isUserEnrolled } from 'api';
 import { history } from 'utils/History';
+
+import CustomLoader from 'components/Common/CustomLoader';
+import NotFound from 'components/Common/NotFound';
+import Button from 'components/Common/Button';
 
 type IContestInfo = {
   contestId: string;

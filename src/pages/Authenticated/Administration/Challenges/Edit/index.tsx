@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Route, Switch, RouteComponentProps, useRouteMatch, NavLink } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+
 import { isUserAuthorizedToChallenge } from 'api';
+import { history } from 'utils/History';
+
+import CustomLoader from 'components/Common/CustomLoader';
 
 import Details from './Details';
 import Settings from './Settings';
@@ -9,10 +14,6 @@ import Language from './Languages';
 import Moderators from './Moderator';
 import Testcase from './Testcase';
 import CodeStubs from './CodeStub';
-
-import { history } from 'utils/History';
-import { useSelector } from 'react-redux';
-import CustomLoader from 'components/Common/CustomLoader';
 
 interface MatchParams {
   challengeId: string;
@@ -38,7 +39,6 @@ const TabItem: React.FC<TabIntemProps> = ({ title, to }) => (
 const Challenges: React.FC<EditChallengeParms> = (RouteProps) => {
   const { url } = useRouteMatch();
   const [isLoading, setIsLoading] = useState(false);
-
   console.log(RouteProps);
   const {
     match: {
@@ -47,7 +47,6 @@ const Challenges: React.FC<EditChallengeParms> = (RouteProps) => {
     location: { pathname },
   } = RouteProps;
   console.log(url);
-
   const Auth = useSelector((state) => state['Auth']);
   const checkAuthorization = async () => {
     try {

@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
-
-import { toast } from 'react-toastify';
-import LogoWhite from 'shared/assets/images/logo-white.png';
-import { IRoutePropsForContest } from './types';
 import { useSelector } from 'react-redux';
 import { Link, useRouteMatch } from 'react-router-dom';
+import { toast } from 'react-toastify';
+
 import { getContestSubmission } from 'api';
 import truncate from 'utils/Truncate';
+
+import { IRoutePropsForContest } from './types';
+
+import LogoWhite from 'shared/assets/images/logo-white.png';
 
 interface ISubmissionState {
   isLoading: boolean;

@@ -1,15 +1,17 @@
 import React, { useEffect } from 'react';
 import { RouteComponentProps, useRouteMatch, Link } from 'react-router-dom';
-import Button from 'components/Common/Button';
 import { useSelector, useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 
 import { history } from 'utils/History';
-import InfoWithButton from 'components/Common/InfoWithButton';
-import LogoWhite from 'shared/assets/images/logo-white.png';
 import contestAction from 'actions/ContestActions';
 import { Contest } from 'actions/ActionTypes';
 import removeContest from 'api/methods/removeContest';
+
+import Button from 'components/Common/Button';
+import InfoWithButton from 'components/Common/InfoWithButton';
+
+import LogoWhite from 'shared/assets/images/logo-white.png';
 
 const Manage: React.FC<RouteComponentProps> = (RouteProps) => {
   const { url } = useRouteMatch();

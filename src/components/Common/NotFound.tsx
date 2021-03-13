@@ -1,6 +1,6 @@
 import React from 'react';
-import { history } from 'utils/History';
 
+import { history } from 'utils/History';
 import Button from 'components/Common/Button';
 
 const NotFound = () => {

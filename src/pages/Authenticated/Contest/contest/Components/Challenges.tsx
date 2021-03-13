@@ -1,8 +1,11 @@
 import React from 'react';
-import Button from 'components/Common/Button';
-import { history } from 'utils/History';
-import LogoWhite from 'shared/assets/images/logo-white.png';
 import { Link } from 'react-router-dom';
+
+import { history } from 'utils/History';
+
+import Button from 'components/Common/Button';
+
+import LogoWhite from 'shared/assets/images/logo-white.png';
 
 interface IChallengesProps {
   challenges: any;

@@ -1,16 +1,19 @@
-import React, { useState, useEffect, useRef, forwardRef, SyntheticEvent } from 'react';
-import { Link, NavLink } from 'react-router-dom';
-import Logo from 'shared/assets/images/default.png';
-import classnames from 'classnames';
+import React, { useState, useEffect, useRef, forwardRef } from 'react';
 import { useSelector, RootStateOrAny, useDispatch } from 'react-redux';
+import { Link, NavLink } from 'react-router-dom';
 import { CSSTransition } from 'react-transition-group';
+import classnames from 'classnames';
+
+import AccountCircle from '@material-ui/icons/AccountCircle';
+import ChevronRight from '@material-ui/icons/ChevronRight';
+
 import authAction from 'actions/AuthActions';
 import { Auth } from 'actions/ActionTypes';
 
+import Logo from 'shared/assets/images/default.png';
 import { ReactComponent as CaretIcon } from 'shared/assets/icons/caret.svg';
 import { ReactComponent as LogoutIcon } from 'shared/assets/icons/logout.svg';
 import { ReactComponent as CogIcon } from 'shared/assets/icons/cog.svg';
-import { ReactComponent as ChevronIcon } from 'shared/assets/icons/chevron.svg';
 import { ReactComponent as ArrowIcon } from 'shared/assets/icons/arrow.svg';
 import { ReactComponent as BoltIcon } from 'shared/assets/icons/bolt.svg';
 
@@ -123,7 +126,11 @@ const DropdownMenu = forwardRef<HTMLDivElement, IDropdownMenu>(({ isMobile }, re
   const [activeMenu, setActiveMenu] = useState('main');
   const [menuHeight, setMenuHeight] = useState(null);
   const dropdownRef = useRef(null);
-
+  const {
+    data: {
+      user: { username },
+    },
+  } = useSelector((state: RootStateOrAny) => state['Auth']);
   useEffect(() => {
     setMenuHeight(dropdownRef.current?.firstChild.offsetHeight + 20);
   }, []);
@@ -157,8 +164,8 @@ const DropdownMenu = forwardRef<HTMLDivElement, IDropdownMenu>(({ isMobile }, re
         onEnter={calcHeight}
       >
         <div className="menu">
-          <DropdownItem>My Profile</DropdownItem>
-          <DropdownItem leftIcon={<CogIcon />} rightIcon={<ChevronIcon />} goToMenu="settings">
+          <DropdownItem leftIcon={<AccountCircle fontSize="large" />}>@{username}</DropdownItem>
+          <DropdownItem leftIcon={<CogIcon />} rightIcon={<ChevronRight />} goToMenu="settings">
             Settings
           </DropdownItem>
           <DropdownItem onClick={() => dispatch(authAction(Auth.Logout, {}))} leftIcon={<LogoutIcon />}>

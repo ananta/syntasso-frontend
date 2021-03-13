@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { Route, Switch, RouteComponentProps, useRouteMatch, NavLink, Link, Redirect } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
+
+import { doesChallengeAndContestExists, getChallengeInfo, getContestInfo } from 'api';
+import { history } from 'utils/History';
+import Linkgenerator from 'utils/Linkgenerator';
+
+import NotFound from 'components/Common/NotFound';
+import CustomLoader from 'components/Common/CustomLoader';
 
 import Problem from './Problem';
 import Leaderboard from './Leaderboard';
 import Submissions from './Submissions';
-import { doesChallengeAndContestExists, getChallengeInfo, getContestInfo } from 'api';
-import { history } from 'utils/History';
-import { toast } from 'react-toastify';
-import NotFound from 'components/Common/NotFound';
-import CustomLoader from 'components/Common/CustomLoader';
-import Linkgenerator from 'utils/Linkgenerator';
 
 type MatchParams = {
   challengeId: string;

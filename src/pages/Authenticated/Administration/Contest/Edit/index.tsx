@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Route, Switch, RouteComponentProps, useRouteMatch, NavLink } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+
 import { isUserAuthorizedToContest } from 'api';
+import { history } from 'utils/History';
 
 import Details from './Details';
-
 import ContestChallenges from './Challenges';
-
-import { history } from 'utils/History';
-import { useSelector } from 'react-redux';
 
 interface MatchParams {
   contestId: string;

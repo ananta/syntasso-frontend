@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
+import { useDispatch, useSelector, RootStateOrAny } from 'react-redux';
+import { useForm, Controller } from 'react-hook-form';
+import { toast } from 'react-toastify';
+
+import { register as registerUser } from 'api';
+import useLocalStorage from 'hooks/useLocalStorage';
+import { Auth } from 'actions/ActionTypes';
+import authAction from 'actions/AuthActions';
+
 import TextInput from 'components/Common/TextInput';
 import SocialSignIn from 'components/Common/SocialSignIn';
-import { TitleText, MediumTitle } from './CustomText';
+import { TitleText, MediumTitle } from 'components/Common/CustomText';
 import Button from 'components/Common/Button';
-import { register as registerUser } from 'api';
-import { toast } from 'react-toastify';
-import { useDispatch, useSelector, RootStateOrAny } from 'react-redux';
-import { Auth } from 'actions/ActionTypes';
-import { useForm, Controller } from 'react-hook-form';
-import useLocalStorage from 'hooks/useLocalStorage';
-import authAction from 'actions/AuthActions';
 
 interface InputProps {
   firstName?: string;
@@ -18,6 +20,7 @@ interface InputProps {
   username: string;
   password: string;
 }
+
 const HeroWithForm = () => {
   const [isRegistering, setIsRegistering] = useState(false);
   const dispatch = useDispatch();

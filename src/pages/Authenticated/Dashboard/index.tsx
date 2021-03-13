@@ -1,7 +1,9 @@
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
-import DefaultImage from 'shared/assets/images/defaultPostRect.png';
+
 import SectionHeader from 'components/Common/SectionHeader';
+
+import DefaultImage from 'shared/assets/images/defaultPostRect.png';
 
 const Home: React.FC<RouteComponentProps> = () => {
   return (

@@ -1,5 +1,5 @@
 import React from 'react';
-import { RouteComponentProps, useRouteMatch } from 'react-router-dom';
+import { RouteComponentProps } from 'react-router-dom';
 
 import NotFound from 'components/Common/NotFound';
 
@@ -8,7 +8,6 @@ interface RouteWithProps extends RouteComponentProps {
 }
 
 const Settings: React.FC<RouteWithProps> = (RouteProps) => {
-  const { url } = useRouteMatch();
   return <NotFound />;
 };
 

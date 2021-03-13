@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import AppContainer from 'components/Layout/AppContainer';
-import Navbar from 'components/Layout/Navbar';
+import React, { useEffect } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { useSelector, RootStateOrAny } from 'react-redux';
+
 import routes from 'routes';
+
+import AppContainer from 'components/Layout/AppContainer';
+import Navbar from 'components/Layout/Navbar';
 import Footer from 'components/Layout/Footer';
 
 interface Props {

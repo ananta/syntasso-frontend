@@ -1,13 +1,16 @@
-import React, { useState, useEffect, Dispatch, SetStateAction, ChangeEvent } from 'react';
+import React, { useState, useEffect, ChangeEvent } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import classnames from 'classnames';
-import Logo from 'shared/assets/images/logo-white.png';
-import Button from 'components/Common/Button';
+
 import { history } from 'utils/History';
 import { searchContest } from 'api';
+
+import Button from 'components/Common/Button';
 import CustomPaginate from 'components/Common/CustomPaginaton';
+
+import Logo from 'shared/assets/images/logo-white.png';
 
 interface ListItemProps {
   title: string;

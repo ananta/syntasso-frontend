@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { RouteProps } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
 import { EditorState, convertFromRaw, convertToRaw } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
-import { useDispatch } from 'react-redux';
-import Button from 'components/Common/Button';
 import Loader from 'react-loader-spinner';
 
 import { isUserAuthorizedToChallenge, updateChallenge } from 'api';
-import { useSelector } from 'react-redux';
-import { toast } from 'react-toastify';
 import challengeAction from 'actions/ChallengeActions';
 import { Challenge } from 'actions/ActionTypes';
+
+import Button from 'components/Common/Button';
 
 interface EditPageProps extends RouteProps {
   challengeId: string;

@@ -1,4 +1,5 @@
 import React from 'react';
+
 import PricingTable from 'components/Common/PricingTable';
 
 const Pricing = () => {

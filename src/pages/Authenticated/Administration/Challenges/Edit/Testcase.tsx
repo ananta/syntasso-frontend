@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
-import Button from 'components/Common/Button';
 import Modal from 'react-modal';
 import { useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 
 import { createTestcase, getChallengeTestcase, removeTestcase } from 'api';
 
+import Button from 'components/Common/Button';
 import InfoWithButton from 'components/Common/InfoWithButton';
-import { toast } from 'react-toastify';
 import CustomLoader from 'components/Common/CustomLoader';
 
 const customStyles = {

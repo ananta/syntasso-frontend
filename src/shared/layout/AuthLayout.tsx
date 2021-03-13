@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
+import { useSelector, RootStateOrAny } from 'react-redux';
+import { RouteComponentProps } from 'react-router-dom';
+import Loader from 'react-loader-spinner';
+
+import routes from 'routes';
+
 import AppContainer from 'components/Layout/AppContainer';
 import Navbar from 'components/Layout/Navbar';
-import { useSelector, RootStateOrAny } from 'react-redux';
-import routes from 'routes';
-import Loader from 'react-loader-spinner';
-import { RouteComponentProps } from 'react-router-dom';
 import Footer from 'components/Layout/Footer';
 import Header from 'components/Layout/PageHeader';
 

@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import XTerm, { Terminal } from 'react-xterm';
-import 'xterm/css/xterm.css';
 import ReactResizeDetector from 'react-resize-detector';
+import 'xterm/css/xterm.css';
 
 interface SocketTerminalType {
   msg: string | boolean;
