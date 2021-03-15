@@ -27,6 +27,7 @@ import Home from 'pages/Public/Home';
 import Login from 'pages/Public/Login';
 // Common Pages
 import JoinContest from 'pages/Common/JoinContest';
+import Profile from 'pages/Authenticated/Profile';
 
 import './styles/app.css';
 import './App.css';
@@ -141,6 +142,13 @@ export const pages = [
     exact: false,
     path: Routes.administration,
     component: Administration,
+    layout: AuthLayout,
+  },
+  {
+    title: 'Profile',
+    exact: false,
+    path: Routes.profile,
+    component: Profile,
     layout: AuthLayout,
   },
 ];

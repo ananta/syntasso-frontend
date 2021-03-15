@@ -9,6 +9,7 @@ const EndPoint = {
   Login: '/login',
   Search: '/search',
   Profile: '/profile',
+  UserProfile: '/user/profile',
   Challenges: '/challenges',
   Contest: '/contest',
   Editorial: '/editorial',

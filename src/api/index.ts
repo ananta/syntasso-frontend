@@ -27,6 +27,7 @@ import getChallengeLeaderboard from './methods/getChallengeLeaderboard';
 import getContestChallengeLeaderboard from './methods/getContestChallengeLeaderboard';
 import getContestLeaderboard from './methods/getContestLeaderboard';
 import getContestSubmission from './methods/getContestSubmissions';
+import getUserInfo from './methods/getUserInfo';
 
 export {
   executeCode,
@@ -58,4 +59,5 @@ export {
   getContestChallengeLeaderboard,
   getContestLeaderboard,
   getContestSubmission,
+  getUserInfo,
 };

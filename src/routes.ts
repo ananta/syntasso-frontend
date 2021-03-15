@@ -19,4 +19,5 @@ export default {
   manageContest: '/administration/contest',
   // Nested Dashboard pages
   settings: '/dashboard/settings',
+  profile: '/profile/:username',
 };
