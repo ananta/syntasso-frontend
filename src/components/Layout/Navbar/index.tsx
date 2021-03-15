@@ -4,11 +4,12 @@ import { Link, NavLink } from 'react-router-dom';
 import { CSSTransition } from 'react-transition-group';
 import classnames from 'classnames';
 
-import AccountCircle from '@material-ui/icons/AccountCircle';
-import ChevronRight from '@material-ui/icons/ChevronRight';
-
+import { history } from 'utils/History';
 import authAction from 'actions/AuthActions';
 import { Auth } from 'actions/ActionTypes';
+
+import AccountCircle from '@material-ui/icons/AccountCircle';
+import ChevronRight from '@material-ui/icons/ChevronRight';
 
 import Logo from 'shared/assets/images/default.png';
 import { ReactComponent as CaretIcon } from 'shared/assets/icons/caret.svg';
@@ -142,7 +143,7 @@ const DropdownMenu = forwardRef<HTMLDivElement, IDropdownMenu>(({ isMobile }, re
 
   function DropdownItem(props) {
     return (
-      <p className="menu-item" onClick={() => props.goToMenu && setActiveMenu(props.goToMenu)} {...props}>
+      <p className="menu-item text-gray-200" onClick={() => props.goToMenu && setActiveMenu(props.goToMenu)} {...props}>
         <span className="icon-button">{props.leftIcon}</span>
         {props.children}
         <span className="icon-right">{props.rightIcon}</span>
@@ -164,7 +165,12 @@ const DropdownMenu = forwardRef<HTMLDivElement, IDropdownMenu>(({ isMobile }, re
         onEnter={calcHeight}
       >
         <div className="menu">
-          <DropdownItem leftIcon={<AccountCircle fontSize="large" />}>@{username}</DropdownItem>
+          <DropdownItem
+            onClick={() => history.push(`/profile/${username}`)}
+            leftIcon={<AccountCircle fontSize="large" />}
+          >
+            @{username}
+          </DropdownItem>
           <DropdownItem leftIcon={<CogIcon />} rightIcon={<ChevronRight />} goToMenu="settings">
             Settings
           </DropdownItem>
