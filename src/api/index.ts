@@ -28,6 +28,9 @@ import getContestChallengeLeaderboard from './methods/getContestChallengeLeaderb
 import getContestLeaderboard from './methods/getContestLeaderboard';
 import getContestSubmission from './methods/getContestSubmissions';
 import getUserInfo from './methods/getUserInfo';
+import getUserSubmissions from './methods/getUserSubmissions';
+import getUserEnrollments from './methods/getUserEnrollments';
+import getUserTimeline from './methods/getUserTimeline';
 
 export {
   executeCode,
@@ -60,4 +63,7 @@ export {
   getContestLeaderboard,
   getContestSubmission,
   getUserInfo,
+  getUserEnrollments,
+  getUserSubmissions,
+  getUserTimeline,
 };

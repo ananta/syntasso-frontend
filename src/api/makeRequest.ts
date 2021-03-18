@@ -22,6 +22,7 @@ interface RequestResponse {
     challenges?: any;
     isSuccess: boolean;
     testcases?: any;
+    timeline?: any;
     isEnrolled?: any;
     enrollments?: any;
   };
