@@ -56,6 +56,7 @@ const AddChallengeModal: React.FC<IAddChallengeModa> = ({ handleCloseModal, cont
 
   const loadChallenge = async (inputValue) => {
     const requestResult = await getChallenges(inputValue);
+    console.log({ requestResult });
     return requestResult;
   };
 
@@ -64,7 +65,7 @@ const AddChallengeModal: React.FC<IAddChallengeModa> = ({ handleCloseModal, cont
       setIsAddingChallenge(true);
       const addChallengeResponse = await addChallengeToContest({
         token: AuthState.data.user.token,
-        challengeId: selectedChallenge.Challenge_challengeId,
+        challengeId: selectedChallenge.challenges_challengeId,
         contestId: parseInt(contestId),
       });
       toast.success(addChallengeResponse.response.message);
@@ -75,6 +76,7 @@ const AddChallengeModal: React.FC<IAddChallengeModa> = ({ handleCloseModal, cont
       setIsAddingChallenge(false);
     }
   };
+  console.log({ selectedChallenge });
   return (
     <div className="modal-content py-4 text-left px-6 w-full">
       <div className="flex justify-between items-center pb-3 w-full">
@@ -106,8 +108,8 @@ const AddChallengeModal: React.FC<IAddChallengeModa> = ({ handleCloseModal, cont
             placeholder="Enter Challenge Name"
             menuPlacement="auto"
             menuPosition="fixed"
-            getOptionLabel={(e) => e.Challenge_name}
-            getOptionValue={(e) => e.Challenge_challengeId}
+            getOptionLabel={(e) => e.challenges_name}
+            getOptionValue={(e) => e.challenges_challengeId}
             id="grid-text-1"
             style={customSelectContainer}
             theme={(theme) => ({
