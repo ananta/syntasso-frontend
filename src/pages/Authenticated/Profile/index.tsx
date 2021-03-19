@@ -13,6 +13,8 @@ import Button from 'components/Common/Button';
 
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import { FaUserFriends } from 'react-icons/fa';
+import TimelineListItem from './Components/TimelineListItem';
+import getUserTimeline from 'api/methods/getUserTimeline';
 
 type IUserInfo = {
   userId: string;
@@ -31,7 +33,7 @@ const Profile: React.FC<RouteComponentProps> = (RouteProps) => {
     url,
     params: { username },
   } = useRouteMatch<IUserInfo>();
-
+  const [timeline, setTimeline] = useState(null);
   const [userInfo, setUserInfo] = useState<IUserInfo>({
     userId: '',
     username: '',
@@ -55,11 +57,21 @@ const Profile: React.FC<RouteComponentProps> = (RouteProps) => {
     setUserInfo(userRes.response.data);
   };
 
+  const fetchTimeline = async () => {
+    const timelineRes = await getUserTimeline({
+      username,
+      token,
+    });
+    if (!timelineRes.isSuccess) throw new Error(timelineRes.message || timelineRes.response.message);
+    setTimeline(timelineRes.response.timeline);
+  };
+
   const handleInitiation = async () => {
     try {
       setIsPageLoading(true);
       setError(false);
       await fetchUserInfo();
+      await fetchTimeline();
       console.log({ userInfo });
       console.log('Page initialized');
     } catch (err) {
@@ -209,11 +221,7 @@ const Profile: React.FC<RouteComponentProps> = (RouteProps) => {
                           <li>
                             <div className="flex space-x-3">
                               <div className="flex-shrink-0">
-                                <img
-                                  className="h-10 w-10 rounded-full"
-                                  src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=facearea&amp;facepad=2&amp;w=256&amp;h=256&amp;q=80"
-                                  alt=""
-                                />
+                                <AccountCircle className="h-10 w-10 rounded-full" />
                               </div>
                               <div>
                                 <div className="text-sm">
@@ -241,11 +249,7 @@ const Profile: React.FC<RouteComponentProps> = (RouteProps) => {
                           <li>
                             <div className="flex space-x-3">
                               <div className="flex-shrink-0">
-                                <img
-                                  className="h-10 w-10 rounded-full"
-                                  src="https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=facearea&amp;facepad=2&amp;w=256&amp;h=256&amp;q=80"
-                                  alt=""
-                                />
+                                <AccountCircle className="h-10 w-10 rounded-full" />
                               </div>
                               <div>
                                 <div className="text-sm">
@@ -274,11 +278,7 @@ const Profile: React.FC<RouteComponentProps> = (RouteProps) => {
                           <li>
                             <div className="flex space-x-3">
                               <div className="flex-shrink-0">
-                                <img
-                                  className="h-10 w-10 rounded-full"
-                                  src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=facearea&amp;facepad=2&amp;w=256&amp;h=256&amp;q=80"
-                                  alt=""
-                                />
+                                <AccountCircle className="h-10 w-10 rounded-full" />
                               </div>
                               <div>
                                 <div className="text-sm">
@@ -309,11 +309,7 @@ const Profile: React.FC<RouteComponentProps> = (RouteProps) => {
                     <div className="bg-gray-50 px-4 py-6 sm:px-6">
                       <div className="flex space-x-3">
                         <div className="flex-shrink-0">
-                          <img
-                            className="h-10 w-10 rounded-full"
-                            src="https://images.unsplash.com/photo-1517365830460-955ce3ccd263?ixlib=rb-=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=facearea&amp;facepad=8&amp;w=256&amp;h=256&amp;q=80"
-                            alt=""
-                          />
+                          <AccountCircle className="h-10 w-10 rounded-full" />
                         </div>
                         <div className="min-w-0 flex-1">
                           <form action="#">
@@ -374,203 +370,17 @@ const Profile: React.FC<RouteComponentProps> = (RouteProps) => {
                   {/* Activity Feed */}
                   <div className="mt-6 flow-root">
                     <ul className="-mb-8">
-                      <li>
-                        <div className="relative pb-8">
-                          <span
-                            className="absolute top-4 left-4 -ml-px h-full w-0.5 bg-gray-200"
-                            aria-hidden="true"
-                          ></span>
-                          <div className="relative flex space-x-3">
-                            <div>
-                              <span className="h-8 w-8 rounded-full bg-gray-400 flex items-center justify-center ring-8 ring-white">
-                                <svg
-                                  className="h-5 w-5 text-white"
-                                  data-todo-x-description="Heroicon name: solid/user"
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  viewBox="0 0 20 20"
-                                  fill="currentColor"
-                                  aria-hidden="true"
-                                >
-                                  <path
-                                    fillRule="evenodd"
-                                    d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
-                                    clipRule="evenodd"
-                                  ></path>
-                                </svg>
-                              </span>
-                            </div>
-                            <div className="min-w-0 flex-1 pt-1.5 flex justify-between space-x-4">
-                              <div>
-                                <p className="text-sm text-gray-500">
-                                  Applied to{' '}
-                                  <a href="/" className="font-medium text-gray-900">
-                                    Front End Developer
-                                  </a>
-                                </p>
-                              </div>
-                              <div className="text-right text-sm whitespace-nowrap text-gray-500">
-                                <time dateTime="2020-09-20">Sep 20</time>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </li>
-
-                      <li>
-                        <div className="relative pb-8">
-                          <span
-                            className="absolute top-4 left-4 -ml-px h-full w-0.5 bg-gray-200"
-                            aria-hidden="true"
-                          ></span>
-                          <div className="relative flex space-x-3">
-                            <div>
-                              <span className="h-8 w-8 rounded-full bg-blue-500 flex items-center justify-center ring-8 ring-white">
-                                <svg
-                                  className="h-5 w-5 text-white"
-                                  data-todo-x-description="Heroicon name: solid/thumb-up"
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  viewBox="0 0 20 20"
-                                  fill="currentColor"
-                                  aria-hidden="true"
-                                >
-                                  <path d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z"></path>
-                                </svg>
-                              </span>
-                            </div>
-                            <div className="min-w-0 flex-1 pt-1.5 flex justify-between space-x-4">
-                              <div>
-                                <p className="text-sm text-gray-500">
-                                  Advanced to phone screening by{' '}
-                                  <a href="/" className="font-medium text-gray-900">
-                                    Bethany Blake
-                                  </a>
-                                </p>
-                              </div>
-                              <div className="text-right text-sm whitespace-nowrap text-gray-500">
-                                <time dateTime="2020-09-22">Sep 22</time>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </li>
-
-                      <li>
-                        <div className="relative pb-8">
-                          <span
-                            className="absolute top-4 left-4 -ml-px h-full w-0.5 bg-gray-200"
-                            aria-hidden="true"
-                          ></span>
-                          <div className="relative flex space-x-3">
-                            <div>
-                              <span className="h-8 w-8 rounded-full bg-green-500 flex items-center justify-center ring-8 ring-white">
-                                <svg
-                                  className="h-5 w-5 text-white"
-                                  data-todo-x-description="Heroicon name: solid/check"
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  viewBox="0 0 20 20"
-                                  fill="currentColor"
-                                  aria-hidden="true"
-                                >
-                                  <path
-                                    fillRule="evenodd"
-                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                    clipRule="evenodd"
-                                  ></path>
-                                </svg>
-                              </span>
-                            </div>
-                            <div className="min-w-0 flex-1 pt-1.5 flex justify-between space-x-4">
-                              <div>
-                                <p className="text-sm text-gray-500">
-                                  Completed phone screening with{' '}
-                                  <a href="/" className="font-medium text-gray-900">
-                                    Martha Gardner
-                                  </a>
-                                </p>
-                              </div>
-                              <div className="text-right text-sm whitespace-nowrap text-gray-500">
-                                <time dateTime="2020-09-28">Sep 28</time>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </li>
-
-                      <li>
-                        <div className="relative pb-8">
-                          <span
-                            className="absolute top-4 left-4 -ml-px h-full w-0.5 bg-gray-200"
-                            aria-hidden="true"
-                          ></span>
-                          <div className="relative flex space-x-3">
-                            <div>
-                              <span className="h-8 w-8 rounded-full bg-blue-500 flex items-center justify-center ring-8 ring-white">
-                                <svg
-                                  className="h-5 w-5 text-white"
-                                  data-todo-x-description="Heroicon name: solid/thumb-up"
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  viewBox="0 0 20 20"
-                                  fill="currentColor"
-                                  aria-hidden="true"
-                                >
-                                  <path d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z"></path>
-                                </svg>
-                              </span>
-                            </div>
-                            <div className="min-w-0 flex-1 pt-1.5 flex justify-between space-x-4">
-                              <div>
-                                <p className="text-sm text-gray-500">
-                                  Advanced to interview by{' '}
-                                  <a href="/" className="font-medium text-gray-900">
-                                    Bethany Blake
-                                  </a>
-                                </p>
-                              </div>
-                              <div className="text-right text-sm whitespace-nowrap text-gray-500">
-                                <time dateTime="2020-09-30">Sep 30</time>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </li>
-
-                      <li>
-                        <div className="relative pb-8">
-                          <div className="relative flex space-x-3">
-                            <div>
-                              <span className="h-8 w-8 rounded-full bg-green-500 flex items-center justify-center ring-8 ring-white">
-                                <svg
-                                  className="h-5 w-5 text-white"
-                                  data-todo-x-description="Heroicon name: solid/check"
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  viewBox="0 0 20 20"
-                                  fill="currentColor"
-                                  aria-hidden="true"
-                                >
-                                  <path
-                                    fillRule="evenodd"
-                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                    clipRule="evenodd"
-                                  ></path>
-                                </svg>
-                              </span>
-                            </div>
-                            <div className="min-w-0 flex-1 pt-1.5 flex justify-between space-x-4">
-                              <div>
-                                <p className="text-sm text-gray-500">
-                                  Completed interview with{' '}
-                                  <a href="/" className="font-medium text-gray-900">
-                                    Katherine Snyder
-                                  </a>
-                                </p>
-                              </div>
-                              <div className="text-right text-sm whitespace-nowrap text-gray-500">
-                                <time dateTime="2020-10-04">Oct 4</time>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </li>
+                      {timeline.map((event: { type: 'joined' | 'award'; time: string }) => (
+                        <TimelineListItem {...event} />
+                      ))}
+                      {/* <TimelineListItem type="joined" time="2020-12-02" />
+                      <TimelineListItem
+                        type="award"
+                        time="2020-03-15"
+                        position="first"
+                        points={0}
+                        contestName="Gandaki College OF Engineering nad scien andn dal djlkfajs lkfjlk asdjlkfj aklsjdfklj"
+                      /> */}
                     </ul>
                   </div>
                   <div className="mt-6 flex flex-col justify-stretch">
@@ -578,7 +388,7 @@ const Profile: React.FC<RouteComponentProps> = (RouteProps) => {
                       type="button"
                       className="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                     >
-                      Advance to offer
+                      Generate Portfolio
                     </button>
                   </div>
                 </div>
