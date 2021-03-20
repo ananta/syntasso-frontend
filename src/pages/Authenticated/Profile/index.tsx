@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import moment from 'moment';
-import { RouteComponentProps, useRouteMatch } from 'react-router-dom';
+import { Link, RouteComponentProps, useRouteMatch } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
-import { getUserInfo } from 'api';
+import { getUserEnrollments, getUserInfo, getUserSubmissions } from 'api';
 import { history } from 'utils/History';
 
 import CustomLoader from 'components/Common/CustomLoader';
@@ -12,9 +12,11 @@ import NotFound from 'components/Common/NotFound';
 import Button from 'components/Common/Button';
 
 import AccountCircle from '@material-ui/icons/AccountCircle';
-import { FaUserFriends } from 'react-icons/fa';
+import { GiBrain } from 'react-icons/gi';
+import { MdAccountCircle } from 'react-icons/md';
 import TimelineListItem from './Components/TimelineListItem';
 import getUserTimeline from 'api/methods/getUserTimeline';
+import usePaginatedFetcher from 'hooks/usePaginatedFetcher';
 
 type IUserInfo = {
   userId: string;
@@ -34,6 +36,22 @@ const Profile: React.FC<RouteComponentProps> = (RouteProps) => {
     params: { username },
   } = useRouteMatch<IUserInfo>();
   const [timeline, setTimeline] = useState(null);
+  const AuthState = useSelector((state) => state['Auth']);
+  const token = AuthState.data.user.token;
+  const enrollments = usePaginatedFetcher({
+    fetcherFunction: getUserEnrollments,
+    name: ['contests', 'enrollments'],
+    username,
+    token,
+    limit: 2,
+  });
+  const submissions = usePaginatedFetcher({
+    fetcherFunction: getUserSubmissions,
+    name: ['result', 'submissions'],
+    username,
+    token,
+    limit: 5,
+  });
   const [userInfo, setUserInfo] = useState<IUserInfo>({
     userId: '',
     username: '',
@@ -44,8 +62,6 @@ const Profile: React.FC<RouteComponentProps> = (RouteProps) => {
     isActive: 'false',
     isVerified: 'false',
   });
-  const AuthState = useSelector((state) => state['Auth']);
-  const token = AuthState.data.user.token;
   const [error, setError] = useState(false);
 
   const fetchUserInfo = async () => {
@@ -88,6 +104,7 @@ const Profile: React.FC<RouteComponentProps> = (RouteProps) => {
 
   if (error) return <NotFound />;
   if (isPageLoading) return <CustomLoader />;
+
   return (
     <>
       <div>
@@ -98,11 +115,7 @@ const Profile: React.FC<RouteComponentProps> = (RouteProps) => {
               <div className="flex items-center space-x-5">
                 <div className="flex-shrink-0">
                   <div className="relative">
-                    <img
-                      className="h-16 w-16 rounded-full"
-                      src="https://images.unsplash.com/photo-1463453091185-61582044d556?ixlib=rb-=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=facearea&amp;facepad=8&amp;w=1024&amp;h=1024&amp;q=80"
-                      alt=""
-                    />
+                    <MdAccountCircle className="h-12 w-12 text-gray-800" />
                     <span className="absolute inset-0 shadow-inner rounded-full" aria-hidden="true"></span>
                   </div>
                 </div>
@@ -149,238 +162,229 @@ const Profile: React.FC<RouteComponentProps> = (RouteProps) => {
                       <dl className="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
                         <div className="sm:col-span-1">
                           <dt className="text-sm font-medium text-gray-500">Profile for</dt>
-                          <dd className="mt-1 text-sm text-gray-900">{userInfo.username}</dd>
+                          <dd className="mb-1 text-sm text-gray-900">{userInfo.username}</dd>
                         </div>
                         <div className="sm:col-span-1">
                           <dt className="text-sm font-medium text-gray-500">Email address</dt>
-                          <dd className="mt-1 text-sm text-gray-900">{userInfo.email}</dd>
+                          <dd className="mb-1 text-sm text-gray-900">{userInfo.email}</dd>
                         </div>
                         <div className="sm:col-span-1">
                           <dt className="text-sm font-medium text-gray-500">Salary expectation</dt>
-                          <dd className="mt-1 text-sm text-gray-900">$120,000</dd>
+                          <dd className="mb-1 text-sm text-gray-900">$XXXXXXXXXXXXX</dd>
                         </div>
                         <div className="sm:col-span-1">
                           <dt className="text-sm font-medium text-gray-500">Phone</dt>
-                          <dd className="mt-1 text-sm text-gray-900">+1 555-555-5555</dd>
+                          <dd className="mb-1 text-sm text-gray-900">+XXXXXXXXXXX</dd>
                         </div>
                         <div className="sm:col-span-2">
                           <dt className="text-sm font-medium text-gray-500">About</dt>
-                          <dd className="mt-1 text-sm text-gray-900">
-                            Fugiat ipsum ipsum deserunt culpa aute sint do nostrud anim incididunt cillum culpa
-                            consequat. Excepteur qui ipsum aliquip consequat sint. Sit id mollit nulla mollit nostrud in
-                            ea officia proident. Irure nostrud pariatur mollit ad adipisicing reprehenderit deserunt qui
-                            eu.
-                          </dd>
-                        </div>
-                        <div className="sm:col-span-2">
-                          <dt className="text-sm font-medium text-gray-500">Attachments</dt>
-                          <dd className="mt-1 text-sm text-gray-900">
-                            <ul className="border border-gray-200 rounded-md divide-y divide-gray-200">
-                              <li className="pl-3 pr-4 py-3 flex items-center justify-between text-sm">
-                                <div className="w-0 flex-1 flex items-center">
-                                  <svg
-                                    className="flex-shrink-0 h-5 w-5 text-gray-400"
-                                    data-todo-x-description="Heroicon name: solid/paper-clip"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 20 20"
-                                    fill="currentColor"
-                                    aria-hidden="true"
-                                  >
-                                    <path
-                                      fillRule="evenodd"
-                                      d="M8 4a3 3 0 00-3 3v4a5 5 0 0010 0V7a1 1 0 112 0v4a7 7 0 11-14 0V7a5 5 0 0110 0v4a3 3 0 11-6 0V7a1 1 0 012 0v4a1 1 0 102 0V7a3 3 0 00-3-3z"
-                                      clipRule="evenodd"
-                                    ></path>
-                                  </svg>
-                                  <span className="ml-2 flex-1 w-0 truncate">to_be_decided.pdf</span>
-                                </div>
-                                <div className="ml-4 flex-shrink-0">
-                                  <a href="/" className="font-medium text-blue-600 hover:text-blue-500">
-                                    Download
-                                  </a>
-                                </div>
-                              </li>
-                            </ul>
+                          <dd className="mb-1 text-sm text-gray-900">
+                            XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                            XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+                            XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXx
                           </dd>
                         </div>
                       </dl>
                     </div>
                   </div>
                 </section>
-
                 <section aria-labelledby="notes-title">
                   <div className="bg-white shadow sm:rounded-lg sm:overflow-hidden">
                     <div className="divide-y divide-gray-200">
                       <div className="px-4 py-5 sm:px-6">
                         <h2 id="notes-title" className="text-lg font-medium text-gray-900">
-                          Activities
+                          Enrollments
                         </h2>
                       </div>
                       <div className="px-4 py-6 sm:px-6">
                         <ul className="space-y-8">
-                          <li>
-                            <div className="flex space-x-3">
-                              <div className="flex-shrink-0">
-                                <AccountCircle className="h-10 w-10 rounded-full" />
-                              </div>
-                              <div>
-                                <div className="text-sm">
-                                  <a href="/" className="font-medium text-gray-900">
-                                    Leslie Alexander
-                                  </a>
+                          {enrollments.data.map((enrollment) => (
+                            <li>
+                              <div className="flex space-x-3">
+                                <div className="flex-shrink-0">
+                                  <AccountCircle className="h-10 w-10 rounded-full" />
                                 </div>
-                                <div className="mt-1 text-sm text-gray-700">
-                                  <p>
-                                    Ducimus quas delectus ad maxime totam doloribus reiciendis ex. Tempore dolorem
-                                    maiores. Similique voluptatibus tempore non ut.
-                                  </p>
-                                </div>
-                                <div className="mt-2 text-sm space-x-2">
-                                  <span className="text-gray-500 font-medium">4d ago</span>
-                                  <span className="text-gray-500 font-medium">·</span>
-                                  <button type="button" className="text-gray-900 font-medium">
-                                    Reply
-                                  </button>
-                                </div>
-                              </div>
-                            </div>
-                          </li>
-
-                          <li>
-                            <div className="flex space-x-3">
-                              <div className="flex-shrink-0">
-                                <AccountCircle className="h-10 w-10 rounded-full" />
-                              </div>
-                              <div>
-                                <div className="text-sm">
-                                  <a href="/" className="font-medium text-gray-900">
-                                    Michael Foster
-                                  </a>
-                                </div>
-                                <div className="mt-1 text-sm text-gray-700">
-                                  <p>
-                                    Et ut autem. Voluptatem eum dolores sint necessitatibus quos. Quis eum qui dolorem
-                                    accusantium voluptas voluptatem ipsum. Quo facere iusto quia accusamus veniam id
-                                    explicabo et aut.
-                                  </p>
-                                </div>
-                                <div className="mt-2 text-sm space-x-2">
-                                  <span className="text-gray-500 font-medium">4d ago</span>
-                                  <span className="text-gray-500 font-medium">·</span>
-                                  <button type="button" className="text-gray-900 font-medium">
-                                    Reply
-                                  </button>
+                                <div>
+                                  <div className="text-sm">
+                                    <a href="/" className="font-medium text-gray-900">
+                                      {enrollment.contest_name}
+                                    </a>
+                                  </div>
+                                  <div className="mt-1 text-sm text-gray-700">
+                                    <p>{enrollment.contest_description}</p>
+                                  </div>
+                                  <div className="mt-2 text-sm space-x-2">
+                                    <span className="text-gray-500 font-medium">
+                                      {moment.duration(moment().diff(enrollment.enrollment_createdAt)).days()} days ago
+                                    </span>
+                                    <span className="text-gray-500 font-medium">·</span>
+                                    <Link
+                                      target="_blank"
+                                      className="text-gray-900 font-medium"
+                                      to={`/join/${enrollment.contest_contestId}`}
+                                    >
+                                      View
+                                    </Link>
+                                  </div>
                                 </div>
                               </div>
-                            </div>
-                          </li>
-
-                          <li>
-                            <div className="flex space-x-3">
-                              <div className="flex-shrink-0">
-                                <AccountCircle className="h-10 w-10 rounded-full" />
-                              </div>
-                              <div>
-                                <div className="text-sm">
-                                  <a href="/" className="font-medium text-gray-900">
-                                    Dries Vincent
-                                  </a>
-                                </div>
-                                <div className="mt-1 text-sm text-gray-700">
-                                  <p>
-                                    Expedita consequatur sit ea voluptas quo ipsam recusandae. Ab sint et voluptatem
-                                    repudiandae voluptatem et eveniet. Nihil quas consequatur autem. Perferendis rerum
-                                    et.
-                                  </p>
-                                </div>
-                                <div className="mt-2 text-sm space-x-2">
-                                  <span className="text-gray-500 font-medium">4d ago</span>
-                                  <span className="text-gray-500 font-medium">·</span>
-                                  <button type="button" className="text-gray-900 font-medium">
-                                    Reply
-                                  </button>
-                                </div>
-                              </div>
-                            </div>
-                          </li>
+                            </li>
+                          ))}
                         </ul>
                       </div>
-                    </div>
-                    <div className="bg-gray-50 px-4 py-6 sm:px-6">
-                      <div className="flex space-x-3">
-                        <div className="flex-shrink-0">
-                          <AccountCircle className="h-10 w-10 rounded-full" />
+                      <div className="flex bg-gray-50 px-4 pt-3 mb-3 sm:px-6 justify-end">
+                        <div className="inline-block">
+                          <Button
+                            isBusy={enrollments.isBusy}
+                            disabled={enrollments.totalPages <= enrollments.currentPage}
+                            onClick={enrollments.handleFetchMore}
+                            title="Load more"
+                            classNames="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white focus:outline-none focus:ring-2 focus:ring-offset-2 "
+                          />
                         </div>
-                        <div className="min-w-0 flex-1">
-                          <form action="#">
-                            <div>
-                              <label htmlFor="comment" className="sr-only">
-                                About
-                              </label>
-                              <textarea
-                                id="comment"
-                                name="comment"
-                                rows={3}
-                                className="shadow-sm block w-full focus:ring-blue-500 focus:border-blue-500 sm:text-sm border-gray-300 rounded-md"
-                                placeholder="Add a note"
-                              ></textarea>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+                <section aria-labelledby="notes-title">
+                  <div className="bg-white shadow sm:rounded-lg sm:overflow-hidden">
+                    <div className="divide-y divide-gray-200">
+                      <div className="px-4 py-5 sm:px-6">
+                        <h2 id="notes-title" className="text-lg font-medium text-gray-900">
+                          Submissions
+                        </h2>
+                      </div>
+                      <div className="">
+                        <div className="bg-gray-100">
+                          <div className="max-w-7xl mx-auto ">
+                            <div className="flex flex-col">
+                              <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                                <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+                                  <div className="">
+                                    <table className="min-w-full divide-y divide-gray-200">
+                                      <thead className="bg-gray-50">
+                                        <tr>
+                                          <th
+                                            scope="col"
+                                            className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                          >
+                                            Challenge Name
+                                          </th>
+                                          <th
+                                            scope="col"
+                                            className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                          >
+                                            Contest
+                                          </th>
+                                          <th
+                                            scope="col"
+                                            className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                          >
+                                            Status
+                                          </th>
+                                          <th
+                                            scope="col"
+                                            className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                          >
+                                            Date
+                                          </th>
+                                          <th scope="col" className="relative px-6 py-3">
+                                            <span className="sr-only">Points</span>
+                                          </th>
+                                        </tr>
+                                      </thead>
+                                      <tbody className="bg-white divide-y divide-gray-200" data-todo-x-max="1">
+                                        {submissions.data.map((submission, indx) => (
+                                          <tr>
+                                            <td className="px-6 py-4 whitespace-nowrap">
+                                              <div className="flex items-center">
+                                                <div className="flex-shrink-0 h-10 w-10">
+                                                  <GiBrain className="h-10 w-10 rounded-full text-gray-800" />
+                                                </div>
+                                                <div className="ml-4">
+                                                  <div className="text-sm font-medium text-gray-900 truncate w-40">
+                                                    {submission.challenge_name}
+                                                  </div>
+                                                  <div className="text-sm text-gray-500 truncate w-48">
+                                                    {submission.challenge_description}
+                                                  </div>
+                                                </div>
+                                              </div>
+                                            </td>
+                                            <td className="px-6 py-4 whitespace-nowrap">
+                                              {submission.contest_name ? (
+                                                <>
+                                                  <div className="text-sm text-gray-900 truncate w-24 ">
+                                                    {submission.contest_name}
+                                                  </div>
+
+                                                  <Link
+                                                    target="_blank"
+                                                    to={`/join/${submission.contest_contestId}`}
+                                                    className="text-sm text-gray-500"
+                                                  >
+                                                    View
+                                                  </Link>
+                                                </>
+                                              ) : (
+                                                <div className="text-sm text-gray-900">--</div>
+                                              )}
+                                            </td>
+                                            <td className="px-6 py-4 whitespace-nowrap">
+                                              <span
+                                                className={`capitalize px-2 inline-flex text-xs leading-5 font-semibold rounded-full${
+                                                  submission.submissions_status === 'completed'
+                                                    ? 'bg-green-100 text-green-800 '
+                                                    : 'bg-red-100 text-red-800'
+                                                } `}
+                                              >
+                                                {submission.submissions_status}
+                                              </span>
+                                            </td>
+                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                              {moment(submission.submissions_createdAt).format('YY/MM/DD')}
+                                            </td>
+                                            <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                              <a href="/" className="text-green-600 hover:text-indigo-900">
+                                                {submission.submissions_score > 0 && `+`} {submission.submissions_score}
+                                              </a>
+                                            </td>
+                                          </tr>
+                                        ))}
+                                      </tbody>
+                                    </table>
+                                  </div>
+                                </div>
+                              </div>
                             </div>
-                            <div className="mt-3 flex items-center justify-between">
-                              <a
-                                href="/"
-                                className="group inline-flex items-start text-sm space-x-2 text-gray-500 hover:text-gray-900"
-                              >
-                                <svg
-                                  className="flex-shrink-0 h-5 w-5 text-gray-400 group-hover:text-gray-500"
-                                  data-todo-x-description="Heroicon name: solid/question-mark-circle"
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  viewBox="0 0 20 20"
-                                  fill="currentColor"
-                                  aria-hidden="true"
-                                >
-                                  <path
-                                    fillRule="evenodd"
-                                    d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z"
-                                    clipRule="evenodd"
-                                  ></path>
-                                </svg>
-                                <span>Some HTML is okay.</span>
-                              </a>
-                              <button
-                                type="submit"
-                                className="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                              >
-                                Comment
-                              </button>
-                            </div>
-                          </form>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="flex bg-gray-50 px-4 pt-3 mb-3 sm:px-6 justify-end">
+                        <div className="inline-block">
+                          <Button
+                            isBusy={submissions.isBusy}
+                            disabled={submissions.totalPages <= submissions.currentPage}
+                            onClick={submissions.handleFetchMore}
+                            title="Load more"
+                            classNames="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white focus:outline-none focus:ring-2 focus:ring-offset-2 "
+                          />
                         </div>
                       </div>
                     </div>
                   </div>
                 </section>
               </div>
-
               <section aria-labelledby="timeline-title" className="lg:col-start-3 lg:col-span-1">
                 <div className="bg-white px-4 py-5 shadow sm:rounded-lg sm:px-6">
                   <h2 id="timeline-title" className="text-lg font-medium text-gray-900">
                     Timeline
                   </h2>
-
-                  {/* Activity Feed */}
                   <div className="mt-6 flow-root">
                     <ul className="-mb-8">
                       {timeline.map((event: { type: 'joined' | 'award'; time: string }) => (
                         <TimelineListItem {...event} />
                       ))}
-                      {/* <TimelineListItem type="joined" time="2020-12-02" />
-                      <TimelineListItem
-                        type="award"
-                        time="2020-03-15"
-                        position="first"
-                        points={0}
-                        contestName="Gandaki College OF Engineering nad scien andn dal djlkfajs lkfjlk asdjlkfj aklsjdfklj"
-                      /> */}
                     </ul>
                   </div>
                   <div className="mt-6 flex flex-col justify-stretch">
