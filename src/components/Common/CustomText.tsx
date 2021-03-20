@@ -12,7 +12,7 @@ const TitleText: React.FC<CustomTextProps> = ({ classNames, children }) => (
 );
 
 const RegularText: React.FC<CustomTextProps> = ({ classNames, children }) => (
-  <div className={classnames('text-black text-base leading-8 sm:text-xs ', classNames)}>{children}</div>
+  <div className={classnames('text-black text-base sm:text-xs ', classNames)}>{children}</div>
 );
 
 const MediumTitle: React.FC<CustomTextProps> = ({ classNames, children }) => (
