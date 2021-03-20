@@ -1,4 +1,5 @@
 import React from 'react';
+import moment from 'moment';
 
 interface ITimelineListItem {
   type: 'joined' | 'award';
@@ -75,7 +76,7 @@ const TimelineListItem: React.FC<ITimelineListItem> = ({ type, time, position, p
               </div>
             )}
             <div className="text-right text-sm whitespace-nowrap text-gray-500">
-              <time dateTime={time}>{time}</time>
+              <time dateTime={time}>{moment(time).format('YY/MM/DD')}</time>
             </div>
           </div>
         </div>
