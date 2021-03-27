@@ -16,6 +16,7 @@ const EndPoint = {
   Editorial: '/editorial',
   Submission: '/submissions',
   Testcase: '/testcase',
+  Bookmark: '/bookmark',
 };
 
 export { BASE_URL };

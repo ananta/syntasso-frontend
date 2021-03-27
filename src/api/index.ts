@@ -31,6 +31,7 @@ import getUserInfo from './methods/getUserInfo';
 import getUserSubmissions from './methods/getUserSubmissions';
 import getUserEnrollments from './methods/getUserEnrollments';
 import getUserTimeline from './methods/getUserTimeline';
+import removeBookmark from './methods/removeBookmark';
 
 export {
   executeCode,
@@ -66,4 +67,5 @@ export {
   getUserEnrollments,
   getUserSubmissions,
   getUserTimeline,
+  removeBookmark,
 };

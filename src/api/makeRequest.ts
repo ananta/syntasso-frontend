@@ -25,6 +25,7 @@ interface RequestResponse {
     timeline?: any;
     isEnrolled?: any;
     enrollments?: any;
+    bookmarks?: any;
   };
   message: string | null | undefined;
 }
