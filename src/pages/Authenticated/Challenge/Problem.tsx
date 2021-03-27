@@ -19,8 +19,11 @@ import Terminal from 'components/IDE/Terminal';
 import TestCaseStatus from './Components/TestCaseStatus';
 import ContainerStatus, { IContainerStatus } from './Components/ContainerStatus';
 
+import StarIcon from '@material-ui/icons/Star';
+import StarBorderIcon from '@material-ui/icons/StarBorder';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
+import useBookmark from 'hooks/useBookmark';
 
 interface ProblemInfoProps extends RouteComponentProps {
   challenge: {
@@ -82,7 +85,13 @@ const Problem: React.FC<ProblemInfoProps> = (ProblemInfo) => {
   // const serverUrl = 'http://localhost:8080',
   //     topic = 'docker-app-stdout';
   const [topic, msgBuildLogs, msgTestLogs, msgContainerStatus, isConnected, socketId] = useEngine(currentLanguage);
+  const token = AuthState.user.token.toString();
 
+  const { isBookmarkLoading, isBookmarked, toggle } = useBookmark({
+    token,
+    contentId: challenge.challengeId,
+    bookmarkType: 'challenge',
+  });
   const handleStreaming = (testCases: [any]) => {
     const formattedTestCases = testCases.map((test, index) => ({
       ...test,
@@ -108,7 +117,6 @@ const Problem: React.FC<ProblemInfoProps> = (ProblemInfo) => {
       // set code submission = true;
       // generate  the testcases grid and wait for the socket connection to fulfull
       /// update the testcases with the testcase socket connection
-      const token = AuthState.user.token.toString();
       const challengeId = challenge.challengeId;
       const testCases = await getChallengeTestcase({ challengeId, token });
       if (!(testCases.response.testcases || testCases.response.testcases.length > 0)) {
@@ -197,7 +205,18 @@ const Problem: React.FC<ProblemInfoProps> = (ProblemInfo) => {
     <div>
       <div className="bg-white shadow-xl  border-l  border-r py-4 px-4 ">
         <div className="inputs w-full px-6 my-4">
-          <h2 className="text-3xl text-gray-900 -mx-3">{challenge.name}</h2>
+          <div className="flex justify-between">
+            <h2 className="text-3xl text-gray-900 -mx-3">{challenge.name}</h2>
+            {isBookmarkLoading ? (
+              <div className="cursor-pointer text-blue-200">
+                <StarIcon />
+              </div>
+            ) : (
+              <div className="cursor-pointer text-blue-600" onClick={toggle}>
+                {isBookmarked ? <StarIcon /> : <StarBorderIcon />}
+              </div>
+            )}
+          </div>
           <form className="border-t border-gray-400 pt-8 ">
             <div className="flex flex-wrap -mx-3 mb-6">
               <div className="md:flex w-full md:w-full  mb-6 items-center">
