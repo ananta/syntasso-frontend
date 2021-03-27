@@ -14,6 +14,8 @@ import Challenges from './Components/Challenges';
 import Submissions from './Components/Submissions';
 import Leaderboard from './Components/Leaderboard';
 import Enrollments from './Components/Enrollments';
+import Bookmark from 'components/Common/Bookmark';
+import useBookmark from 'hooks/useBookmark';
 
 type IContest = {
   contestId: string;
@@ -55,7 +57,11 @@ const Contest: React.FC<RouteComponentProps> = (RouteProps) => {
     if (!challengesRes.isSuccess) throw new Error(challengesRes.message);
     setChallenges(challengesRes.response.challenges);
   };
-
+  const { isBookmarkLoading, isBookmarked, toggle } = useBookmark({
+    token,
+    contentId: contestId,
+    bookmarkType: 'contest',
+  });
   const getContestInformation = async () => {
     const contestRes = await getContestInfo({ contestId: parseInt(contestId) });
     if (!contestRes.response.isSuccess) throw new Error(contestRes.response.message);
@@ -84,7 +90,10 @@ const Contest: React.FC<RouteComponentProps> = (RouteProps) => {
   return (
     <div className="max-w-screen-xl mx-auto">
       <div>
-        <SectionHeader minified title={contestInfo.name} link="Details" />
+        <div className="flex flex-row justify-between">
+          <SectionHeader minified title={contestInfo.name} />
+          <Bookmark loading={isBookmarkLoading} bookmarked={isBookmarked} toggle={toggle} />
+        </div>
         <div className="border border-dotted my-5"></div>
       </div>
       <div className="block lg:flex lg:space-x-2 px-2 lg:p-0 mb-10 ">
