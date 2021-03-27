@@ -74,9 +74,15 @@ const ListItem: React.FC<ListItemProps> = ({ title, onClick, difficulty }) => (
   </div>
 );
 
-const Contest: React.FC<RouteComponentProps> = () => {
+const Contest: React.FC<RouteComponentProps> = (RouteProps) => {
   const AuthState = useSelector((state) => state['Auth']);
-  const [selectedTab, setSelectedTab] = useState<'enrolled' | 'active' | 'archived'>('enrolled');
+  const {
+    location: { pathname },
+  } = RouteProps;
+  // handle tab initialization with tab name
+  const [selectedTab, setSelectedTab] = useState<'enrolled' | 'active' | 'archived'>(
+    pathname.includes('active') ? 'active' : pathname.includes('archived') ? 'archived' : 'enrolled',
+  );
   const [searchQuery, setSearchQuery] = useState('');
   const [pagination, setPagination] = useState(10);
   const [challenges, setChallenges] = useState([]);
