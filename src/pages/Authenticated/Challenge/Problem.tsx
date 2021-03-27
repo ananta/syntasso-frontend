@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { RouteComponentProps, useRouteMatch } from 'react-router-dom';
 import Button from 'components/Common/Button';
+import Bookmark from 'components/Common/Bookmark';
 import { convertFromRaw } from 'draft-js';
 import { useSelector, useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
@@ -19,8 +20,6 @@ import Terminal from 'components/IDE/Terminal';
 import TestCaseStatus from './Components/TestCaseStatus';
 import ContainerStatus, { IContainerStatus } from './Components/ContainerStatus';
 
-import StarIcon from '@material-ui/icons/Star';
-import StarBorderIcon from '@material-ui/icons/StarBorder';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import useBookmark from 'hooks/useBookmark';
@@ -207,15 +206,7 @@ const Problem: React.FC<ProblemInfoProps> = (ProblemInfo) => {
         <div className="inputs w-full px-6 my-4">
           <div className="flex justify-between">
             <h2 className="text-3xl text-gray-900 -mx-3">{challenge.name}</h2>
-            {isBookmarkLoading ? (
-              <div className="cursor-pointer text-blue-200">
-                <StarIcon />
-              </div>
-            ) : (
-              <div className="cursor-pointer text-blue-600" onClick={toggle}>
-                {isBookmarked ? <StarIcon /> : <StarBorderIcon />}
-              </div>
-            )}
+            <Bookmark loading={isBookmarkLoading} bookmarked={isBookmarked} toggle={toggle} />
           </div>
           <form className="border-t border-gray-400 pt-8 ">
             <div className="flex flex-wrap -mx-3 mb-6">
