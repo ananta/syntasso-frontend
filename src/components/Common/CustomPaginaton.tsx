@@ -16,7 +16,7 @@ const CustomPaginate: React.FC<PaginationProps & ComponentProps<'button'>> = ({ 
       marginPagesDisplayed={2}
       pageRangeDisplayed={5}
       onPageChange={handlePageClick}
-      containerClassName={'flex pl-0 list-none rounded border border-gray-300 block leading-tight relative'}
+      containerClassName={'flex flex-wrap pl-0 list-none rounded content-center'}
       pageLinkClassName={
         'relative block py-2 px-3 leading-tight bg-white border border-gray-200 text-gray-500 border-t-0 hover:bg-gray-200 no-underline cursor-pointer focus:outline-none'
       }
