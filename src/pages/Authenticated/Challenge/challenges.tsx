@@ -10,31 +10,68 @@ import SectionHeader from 'components/Common/SectionHeader';
 import Button from 'components/Common/Button';
 import CustomPaginate from 'components/Common/CustomPaginaton';
 
-import Logo from 'shared/assets/images/logo-white.png';
+import moment from 'moment';
 
 interface ListItemProps {
   title: string;
   description: string;
   difficulty: string;
+  createdAt: string;
   onClick: () => void;
 }
 
-const ListItem: React.FC<ListItemProps> = ({ title, description, onClick, difficulty }) => (
-  <div className="bg-white px-4 py-2 rounded-l w-full lg:flex mb-10 cursor-pointer" onClick={onClick}>
-    <div className=" rounded px-4 flex flex-col justify-between leading-normal">
-      <div>
-        <div className="mt-3 md:mt-0 text-gray-700 font-bold text-2xl mb-2">{title}</div>
-        <p className="text-gray-700 text-base">{description}</p>
-      </div>
-      <div className="flex mt-3">
-        <img src={Logo} className="h-10 w-10 rounded-full mr-2 object-cover" />
-        <div>
-          <p className="font-semibold text-gray-700 text-sm capitalize"> weekly competition </p>
-          <p className="text-gray-600 text-xs"> 14 Aug </p>
+const ListItem: React.FC<ListItemProps> = ({ title, description, onClick, difficulty, createdAt }) => (
+  <li className="cursor-pointer transition duration-500 ease-in-out  hover:bg-gray-200 transform hover:-translate-y-1 hover:scale-20">
+    <div onClick={onClick} className="block hover:bg-gray-50">
+      <div className="px-4 py-4 sm:px-6">
+        <div className="flex items-center justify-between">
+          <p className="text-sm font-medium text-primary truncate">{title}</p>
+          <div className="ml-2 flex-shrink-0 flex">
+            <p className="capitalize px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+              {difficulty}
+            </p>
+          </div>
+        </div>
+        <div className="mt-2 sm:flex sm:justify-between">
+          <div className="sm:flex">
+            <p className="flex items-center text-sm text-gray-500">
+              <svg
+                className="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400"
+                data-todo-x-description="Heroicon name: solid/users"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+                aria-hidden="true"
+              >
+                <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"></path>
+              </svg>
+              {description}
+            </p>
+          </div>
+          <div className="mt-2 flex items-center text-sm text-gray-500 sm:mt-0">
+            <svg
+              className="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400"
+              data-todo-x-description="Heroicon name: solid/calendar"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+              aria-hidden="true"
+            >
+              <path
+                fillRule="evenodd"
+                d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
+                clipRule="evenodd"
+              ></path>
+            </svg>
+            <p>
+              Created:{/* space */}
+              <time dateTime={createdAt}>{` ` + moment(createdAt).format('YYYY/MM/DD')}</time>
+            </p>
+          </div>
         </div>
       </div>
     </div>
-  </div>
+  </li>
 );
 
 const Contest: React.FC<RouteComponentProps> = () => {
@@ -99,7 +136,7 @@ const Contest: React.FC<RouteComponentProps> = () => {
         <div className="w-full lg:w-2/3 mx-auto ">
           <div>
             <SectionHeader title="Active Challenges" />
-            <div className="mb-5">
+            <div className=" flex flex-row justify-between ">
               <div className="py-1">
                 <div className="my-2 flex sm:flex-row flex-col ">
                   <div className="flex flex-row mb-1 sm:mb-0 ">
@@ -147,26 +184,36 @@ const Contest: React.FC<RouteComponentProps> = () => {
                   </div>
                 </div>
               </div>
+
+              <CustomPaginate totalPages={totalPages} handlePageClick={handlePageClick} />
             </div>
-            {challenges.length > 0 ? (
-              <div>
-                {challenges.map((challenge, indx) => (
-                  <ListItem
-                    key={indx.toString()}
-                    difficulty={challenge.challenges_difficulty}
-                    onClick={() => history.push('/challenge/' + challenge.challenges_challengeId)}
-                    title={challenge.challenges_name}
-                    description={challenge.challenges_description}
-                  />
-                ))}
+
+            <div className="">
+              <div className="">
+                <div className="bg-white shadow overflow-hidden sm:rounded-md">
+                  <ul className="divide-y divide-gray-200">
+                    {challenges.length > 0 ? (
+                      <div>
+                        {challenges.map((challenge, indx) => (
+                          <ListItem
+                            createdAt={challenge.challenges_createdAt}
+                            key={indx.toString()}
+                            difficulty={challenge.challenges_difficulty}
+                            onClick={() => history.push('/challenge/' + challenge.challenges_challengeId)}
+                            title={challenge.challenges_name}
+                            description={challenge.challenges_description}
+                          />
+                        ))}
+                      </div>
+                    ) : (
+                      <h2>There are not Active Contests running at the moment.</h2>
+                    )}
+                  </ul>
+                </div>
               </div>
-            ) : (
-              <h2>There are not Active Contests running at the moment.</h2>
-            )}
+            </div>
           </div>
-          <div className="flex flex-row  items-center m-0 justify-center content-center ">
-            <CustomPaginate totalPages={totalPages} handlePageClick={handlePageClick} />
-          </div>
+          <div className="flex flex-row  items-center m-0 justify-center content-center mt-10"></div>
           <div className="border border-dotted my-10"></div>
         </div>
 
