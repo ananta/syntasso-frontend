@@ -28,6 +28,9 @@ const useBookmark = ({
       });
       if (!bookmarkRes.response.isSuccess) throw new Error(bookmarkRes.response.message);
       setIsBookmarked(bookmarkRes.response.bookmarks.success);
+      setCurrentBookmarkInfo({
+        ...bookmarkRes.response.bookmarks,
+      });
     } catch (err) {
       toast.error(err.message);
     } finally {
