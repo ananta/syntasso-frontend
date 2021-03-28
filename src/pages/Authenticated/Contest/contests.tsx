@@ -27,25 +27,14 @@ interface IContestTab {
   left?: boolean;
   right?: boolean;
 }
-const ContestTab: React.FC<IContestTab> = ({ name, title, selected, onPress }) => (
-  <p
-    onClick={() => onPress(name)}
-    className={classnames('w-1/3 py-4 px-1 text-center border-b-2  font-medium text-sm leading-5 cursor-pointer', {
-      'border-primary text-primary focus:text-primary focus:border-primary': name === selected,
-      'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300':
-        name !== selected,
-    })}
-  >
-    {title}
-  </p>
-);
 
 const ContestTabPill: React.FC<IContestTab> = ({ name, title, selected, onPress, left, right }) => (
   <p
     onClick={() => onPress(name)}
     aria-current="page"
     className={classnames(
-      selected === name ? 'text-gray-900' : 'text-gray-500',
+      ' transition duration-500 ease-in-out hover:text-primary',
+      selected === name ? 'text-primary' : 'text-gray-500',
       'group relative min-w-0 flex-1 overflow-hidden bg-white cursor-pointer py-4 px-4 text-sm font-medium text-center hover:bg-gray-50 focus:z-10',
       left && 'rounded-l-lg',
       right && 'rounded-r-lg',
@@ -191,7 +180,7 @@ const Contest: React.FC<RouteComponentProps> = (RouteProps) => {
               <select
                 id="tabs"
                 name="tabs"
-                className="block w-full focus:ring-indigo-500 focus:border-indigo-500 border-gray-300 rounded-md"
+                className="block w-full focus:ring-primary-500 focus:border-primary border-gray-300 rounded-md hover:border-indigo-600"
               >
                 <option selected={selectedTab === 'enrolled'}>Enrolled</option>
                 <option selected={selectedTab === 'active'}>Active</option>
