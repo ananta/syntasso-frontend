@@ -11,17 +11,17 @@ interface IBookmark {
 
 const Bookmark: React.FC<IBookmark> = ({ loading, bookmarked, toggle }) => {
   return (
-    <>
+    <div className="flex flex-wrap justify-center align-middle">
       {loading ? (
-        <div className="cursor-pointer text-blue-200">
-          <StarIcon />
+        <div className="cursor-pointer text-blue-200 ">
+          <StarIcon fontSize="default" />
         </div>
       ) : (
-        <div className="cursor-pointer text-blue-600" onClick={toggle}>
-          {bookmarked ? <StarIcon /> : <StarBorderIcon />}
+        <div className="cursor-pointer text-blue-600 flex justify-center align-middle" onClick={toggle}>
+          {bookmarked ? <StarIcon fontSize="default" /> : <StarBorderIcon fontSize="default" />}
         </div>
       )}
-    </>
+    </div>
   );
 };
 
