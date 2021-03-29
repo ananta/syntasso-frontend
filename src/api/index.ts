@@ -32,6 +32,7 @@ import getUserSubmissions from './methods/getUserSubmissions';
 import getUserEnrollments from './methods/getUserEnrollments';
 import getUserTimeline from './methods/getUserTimeline';
 import removeBookmark from './methods/removeBookmark';
+import getContestChallengeSubmissions from './methods/getContestChallengeSubmissions';
 
 export {
   executeCode,
@@ -68,4 +69,5 @@ export {
   getUserSubmissions,
   getUserTimeline,
   removeBookmark,
+  getContestChallengeSubmissions,
 };

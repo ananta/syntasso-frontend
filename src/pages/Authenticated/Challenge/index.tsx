@@ -191,7 +191,12 @@ const Challenge: React.FC<ChallengeParams> = (RouteProps) => {
                     <Route
                       path={`${url}/submissions`}
                       render={(props) => (
-                        <Submissions {...props} challenge={currentChallenge} isContestBased={isContest} />
+                        <Submissions
+                          {...props}
+                          challenge={currentChallenge}
+                          isContestBased={isContest}
+                          contestId={parseInt(contestId)}
+                        />
                       )}
                     />
                     <Route component={() => <Redirect to={`${url}/problem`} />} />

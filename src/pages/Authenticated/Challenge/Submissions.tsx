@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import LogoWhite from 'shared/assets/images/logo-white.png';
 import getChallengeSubmissions from 'api/methods/getChallengeSubmissions';
 import CustomLoader from 'components/Common/CustomLoader';
+import { getContestChallengeSubmissions } from 'api';
 
 interface ISubmissionsState {
   isLoading: boolean;
@@ -24,6 +25,7 @@ interface ISubmissions {
     createdAt: string;
   };
   isContestBased?: boolean;
+  contestId?: number;
 }
 
 const SubmissionRow = ({
@@ -74,6 +76,8 @@ const SubmissionRow = ({
 const Submissions: React.FC<ISubmissions> = (SubmissionInfo) => {
   const {
     challenge: { challengeId },
+    isContestBased,
+    contestId,
   } = SubmissionInfo;
   const [submissionState, setSubmissionState] = useState<ISubmissionsState>({
     isLoading: false,
@@ -83,10 +87,19 @@ const Submissions: React.FC<ISubmissions> = (SubmissionInfo) => {
   const token = AuthState.user.token.toString();
 
   const getSubmissions = async () => {
-    const submissionRes = await getChallengeSubmissions({
-      challengeId: parseInt(challengeId),
-      token,
-    });
+    let submissionRes;
+    if (isContestBased) {
+      submissionRes = await getContestChallengeSubmissions({
+        challengeId: parseInt(challengeId),
+        contestId: contestId,
+        token,
+      });
+    } else {
+      submissionRes = await getChallengeSubmissions({
+        challengeId: parseInt(challengeId),
+        token,
+      });
+    }
     if (!submissionRes.isSuccess) throw new Error(submissionRes.message || 'Cannot get submission');
     return submissionRes.response.submissions;
   };
