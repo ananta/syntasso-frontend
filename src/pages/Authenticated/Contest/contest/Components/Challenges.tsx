@@ -12,6 +12,36 @@ interface IChallengesProps {
   challenges: any;
   url: string;
 }
+interface ListItemProps {
+  name: string;
+  difficulty: string;
+  slug: string;
+  link: string;
+}
+
+const ListItem: React.FC<ListItemProps> = ({ name, difficulty, slug, link }) => (
+  <div className="cursor-pointer transition duration-500 ease-in-out  hover:bg-gray-200 transform hover:-translate-y-1 hover:scale-20">
+    <Link to={link}>
+      <div className="block hover:bg-gray-50">
+        <div className="px-4 py-4 sm:px-6">
+          <div className="flex items-center justify-between">
+            <p className="text-sm font-medium text-primary truncate">{name}</p>
+            <div className="ml-2 flex-shrink-0 flex">
+              <p className="capitalize px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                {difficulty}
+              </p>
+            </div>
+          </div>
+          <div className="mt-2 sm:flex sm:justify-between">
+            <div className="sm:flex">
+              <p className="flex items-center text-sm text-gray-500">{slug}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </Link>
+  </div>
+);
 
 const Challenges: React.FC<IChallengesProps> = ({ url, challenges }) => {
   return (
@@ -90,59 +120,19 @@ const Challenges: React.FC<IChallengesProps> = ({ url, challenges }) => {
                 </a>
               </div>
             </div>
-            <div className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
+            <div className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-1 overflow-x-auto">
               <div className="inline-block min-w-full shadow rounded-lg overflow-hidden">
-                <table className="min-w-full leading-normal">
-                  <thead>
-                    <tr>
-                      <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                        Challenge
-                      </th>
-                      <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                        Slug
-                      </th>
-                      <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                        Difficulty
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
+                <div className="bg-white shadow overflow-hidden sm:rounded-md">
+                  <ul className="divide-y divide-gray-200">
                     {challenges.map((challenge, indx) => (
-                      <tr key={indx.toString()}>
-                        <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                          <div className="flex items-center">
-                            <div className="flex-shrink-0 w-10 h-10">
-                              <img className="w-full h-full rounded-full" src={LogoWhite} alt="" />
-                            </div>
-                            <div className="ml-3">
-                              <Link to={`${url}/challenge/${challenge.challengeId}/problem`}>
-                                <p className="text-gray-900 whitespace-no-wrap">{challenge.name}</p>
-                              </Link>
-                            </div>
-                          </div>
-                        </td>
-                        <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                          <Link to={`${url}/challenge/${challenge.challengeId}`}>
-                            <p className="text-gray-900 whitespace-no-wrap">{`/challenge/${challenge.challengeId}`}</p>
-                          </Link>
-                        </td>
-                        <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm uppercase">
-                          <p className="text-gray-900 whitespace-no-wrap">{challenge.difficulty || 'undefined'}</p>
-                        </td>
-                      </tr>
+                      <ListItem
+                        link={`${url}/challenge/${challenge.challengeId}`}
+                        name={challenge.name}
+                        difficulty={challenge.difficulty || 'easy'}
+                        slug={`/challenge/${challenge.challengeId}`}
+                      />
                     ))}
-                  </tbody>
-                </table>
-                <div className="px-5 py-5 bg-white border-t flex flex-col xs:flex-row items-center xs:justify-between          ">
-                  <span className="text-xs xs:text-sm text-gray-900"></span>
-                  <div className="inline-flex mt-2 xs:mt-0">
-                    <button className="text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-l">
-                      Prev
-                    </button>
-                    <button className="text-sm bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded-r">
-                      Next
-                    </button>
-                  </div>
+                  </ul>
                 </div>
               </div>
             </div>
