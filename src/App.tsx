@@ -89,6 +89,20 @@ export const pages = [
     layout: AuthLayout,
   },
   {
+    title: 'Challenges',
+    exact: true,
+    path: Routes.bareChallenge,
+    component: Challenges,
+    layout: AuthLayout,
+  },
+  {
+    title: 'Contests',
+    exact: true,
+    path: Routes.bareContest,
+    component: Contests,
+    layout: AuthLayout,
+  },
+  {
     title: 'Join Contest',
     exact: true,
     path: Routes.joinContest,

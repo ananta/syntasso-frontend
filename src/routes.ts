@@ -13,6 +13,8 @@ export default {
   joinContest: '/join/:contestId',
   jobs: '/jobs',
   challenge: '/challenge/:challengeId',
+  bareChallenge: '/challenge',
+  bareContest: '/contest',
   challenges: '/challenges',
   administration: '/administration',
   createContest: '/administration/contest/create',
