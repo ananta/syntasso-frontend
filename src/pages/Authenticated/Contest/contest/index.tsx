@@ -94,7 +94,7 @@ const Contest: React.FC<RouteComponentProps> = (RouteProps) => {
         <>
           <div className="">
             <div className="max-w-7xl mx-auto">
-              <div className="lg:flex lg:items-center lg:justify-between">
+              <div className="flex lg:items-center lg:justify-between">
                 <div className="flex-1 min-w-0">
                   <div className="flex flex-row flex-wrap justify-between mb-2">
                     <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate capitalize">
@@ -200,10 +200,7 @@ const Contest: React.FC<RouteComponentProps> = (RouteProps) => {
             </div>
           </div>
         </>
-        {/* <div className="flex flex-row justify-between">
-          <SectionHeader minified title={contestInfo.name} />
-        </div> */}
-        <div className="border border-dotted my-5"></div>
+        <div className="border border-dotted mt-6 mb-4"></div>
       </div>
       <div className="block lg:flex lg:space-x-2 px-2 lg:p-0 mb-10 ">
         <div className="w-full flex-1 lg:w-1/4 pr-3">

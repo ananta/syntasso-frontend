@@ -35,7 +35,7 @@ const Sidebar: React.FC<ISidebar> = ({ endTime }) => {
             <Link to={`${url}/leaderboard`}>
               <div className="flex items-center text-gray-600 cursor-pointer">
                 <span className="inline-block h-4 w-4 bg-green-300 mr-3"></span>
-                Current Leaderboard
+                Leaderboard
                 <i className="text-gray-500 bx bx-right-arrow-alt ml-1"></i>
               </div>
             </Link>
@@ -44,7 +44,7 @@ const Sidebar: React.FC<ISidebar> = ({ endTime }) => {
             <Link to={`${url}/submissions`}>
               <div className="flex items-center text-gray-600 cursor-pointer">
                 <span className="inline-block h-4 w-4 bg-indigo-300 mr-3"></span>
-                View Submissions
+                Submissions
                 <i className="text-gray-500 bx bx-right-arrow-alt ml-1"></i>
               </div>
             </Link>
@@ -53,7 +53,7 @@ const Sidebar: React.FC<ISidebar> = ({ endTime }) => {
             <Link to={`${url}/enrollments`}>
               <div className="flex items-center text-gray-600 cursor-pointer">
                 <span className="inline-block h-4 w-4 bg-red-300 mr-3"></span>
-                View Enrollments
+                Enrollments
                 <i className="text-gray-500 bx bx-right-arrow-alt ml-1"></i>
               </div>
             </Link>
