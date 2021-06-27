@@ -11,6 +11,8 @@ import Button from 'components/Common/Button';
 import CustomPaginate from 'components/Common/CustomPaginaton';
 
 import moment from 'moment';
+import NoPostYet from 'components/Common/NoPostYet';
+import CustomLoader from 'components/Common/CustomLoader';
 
 interface ListItemProps {
   title: string;
@@ -117,9 +119,10 @@ const Contest: React.FC<RouteComponentProps> = (RouteProps) => {
   const [totalPages, setTotalPages] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [contests, setContests] = useState([]);
-  const [isChallengeLoading, setIsChallengeLoading] = useState(false);
+  const [isChallengeLoading, setIsChallengeLoading] = useState(true);
 
   const handlePaginationChange = (event: ChangeEvent<HTMLSelectElement>) => {
+    setCurrentPage(1);
     setPagination(parseInt(event.target.value));
   };
 
@@ -141,10 +144,9 @@ const Contest: React.FC<RouteComponentProps> = (RouteProps) => {
     const challengesRes = await searchContest(options);
     if (!challengesRes.isSuccess) throw new Error(challengesRes.message);
     const { contests, totalPages } = challengesRes.response.data;
-    setChallenges(challenges);
     setTotalPages(totalPages);
     setChallenges(challengesRes.response.data.contests);
-    setIsChallengeLoading(true);
+    setIsChallengeLoading(false);
   };
 
   const handlePageInitiaiton = async () => {
@@ -153,7 +155,7 @@ const Contest: React.FC<RouteComponentProps> = (RouteProps) => {
       await getChallengeInfo();
     } catch (err) {
       toast.error(err.message);
-      setIsChallengeLoading(true);
+      setIsChallengeLoading(false);
     }
   };
   useEffect(() => {
@@ -284,21 +286,27 @@ const Contest: React.FC<RouteComponentProps> = (RouteProps) => {
               <div className="">
                 <div className="bg-white shadow overflow-hidden sm:rounded-md">
                   <ul className="divide-y divide-gray-200">
-                    {challenges.length > 0 ? (
-                      <div>
-                        {challenges.map((challenge, indx) => (
-                          <ListItem
-                            description={challenge.contest_description}
-                            createdAt={challenge.contest_createdAt}
-                            key={indx.toString()}
-                            difficulty={challenge.contest_difficulty}
-                            onClick={() => history.push('/join/' + challenge.contest_contestId)}
-                            title={challenge.contest_name}
-                          />
-                        ))}
-                      </div>
+                    {isChallengeLoading ? (
+                      <CustomLoader />
                     ) : (
-                      <h2>Contests Unavailable</h2>
+                      <>
+                        {challenges.length > 0 ? (
+                          <div>
+                            {challenges.map((challenge, indx) => (
+                              <ListItem
+                                description={challenge.contest_description}
+                                createdAt={challenge.contest_createdAt}
+                                key={indx.toString()}
+                                difficulty={challenge.contest_difficulty}
+                                onClick={() => history.push('/join/' + challenge.contest_contestId)}
+                                title={challenge.contest_name}
+                              />
+                            ))}
+                          </div>
+                        ) : (
+                          <NoPostYet />
+                        )}
+                      </>
                     )}
                   </ul>
                 </div>
