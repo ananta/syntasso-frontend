@@ -12,6 +12,8 @@ import CustomPaginate from 'components/Common/CustomPaginaton';
 
 import moment from 'moment';
 import CustomLoader from 'components/Common/CustomLoader';
+import NoPostYet from 'components/Common/NoPostYet';
+import usePaginatedList from 'hooks/usePaginatedList';
 
 interface ListItemProps {
   title: string;
@@ -76,60 +78,28 @@ const ListItem: React.FC<ListItemProps> = ({ title, description, onClick, diffic
 );
 
 const Contest: React.FC<RouteComponentProps> = () => {
-  const AuthState = useSelector((state) => state['Auth']);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [difficulty, setDifficulty] = useState('');
-  const [pagination, setPagination] = useState(5);
-  const [challenges, setChallenges] = useState([]);
-  const [totalPages, setTotalPages] = useState(0);
-  const [currentPage, setCurrentPages] = useState(1);
-  const [isChallengeLoading, setIsChallengeLoading] = useState(true);
+  const [searchQuery] = useState('');
+  const [difficulty] = useState('');
+  const [pagination] = useState(5);
+  const [currentPage] = useState(1);
 
-  const handlePagination = (event: ChangeEvent<HTMLSelectElement>) => {
-    setPagination(parseInt(event.target.value));
-  };
-
-  const handlePageClick = (data) => {
-    setCurrentPages(parseInt(data.selected) + 1);
-  };
-
-  const getChallengeInfo = async () => {
-    const options = {
-      token: AuthState.data.user.token,
-      limit: pagination,
-      page: currentPage,
-      type: 'challenges',
-    };
-    if (searchQuery.length > 0) {
-      options['query'] = searchQuery;
-    }
-    if (difficulty.length > 0) {
-      options['difficulty'] = difficulty;
-    }
-    const challengesRes = await searchChallenge(options);
-    if (!challengesRes.isSuccess) throw new Error(challengesRes.message);
-    const { challenges, totalPages } = challengesRes.response.data;
-    setChallenges(challenges);
-    setTotalPages(totalPages);
-    setIsChallengeLoading(false);
-  };
-
-  const handlePageInitiaiton = async () => {
-    try {
-      setIsChallengeLoading(true);
-      await getChallengeInfo();
-    } catch (err) {
-      toast.error(err.message);
-      setIsChallengeLoading(false);
-    }
-  };
-  useEffect(() => {
-    handlePageInitiaiton();
-  }, []);
-
-  useEffect(() => {
-    handlePageInitiaiton();
-  }, [searchQuery, difficulty, pagination, currentPage]);
+  const {
+    isItemsLoading,
+    items,
+    handlePageClick,
+    handlePagination,
+    totalPages,
+    setDifficulty: handleDifficultyChange,
+    setSearchQuery: handleSearchQueryChange,
+    currentPagination,
+  } = usePaginatedList({
+    pagination,
+    currentPage,
+    searchQuery,
+    getDataApi: searchChallenge,
+    type: 'challenges',
+    difficulty,
+  });
 
   return (
     <div className="max-w-screen-xl mx-auto">
@@ -143,7 +113,7 @@ const Contest: React.FC<RouteComponentProps> = () => {
                   <div className="flex flex-row mb-1 sm:mb-0 ">
                     <div className="relative">
                       <select
-                        value={pagination}
+                        value={currentPagination}
                         onChange={handlePagination}
                         className="appearance-none h-full rounded-l border block appearance-none w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                       >
@@ -179,27 +149,27 @@ const Contest: React.FC<RouteComponentProps> = () => {
                     </span>
                     <input
                       placeholder="Search"
-                      onChange={(e) => setSearchQuery(e.target.value)}
+                      onChange={(e) => handleSearchQueryChange(e.target.value)}
                       className="appearance-none rounded-r rounded-l sm:rounded-l-none border border-gray-400 border-b block pl-8 pr-6 py-2 w-full bg-white text-sm placeholder-gray-400 text-gray-700 focus:bg-white focus:placeholder-gray-600 focus:text-gray-700 focus:outline-none"
                     />
                   </div>
                 </div>
               </div>
 
-              <CustomPaginate totalPages={totalPages} handlePageClick={handlePageClick} />
+              <CustomPaginate totalPages={totalPages} handlePageClick={(data: any) => handlePageClick(data.selected)} />
             </div>
 
             <div className="">
               <div className="">
                 <div className="bg-white shadow overflow-hidden sm:rounded-md">
                   <ul className="divide-y divide-gray-200">
-                    {isChallengeLoading ? (
+                    {isItemsLoading ? (
                       <CustomLoader />
                     ) : (
                       <>
-                        {challenges.length > 0 ? (
+                        {items.length > 0 ? (
                           <div>
-                            {challenges.map((challenge, indx) => (
+                            {items.map((challenge, indx) => (
                               <ListItem
                                 createdAt={challenge.challenges_createdAt}
                                 key={indx.toString()}
@@ -211,7 +181,7 @@ const Contest: React.FC<RouteComponentProps> = () => {
                             ))}
                           </div>
                         ) : (
-                          <h2>There are not Active Contests running at the moment.</h2>
+                          <NoPostYet />
                         )}
                       </>
                     )}
@@ -245,7 +215,7 @@ const Contest: React.FC<RouteComponentProps> = () => {
             <h5 className="font-bold text-lg uppercase text-gray-700 px-1 mb-2">Difficulty</h5>
             <ul>
               <li
-                onClick={() => setDifficulty('easy')}
+                onClick={() => handleDifficultyChange('easy')}
                 className="cursor-pointer px-1 py-4 border-b border-t border-white hover:border-gray-200 transition duration-300"
               >
                 <div className="flex items-center text-gray-600 cursor-pointer">
@@ -255,7 +225,7 @@ const Contest: React.FC<RouteComponentProps> = () => {
                 </div>
               </li>
               <li
-                onClick={() => setDifficulty('medium')}
+                onClick={() => handleDifficultyChange('medium')}
                 className=" cursor-pointer px-1 py-4 border-b border-t border-white hover:border-gray-200 transition duration-300"
               >
                 <div className="flex items-center text-gray-600 cursor-pointer">
@@ -265,7 +235,7 @@ const Contest: React.FC<RouteComponentProps> = () => {
                 </div>
               </li>
               <li
-                onClick={() => setDifficulty('hard')}
+                onClick={() => handleDifficultyChange('hard')}
                 className=" cursor-pointer px-1 py-4 border-b border-t border-white hover:border-gray-200 transition duration-300"
               >
                 <div className="flex items-center text-gray-600 cursor-pointer">
