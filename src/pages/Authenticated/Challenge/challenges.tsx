@@ -11,6 +11,7 @@ import Button from 'components/Common/Button';
 import CustomPaginate from 'components/Common/CustomPaginaton';
 
 import moment from 'moment';
+import CustomLoader from 'components/Common/CustomLoader';
 
 interface ListItemProps {
   title: string;
@@ -82,7 +83,7 @@ const Contest: React.FC<RouteComponentProps> = () => {
   const [challenges, setChallenges] = useState([]);
   const [totalPages, setTotalPages] = useState(0);
   const [currentPage, setCurrentPages] = useState(1);
-  const [isChallengeLoading, setIsChallengeLoading] = useState(false);
+  const [isChallengeLoading, setIsChallengeLoading] = useState(true);
 
   const handlePagination = (event: ChangeEvent<HTMLSelectElement>) => {
     setPagination(parseInt(event.target.value));
@@ -110,7 +111,7 @@ const Contest: React.FC<RouteComponentProps> = () => {
     const { challenges, totalPages } = challengesRes.response.data;
     setChallenges(challenges);
     setTotalPages(totalPages);
-    setIsChallengeLoading(true);
+    setIsChallengeLoading(false);
   };
 
   const handlePageInitiaiton = async () => {
@@ -119,7 +120,7 @@ const Contest: React.FC<RouteComponentProps> = () => {
       await getChallengeInfo();
     } catch (err) {
       toast.error(err.message);
-      setIsChallengeLoading(true);
+      setIsChallengeLoading(false);
     }
   };
   useEffect(() => {
@@ -192,21 +193,27 @@ const Contest: React.FC<RouteComponentProps> = () => {
               <div className="">
                 <div className="bg-white shadow overflow-hidden sm:rounded-md">
                   <ul className="divide-y divide-gray-200">
-                    {challenges.length > 0 ? (
-                      <div>
-                        {challenges.map((challenge, indx) => (
-                          <ListItem
-                            createdAt={challenge.challenges_createdAt}
-                            key={indx.toString()}
-                            difficulty={challenge.challenges_difficulty}
-                            onClick={() => history.push('/challenge/' + challenge.challenges_challengeId)}
-                            title={challenge.challenges_name}
-                            description={challenge.challenges_description}
-                          />
-                        ))}
-                      </div>
+                    {isChallengeLoading ? (
+                      <CustomLoader />
                     ) : (
-                      <h2>There are not Active Contests running at the moment.</h2>
+                      <>
+                        {challenges.length > 0 ? (
+                          <div>
+                            {challenges.map((challenge, indx) => (
+                              <ListItem
+                                createdAt={challenge.challenges_createdAt}
+                                key={indx.toString()}
+                                difficulty={challenge.challenges_difficulty}
+                                onClick={() => history.push('/challenge/' + challenge.challenges_challengeId)}
+                                title={challenge.challenges_name}
+                                description={challenge.challenges_description}
+                              />
+                            ))}
+                          </div>
+                        ) : (
+                          <h2>There are not Active Contests running at the moment.</h2>
+                        )}
+                      </>
                     )}
                   </ul>
                 </div>

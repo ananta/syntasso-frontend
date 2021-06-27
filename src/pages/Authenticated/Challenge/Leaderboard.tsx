@@ -76,6 +76,7 @@ const SubmissionRow = ({
     </tr>
   );
 };
+
 const Leaderboard: React.FC<ILeaderboard> = (SubmissionInfo) => {
   const {
     challenge: { challengeId },
@@ -83,7 +84,7 @@ const Leaderboard: React.FC<ILeaderboard> = (SubmissionInfo) => {
     contestId,
   } = SubmissionInfo;
   const [submissionState, setSubmissionState] = useState<ILeaderboardState>({
-    isLoading: false,
+    isLoading: true,
     submissions: [],
   });
   const AuthState = useSelector((state) => state['Auth'].data);
