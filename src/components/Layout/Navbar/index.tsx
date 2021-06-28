@@ -58,8 +58,8 @@ export const NavBarElements = [
     isProtected: true,
   },
   {
-    title: 'Jobs',
-    location: '/jobs',
+    title: 'Bookmarks',
+    location: '/bookmarks',
     isProtected: true,
   },
 ];

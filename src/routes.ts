@@ -12,6 +12,7 @@ export default {
   contestChallenge: '/contest/:contestId/challenge/:challengeId',
   joinContest: '/join/:contestId',
   jobs: '/jobs',
+  bookmarks: '/bookmarks',
   challenge: '/challenge/:challengeId',
   bareChallenge: '/challenge',
   bareContest: '/contest',

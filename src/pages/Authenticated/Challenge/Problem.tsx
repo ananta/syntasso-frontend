@@ -173,6 +173,8 @@ const Problem: React.FC<ProblemInfoProps> = (ProblemInfo) => {
   };
 
   const handleTestCaseUpdates = (msgLog: any) => {
+    console.log('Here are the test case msgLogs');
+    console.log({ 'test-status': msgLog });
     const testCases = submissionStreaming.testCases;
     if (submissionStreaming.testCases && submissionStreaming.testCases.length > 0) {
       const updatedTestProcessId = submissionStreaming.testCases.findIndex((tst) => tst.process === msgLog.process);
@@ -199,7 +201,6 @@ const Problem: React.FC<ProblemInfoProps> = (ProblemInfo) => {
   useEffect(() => {
     handleContainerStatusUpdates(msgContainerStatus);
   }, [msgContainerStatus]);
-  console.log({ showError });
   return (
     <div>
       <div className="bg-white shadow-xl  border-l  border-r py-4 px-4 ">

@@ -14,6 +14,7 @@ import CommonLayout from 'shared/layout/CommonLayout';
 // Authenticated Pages
 import Dashboard from 'pages/Authenticated/Dashboard';
 import { Contest, Contests } from 'pages/Authenticated/Contest/';
+import Bookmarks from 'pages/Authenticated/Bookmarks';
 import Jobs from 'pages/Authenticated/Jobs';
 import Challenges from 'pages/Authenticated/Challenge/challenges';
 import Challenge from 'pages/Authenticated/Challenge';
@@ -149,6 +150,13 @@ export const pages = [
     exact: false,
     path: Routes.jobs,
     component: Jobs,
+    layout: AuthLayout,
+  },
+  {
+    title: 'Bookmarks',
+    exact: false,
+    path: Routes.bookmarks,
+    component: Bookmarks,
     layout: AuthLayout,
   },
   {
