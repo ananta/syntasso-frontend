@@ -14,6 +14,7 @@ import moment from 'moment';
 import NoPostYet from 'components/Common/NoPostYet';
 import CustomLoader from 'components/Common/CustomLoader';
 import TabNavigator from 'components/Common/TabNavigator';
+import usePaginatedList from 'hooks/usePaginatedList';
 
 interface ListItemProps {
   title: string;
@@ -78,7 +79,6 @@ const ListItem: React.FC<ListItemProps> = ({ title, description, onClick, diffic
 );
 
 const Contest: React.FC<RouteComponentProps> = (RouteProps) => {
-  const AuthState = useSelector((state) => state['Auth']);
   const {
     location: { pathname },
   } = RouteProps;
@@ -86,63 +86,33 @@ const Contest: React.FC<RouteComponentProps> = (RouteProps) => {
   const [selectedTab, setSelectedTab] = useState<'enrolled' | 'active' | 'archived'>(
     pathname.includes('active') ? 'active' : pathname.includes('archived') ? 'archived' : 'enrolled',
   );
-  const [searchQuery, setSearchQuery] = useState('');
-  const [pagination, setPagination] = useState(10);
-  const [challenges, setChallenges] = useState([]);
-  const [totalPages, setTotalPages] = useState(0);
+  const [searchQuery] = useState('');
+  const [pagination] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
-  const [contests, setContests] = useState([]);
-  const [isChallengeLoading, setIsChallengeLoading] = useState(true);
 
-  const handlePaginationChange = (event: ChangeEvent<HTMLSelectElement>) => {
-    setCurrentPage(1);
-    setPagination(parseInt(event.target.value));
-  };
-
-  const handlePageClick = (data) => {
-    setCurrentPage(parseInt(data.selected) + 1);
-  };
-
-  const getChallengeInfo = async () => {
-    const options = {
-      token: AuthState.data.user.token,
-      limit: pagination,
-      page: currentPage,
-      type: 'contests',
-      status: selectedTab,
-    };
-    if (searchQuery.length > 0) {
-      options['query'] = searchQuery;
-    }
-    const challengesRes = await searchContest(options);
-    if (!challengesRes.isSuccess) throw new Error(challengesRes.message);
-    const { contests, totalPages } = challengesRes.response.data;
-    setTotalPages(totalPages);
-    setChallenges(challengesRes.response.data.contests);
-    setIsChallengeLoading(false);
-  };
-
-  const handlePageInitiaiton = async () => {
-    try {
-      setIsChallengeLoading(true);
-      await getChallengeInfo();
-    } catch (err) {
-      toast.error(err.message);
-      setIsChallengeLoading(false);
-    }
-  };
-  useEffect(() => {
-    handlePageInitiaiton();
-  }, []);
-
-  useEffect(() => {
-    handlePageInitiaiton();
-  }, [searchQuery, pagination, currentPage]);
+  const {
+    isItemsLoading,
+    handlePageClick,
+    handlePagination,
+    totalPages,
+    items,
+    currentPagination,
+    setSearchQuery,
+    handlePageInitiaiton,
+  } = usePaginatedList({
+    pagination,
+    currentPage,
+    searchQuery,
+    getDataApi: searchContest,
+    type: 'contests',
+    status: selectedTab,
+  });
 
   useEffect(() => {
     handlePageInitiaiton();
     setCurrentPage(1);
   }, [setSelectedTab, selectedTab]);
+
   return (
     <div className="max-w-screen-xl mx-auto">
       <div className="block lg:flex lg:space-x-2 px-2 lg:p-0 mb-10 ">
@@ -180,8 +150,8 @@ const Contest: React.FC<RouteComponentProps> = (RouteProps) => {
                       <div className="flex">
                         <div className="relative">
                           <select
-                            value={pagination}
-                            onChange={handlePaginationChange}
+                            value={currentPagination}
+                            onChange={handlePagination}
                             className="appearance-none h-full rounded-l border block appearance-none w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                           >
                             <option value={5}>5</option>
@@ -224,7 +194,10 @@ const Contest: React.FC<RouteComponentProps> = (RouteProps) => {
                       </div>
                     </div>
                     <div className="flex flex-row  items-center m-0 justify-center content-center ">
-                      <CustomPaginate totalPages={totalPages} handlePageClick={handlePageClick} />
+                      <CustomPaginate
+                        totalPages={totalPages}
+                        handlePageClick={(data: any) => handlePageClick(data.selected)}
+                      />
                     </div>
                   </div>
                 </div>
@@ -234,13 +207,13 @@ const Contest: React.FC<RouteComponentProps> = (RouteProps) => {
               <div className="">
                 <div className="bg-white shadow overflow-hidden sm:rounded-md">
                   <ul className="divide-y divide-gray-200">
-                    {isChallengeLoading ? (
+                    {isItemsLoading ? (
                       <CustomLoader />
                     ) : (
                       <>
-                        {challenges.length > 0 ? (
+                        {items.length > 0 ? (
                           <div>
-                            {challenges.map((challenge, indx) => (
+                            {items.map((challenge, indx) => (
                               <ListItem
                                 description={challenge.contest_description}
                                 createdAt={challenge.contest_createdAt}
