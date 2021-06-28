@@ -12,6 +12,7 @@ import CustomPaginate from 'components/Common/CustomPaginaton';
 
 import moment from 'moment';
 import CustomLoader from 'components/Common/CustomLoader';
+import NoPostYet from 'components/Common/NoPostYet';
 
 interface ListItemProps {
   title: string;
@@ -211,7 +212,7 @@ const Contest: React.FC<RouteComponentProps> = () => {
                             ))}
                           </div>
                         ) : (
-                          <h2>There are not Active Contests running at the moment.</h2>
+                          <NoPostYet />
                         )}
                       </>
                     )}
