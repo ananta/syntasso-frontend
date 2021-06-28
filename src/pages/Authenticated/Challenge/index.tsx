@@ -117,7 +117,6 @@ const Challenge: React.FC<ChallengeParams> = (RouteProps) => {
     handleChallengeInitiation();
   }, []);
 
-  if (isLoading) return <CustomLoader />;
   console.log({ error });
   if (error) return <NotFound />;
   const challengeURL = window.location.hostname + url;
@@ -160,49 +159,55 @@ const Challenge: React.FC<ChallengeParams> = (RouteProps) => {
             </NavLink>
             {/* )} */}
           </ul>
-          {currentChallenge.challengeId && (
+          {isLoading ? (
+            <CustomLoader />
+          ) : (
             <>
-              <div className="">
-                <div className="">
-                  <Switch>
-                    <Route
-                      path={`${url}/problem`}
-                      render={(props) => (
-                        <Problem
-                          {...props}
-                          challenge={currentChallenge}
-                          isContestBased={isContest}
-                          contestId={parseInt(contestId)}
-                          contestInfo={contestInfo}
+              {currentChallenge.challengeId && (
+                <>
+                  <div className="">
+                    <div className="">
+                      <Switch>
+                        <Route
+                          path={`${url}/problem`}
+                          render={(props) => (
+                            <Problem
+                              {...props}
+                              challenge={currentChallenge}
+                              isContestBased={isContest}
+                              contestId={parseInt(contestId)}
+                              contestInfo={contestInfo}
+                            />
+                          )}
                         />
-                      )}
-                    />
-                    <Route
-                      path={`${url}/leaderboard`}
-                      render={(props) => (
-                        <Leaderboard
-                          {...props}
-                          challenge={currentChallenge}
-                          isContestBased={isContest}
-                          contestId={parseInt(contestId)}
+                        <Route
+                          path={`${url}/leaderboard`}
+                          render={(props) => (
+                            <Leaderboard
+                              {...props}
+                              challenge={currentChallenge}
+                              isContestBased={isContest}
+                              contestId={parseInt(contestId)}
+                            />
+                          )}
                         />
-                      )}
-                    />
-                    <Route
-                      path={`${url}/submissions`}
-                      render={(props) => (
-                        <Submissions
-                          {...props}
-                          challenge={currentChallenge}
-                          isContestBased={isContest}
-                          contestId={parseInt(contestId)}
+                        <Route
+                          path={`${url}/submissions`}
+                          render={(props) => (
+                            <Submissions
+                              {...props}
+                              challenge={currentChallenge}
+                              isContestBased={isContest}
+                              contestId={parseInt(contestId)}
+                            />
+                          )}
                         />
-                      )}
-                    />
-                    <Route component={() => <Redirect to={`${url}/problem`} />} />
-                  </Switch>
-                </div>
-              </div>
+                        <Route component={() => <Redirect to={`${url}/problem`} />} />
+                      </Switch>
+                    </div>
+                  </div>
+                </>
+              )}
             </>
           )}
         </div>
