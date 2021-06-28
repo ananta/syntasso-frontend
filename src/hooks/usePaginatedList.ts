@@ -10,6 +10,7 @@ const usePaginatedList = ({
   type,
   difficulty: _difficulty,
   status,
+  ...extras
 }: any) => {
   const AuthState = useSelector((state) => state['Auth']);
   const [searchQuery, setSearchQuery] = useState(_searchQuery);
@@ -37,6 +38,7 @@ const usePaginatedList = ({
       limit: pagination,
       page: currentPage,
       type,
+      ...extras,
     };
     if (status && status.length > 0) {
       options['status'] = status;
@@ -46,6 +48,9 @@ const usePaginatedList = ({
     }
     if (difficulty && difficulty.length > 0) {
       options['difficulty'] = difficulty;
+    }
+    if (extras && extras.bookmarkType) {
+      options['bookmarkType'] = extras.bookmarkType;
     }
     const dataRes = await getDataApi(options);
     if (!dataRes.isSuccess) throw new Error(dataRes.message);

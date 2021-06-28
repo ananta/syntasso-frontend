@@ -16,7 +16,7 @@ import CustomLoader from 'components/Common/CustomLoader';
 import usePaginatedList from 'hooks/usePaginatedList';
 import TabNavigator from 'components/Common/TabNavigator';
 
-interface ListItemProps {
+export interface ContestListItemProps {
   title: string;
   difficulty?: string;
   onClick: () => void;
@@ -24,7 +24,13 @@ interface ListItemProps {
   description: string;
 }
 
-const ListItem: React.FC<ListItemProps> = ({ title, description, onClick, difficulty, createdAt }) => (
+export const ContestListItem: React.FC<ContestListItemProps> = ({
+  title,
+  description,
+  onClick,
+  difficulty,
+  createdAt,
+}) => (
   <li className="cursor-pointer transition duration-500 ease-in-out  hover:bg-gray-200 transform hover:-translate-y-1 hover:scale-20">
     <div onClick={onClick} className="block hover:bg-gray-50">
       <div className="px-4 py-4 sm:px-6">
@@ -214,7 +220,7 @@ const Contest: React.FC<RouteComponentProps> = (RouteProps) => {
                         {items.length > 0 ? (
                           <div>
                             {items.map((challenge, indx) => (
-                              <ListItem
+                              <ContestListItem
                                 description={challenge.contest_description}
                                 createdAt={challenge.contest_createdAt}
                                 key={indx.toString()}

@@ -13,134 +13,47 @@ import CustomPaginate from 'components/Common/CustomPaginaton';
 import moment from 'moment';
 import NoPostYet from 'components/Common/NoPostYet';
 import CustomLoader from 'components/Common/CustomLoader';
+import usePaginatedList from 'hooks/usePaginatedList';
 import TabNavigator from 'components/Common/TabNavigator';
-
-interface ListItemProps {
-  title: string;
-  difficulty?: string;
-  onClick: () => void;
-  createdAt: string;
-  description: string;
-}
-
-const ListItem: React.FC<ListItemProps> = ({ title, description, onClick, difficulty, createdAt }) => (
-  <li className="cursor-pointer transition duration-500 ease-in-out  hover:bg-gray-200 transform hover:-translate-y-1 hover:scale-20">
-    <div onClick={onClick} className="block hover:bg-gray-50">
-      <div className="px-4 py-4 sm:px-6">
-        <div className="flex items-center justify-between">
-          <p className="text-sm font-medium text-primary truncate">{title}</p>
-          <div className="ml-2 flex-shrink-0 flex">
-            <p className="capitalize px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-              {difficulty}
-            </p>
-          </div>
-        </div>
-        <div className="mt-2 sm:flex sm:justify-between">
-          <div className="sm:flex">
-            <p className="flex items-center text-sm text-gray-500">
-              <svg
-                className="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400"
-                data-todo-x-description="Heroicon name: solid/users"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-                aria-hidden="true"
-              >
-                <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"></path>
-              </svg>
-              {description}
-            </p>
-          </div>
-          <div className="mt-2 flex items-center text-sm text-gray-500 sm:mt-0">
-            <svg
-              className="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400"
-              data-todo-x-description="Heroicon name: solid/calendar"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-              aria-hidden="true"
-            >
-              <path
-                fillRule="evenodd"
-                d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
-                clipRule="evenodd"
-              ></path>
-            </svg>
-            <p>
-              Created:{/* space */}
-              <time dateTime={createdAt}>{` ` + moment(createdAt).format('YYYY/MM/DD')}</time>
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </li>
-);
+import { ChallengeListItem, ChallengeListItemProps } from 'pages/Authenticated/Challenge/challenges';
+import { ContestListItem, ContestListItemProps } from 'pages/Authenticated/Contest/contests';
+import searchBookmarks from 'api/methods/searchBookmarks';
 
 const Bookmarks: React.FC<RouteComponentProps> = (RouteProps) => {
-  const AuthState = useSelector((state) => state['Auth']);
   const {
     location: { pathname },
   } = RouteProps;
   // handle tab initialization with tab name
-  const [selectedTab, setSelectedTab] = useState(pathname.includes('challenges') ? 'challenges' : 'contests');
-  const [searchQuery, setSearchQuery] = useState('');
-  const [pagination, setPagination] = useState(10);
-  const [challenges, setChallenges] = useState([]);
-  const [totalPages, setTotalPages] = useState(0);
+  const [selectedTab, setSelectedTab] = useState<'contest' | 'challenge'>(
+    pathname.includes('contest') ? 'contest' : 'challenge',
+  );
+  const [searchQuery] = useState('');
+  const [pagination] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
-  const [contests, setContests] = useState([]);
-  const [isChallengeLoading, setIsChallengeLoading] = useState(true);
 
-  const handlePaginationChange = (event: ChangeEvent<HTMLSelectElement>) => {
-    setCurrentPage(1);
-    setPagination(parseInt(event.target.value));
-  };
-
-  const handlePageClick = (data) => {
-    setCurrentPage(parseInt(data.selected) + 1);
-  };
-
-  const getChallengeInfo = async () => {
-    const options = {
-      token: AuthState.data.user.token,
-      limit: pagination,
-      page: currentPage,
-      type: 'contests',
-      status: selectedTab,
-    };
-    if (searchQuery.length > 0) {
-      options['query'] = searchQuery;
-    }
-    const challengesRes = await searchContest(options);
-    if (!challengesRes.isSuccess) throw new Error(challengesRes.message);
-    const { contests, totalPages } = challengesRes.response.data;
-    setTotalPages(totalPages);
-    setChallenges(challengesRes.response.data.contests);
-    setIsChallengeLoading(false);
-  };
-
-  const handlePageInitiaiton = async () => {
-    try {
-      setIsChallengeLoading(true);
-      await getChallengeInfo();
-    } catch (err) {
-      toast.error(err.message);
-      setIsChallengeLoading(false);
-    }
-  };
-  useEffect(() => {
-    handlePageInitiaiton();
-  }, []);
-
-  useEffect(() => {
-    handlePageInitiaiton();
-  }, [searchQuery, pagination, currentPage]);
+  const {
+    isItemsLoading,
+    handlePageClick,
+    handlePagination,
+    totalPages,
+    items,
+    currentPagination,
+    setSearchQuery,
+    handlePageInitiaiton,
+  } = usePaginatedList({
+    pagination,
+    currentPage,
+    searchQuery,
+    getDataApi: searchBookmarks,
+    type: 'bookmarks',
+    bookmarkType: selectedTab,
+  });
 
   useEffect(() => {
     handlePageInitiaiton();
     setCurrentPage(1);
   }, [setSelectedTab, selectedTab]);
+
   return (
     <div className="max-w-screen-xl mx-auto">
       <div className="block lg:flex lg:space-x-2 px-2 lg:p-0 mb-10 ">
@@ -148,18 +61,19 @@ const Bookmarks: React.FC<RouteComponentProps> = (RouteProps) => {
           <div>
             <div className="sm:block">
               <TabNavigator
+                onTabChange={setSelectedTab}
+                selectedTab={selectedTab}
                 items={[
                   {
-                    name: 'challenges',
+                    name: 'challenge',
                     title: 'Challenges',
                   },
+
                   {
-                    name: 'contests',
+                    name: 'contest',
                     title: 'Contests',
                   },
                 ]}
-                onTabChange={setSelectedTab}
-                selectedTab={selectedTab}
               />
             </div>
           </div>
@@ -172,8 +86,8 @@ const Bookmarks: React.FC<RouteComponentProps> = (RouteProps) => {
                       <div className="flex">
                         <div className="relative">
                           <select
-                            value={pagination}
-                            onChange={handlePaginationChange}
+                            value={currentPagination}
+                            onChange={handlePagination}
                             className="appearance-none h-full rounded-l border block appearance-none w-full bg-white border-gray-400 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                           >
                             <option value={5}>5</option>
@@ -216,7 +130,10 @@ const Bookmarks: React.FC<RouteComponentProps> = (RouteProps) => {
                       </div>
                     </div>
                     <div className="flex flex-row  items-center m-0 justify-center content-center ">
-                      <CustomPaginate totalPages={totalPages} handlePageClick={handlePageClick} />
+                      <CustomPaginate
+                        totalPages={totalPages}
+                        handlePageClick={(data: any) => handlePageClick(data.selected)}
+                      />
                     </div>
                   </div>
                 </div>
@@ -226,21 +143,34 @@ const Bookmarks: React.FC<RouteComponentProps> = (RouteProps) => {
               <div className="">
                 <div className="bg-white shadow overflow-hidden sm:rounded-md">
                   <ul className="divide-y divide-gray-200">
-                    {isChallengeLoading ? (
+                    {isItemsLoading ? (
                       <CustomLoader />
                     ) : (
                       <>
-                        {challenges.length > 0 ? (
+                        {items.length > 0 ? (
                           <div>
-                            {challenges.map((challenge, indx) => (
-                              <ListItem
-                                description={challenge.contest_description}
-                                createdAt={challenge.contest_createdAt}
-                                key={indx.toString()}
-                                difficulty={challenge.contest_difficulty}
-                                onClick={() => history.push('/join/' + challenge.contest_contestId)}
-                                title={challenge.contest_name}
-                              />
+                            {items.map((item, indx) => (
+                              <>
+                                {selectedTab === 'challenge' ? (
+                                  <ChallengeListItem
+                                    createdAt={item.challenges_createdAt}
+                                    key={indx.toString()}
+                                    difficulty={item.challenges_difficulty}
+                                    onClick={() => history.push('/challenge/' + item.challenges_challengeId)}
+                                    title={item.challenges_name}
+                                    description={item.challenges_description}
+                                  />
+                                ) : (
+                                  <ContestListItem
+                                    description={item.contest_description}
+                                    createdAt={item.contest_createdAt}
+                                    key={indx.toString()}
+                                    difficulty={item.contest_difficulty}
+                                    onClick={() => history.push('/join/' + item.contest_contestId)}
+                                    title={item.contest_name}
+                                  />
+                                )}
+                              </>
                             ))}
                           </div>
                         ) : (
