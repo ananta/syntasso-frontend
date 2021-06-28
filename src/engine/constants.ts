@@ -6,6 +6,7 @@ export interface ILanguage {
 
 export const codeStub: ILanguage = {
   js: `"use strict";
+
 let rawSampleInput,
 	parsedInput = [],
 	currentLine = 0;
@@ -46,9 +47,7 @@ const main = () => {
 
 main();
   `,
-  c: `
-
-  #include <stdio.h>
+  c: `#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -60,74 +59,42 @@ main();
 int parseRawSampleInput();
 char *readLine();
 
-// to store the raw sample input file's contents, e.g., "1\n2 3 4 5"
 char *rawSampleInput;
-// to store the parsed sample input, separated by linebreak, e.g, ["1", "2 3 4 5"] ...
-// ...; an array of strings
 char *sampleInput[SAMPLE_INPUT_MAX_LINES];
-// to indicate the length of sampleInput array
 int len_sampleInput = 0;
-// current index of sampleInput
 int currentLine = 0;
 
-// TODO:
-// write your function here:
-// example:
-// int calcArea(int length, int breadth) {
-//		return length * breadth;
-// }
+
+int calcArea(int length, int breadth) {
+		return length * breadth;
+}
 
 int main(int argc, char *argv[]) {
 	if (argc == 2) {
-		// get raw sample inputs from command-line arguments
 		rawSampleInput = argv[1];
-		// parse rawSampleInput into linebreak-separated input(s)
 		int isParsed = parseRawSampleInput(rawSampleInput);
 		if (isParsed == FALSE) {
-			// write to stderr
 			fprintf(stderr, "Length of sample input lines exceeded 500");
 			return -1;
 		}
-		// TODO:
-		// read individual lines from parsed sample inputs like following
-		// char *line = readLine();
-		// while (line != NULL) {
-		// 	line = readLine();
-		// }
-		// TODO:
-		// invoke your function here:
-		// example:
-		// int length = atoi(readLine());
-		// int breadth = atoi(readLine());
-		// int output = calcArea(length, breadth);
-		// printf("%d", output);
+		int length = atoi(readLine());
+		int breadth = atoi(readLine());
+		int output = calcArea(length, breadth);
+		printf("%d", output);
 	} else if (argc > 2) {
-		// write to stderr
 		fprintf(stderr, "Too Many Inputs Provided");
 		return -1;
 	} else {
-		// write to stderr
 		fprintf(stderr, "No Input Provided");
 		return -1;
 	}
 }
 
 int parseRawSampleInput(char *rawSampleInput) {
-	/*
-	* Parse raw sample input, e.g., "1\n2 3 4 5 6" into line-separated strings ,...
-	* ... e.g., ["1", "2 3 4 5 6"]
-	* Returned values:
-	* TRUE /Integer Equivalent 1/ if OK
-	* FALSE /Integer Equivalent 0/ if length of sampleInputs is greater than ...
-	* ... SAMPLE_INPUT_MAX_LINES
-	*/
-	// search for "\n" (linebreak) in the raw sample input string
 	char *token = strtok(rawSampleInput, "\n");
 	int counter = 0;
 	while (token != NULL && len_sampleInput <= SAMPLE_INPUT_MAX_LINES) {
-		// push the token, say "1" or "2 3 4 5 6" into the array of strings- sampleInput
 		sampleInput[counter++] = token;
-		// increment variable to indicate length of sampleInput array
 		len_sampleInput++;
 		token = strtok(NULL, "\n");
 	}
@@ -138,8 +105,7 @@ int parseRawSampleInput(char *rawSampleInput) {
 
 char *readLine() { return sampleInput[currentLine++]; }
   `,
-  cpp: `
-  #include<iostream>
+  cpp: `#include<iostream>
 #include<string>
 #include<vector>
 using namespace std;

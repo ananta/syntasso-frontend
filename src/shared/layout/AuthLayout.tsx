@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, RootStateOrAny } from 'react-redux';
 import { RouteComponentProps } from 'react-router-dom';
-import Loader from 'react-loader-spinner';
+import LoadingBar from 'react-top-loading-bar';
 
 import routes from 'routes';
 
@@ -34,21 +34,22 @@ const AuthLayout: React.FC<Props & RouteComponentProps> = (props) => {
   }, []);
   return (
     <AppContainer>
+      <LoadingBar color="#2B6CB0" progress={isLoading ? 0 : 100} />
       <Navbar />
       <div>
         <Header title={props.title} subTitle="Home" />
         <main>
           <div className="bg-gray-200">
             <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-              {isLoading ? (
+              {/* {isLoading ? (
                 <div className="inputs w-full p-6">
                   <div style={{ display: 'flex', justifyContent: 'center' }}>
                     <Loader type="Bars" color="#d53f8c" height={60} width={60} />
                   </div>
                 </div>
-              ) : (
-                <div>{children}</div>
-              )}
+              ) : ( */}
+              <div>{children}</div>
+              {/* )} */}
             </div>
           </div>
         </main>

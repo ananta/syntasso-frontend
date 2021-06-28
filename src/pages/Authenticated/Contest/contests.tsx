@@ -14,6 +14,7 @@ import moment from 'moment';
 import NoPostYet from 'components/Common/NoPostYet';
 import CustomLoader from 'components/Common/CustomLoader';
 import usePaginatedList from 'hooks/usePaginatedList';
+import TabNavigator from 'components/Common/TabNavigator';
 
 interface ListItemProps {
   title: string;
@@ -22,34 +23,6 @@ interface ListItemProps {
   createdAt: string;
   description: string;
 }
-interface IContestTab {
-  name: 'enrolled' | 'active' | 'archived';
-  selected: 'enrolled' | 'active' | 'archived';
-  title: 'Enrolled' | 'Active' | 'Archived';
-  onPress: any;
-  left?: boolean;
-  right?: boolean;
-}
-
-const ContestTabPill: React.FC<IContestTab> = ({ name, title, selected, onPress, left, right }) => (
-  <p
-    onClick={() => onPress(name)}
-    aria-current="page"
-    className={classnames(
-      ' transition duration-500 ease-in-out hover:text-primary',
-      selected === name ? 'text-primary' : 'text-gray-500',
-      'group relative min-w-0 flex-1 overflow-hidden bg-white cursor-pointer py-4 px-4 text-sm font-medium text-center hover:bg-gray-50 focus:z-10',
-      left && 'rounded-l-lg',
-      right && 'rounded-r-lg',
-    )}
-  >
-    <span>{title}</span>
-    <span
-      aria-hidden="true"
-      className={classnames('absolute inset-x-0 bottom-0 h-1', name === selected ? 'bg-primary' : 'bg-transparent')}
-    ></span>
-  </p>
-);
 
 const ListItem: React.FC<ListItemProps> = ({ title, description, onClick, difficulty, createdAt }) => (
   <li className="cursor-pointer transition duration-500 ease-in-out  hover:bg-gray-200 transform hover:-translate-y-1 hover:scale-20">
@@ -145,32 +118,27 @@ const Contest: React.FC<RouteComponentProps> = (RouteProps) => {
       <div className="block lg:flex lg:space-x-2 px-2 lg:p-0 mb-10 ">
         <div className="w-full lg:w-2/3 mx-auto ">
           <div>
-            <div className="sm:hidden">
-              <label htmlFor="tabs" className="sr-only">
-                Select a tab
-              </label>
-              <select
-                id="tabs"
-                name="tabs"
-                className="block w-full focus:ring-primary-500 focus:border-primary border-gray-300 rounded-md hover:border-indigo-600"
-              >
-                <option selected={selectedTab === 'enrolled'}>Enrolled</option>
-                <option selected={selectedTab === 'active'}>Active</option>
-                <option selected={selectedTab === 'archived'}>Archieved</option>
-              </select>
-            </div>
-            <div className="hidden sm:block">
-              <nav className="relative z-0 rounded-lg shadow flex divide-x divide-gray-200" aria-label="Tabs">
-                <ContestTabPill left name="enrolled" title="Enrolled" onPress={setSelectedTab} selected={selectedTab} />
-                <ContestTabPill name="active" title="Active" onPress={setSelectedTab} selected={selectedTab} />
-                <ContestTabPill
-                  right
-                  name="archived"
-                  title="Archived"
-                  onPress={setSelectedTab}
-                  selected={selectedTab}
-                />
-              </nav>
+            <div className="sm:block">
+              <TabNavigator
+                onTabChange={setSelectedTab}
+                selectedTab={selectedTab}
+                items={[
+                  {
+                    name: 'enrolled',
+                    title: 'Enrolled',
+                  },
+
+                  {
+                    name: 'active',
+                    title: 'Active',
+                  },
+
+                  {
+                    name: 'archived',
+                    title: 'Archived',
+                  },
+                ]}
+              />
             </div>
           </div>
           <div>
