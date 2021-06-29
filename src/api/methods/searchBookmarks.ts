@@ -10,7 +10,7 @@ interface ISearchBookmarks {
   bookmarkType: string;
 }
 
-const SearchBookmarks = ({ token, limit, page, query, type, bookmarkType }: ISearchBookmarks) => {
+const searchBookmarks = ({ token, limit, page, query, type, bookmarkType }: ISearchBookmarks) => {
   return makeRequest({
     method: 'get',
     path:
@@ -23,4 +23,4 @@ const SearchBookmarks = ({ token, limit, page, query, type, bookmarkType }: ISea
   });
 };
 
-export default SearchBookmarks;
+export default searchBookmarks;
