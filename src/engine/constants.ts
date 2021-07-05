@@ -1,11 +1,11 @@
 export interface ILanguage {
-  js: string;
-  c: string;
-  cpp: string;
+	js: string;
+	c: string;
+	cpp: string;
 }
 
 export const codeStub: ILanguage = {
-  js: `"use strict";
+	js: `"use strict";
 
 let rawSampleInput,
 	parsedInput = [],
@@ -46,8 +46,8 @@ const main = () => {
 };
 
 main();
-  `,
-  c: `#include <stdio.h>
+	`,
+	c: `#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -91,12 +91,12 @@ int main(int argc, char *argv[]) {
 }
 
 int parseRawSampleInput(char *rawSampleInput) {
-	char *token = strtok(rawSampleInput, "\n");
+	char *token = strtok(rawSampleInput, "\\n");
 	int counter = 0;
 	while (token != NULL && len_sampleInput <= SAMPLE_INPUT_MAX_LINES) {
 		sampleInput[counter++] = token;
 		len_sampleInput++;
-		token = strtok(NULL, "\n");
+		token = strtok(NULL, "\\n");
 	}
 	if (len_sampleInput > SAMPLE_INPUT_MAX_LINES)
 		return FALSE;
@@ -104,8 +104,8 @@ int parseRawSampleInput(char *rawSampleInput) {
 }
 
 char *readLine() { return sampleInput[currentLine++]; }
-  `,
-  cpp: `#include<iostream>
+	`,
+	cpp: `#include<iostream>
 #include<string>
 #include<vector>
 using namespace std;
@@ -165,10 +165,10 @@ int main(int argc, char *argv[]) {
 /*
 * parse the raw input string into a vector of ...
 * ... linebreak-separated string(s)
-* e.g., "1\n2 3 4 5" into ["1", "2 3 4 5"]
+* e.g., "1\\n2 3 4 5" into ["1", "2 3 4 5"]
 */
 bool parse_raw_sample_input(string rawInput) {
-	sampleInput = split(rawInput, "\n");
+	sampleInput = split(rawInput, "\\n");
 	if (sampleInput.size() > SAMPLE_INPUT_MAX_LINES)
 		return false;
 	return true;
@@ -205,11 +205,11 @@ vector<string> split(string str, string delimiter) {
 		tokens.push_back(remainingString);
 	return tokens;
 }
-  `,
+	`,
 };
 
 export const engineURL: ILanguage = {
-  js: 'http://localhost:8080',
-  c: 'http://localhost:8081',
-  cpp: 'http://localhost:8082',
+	js: 'http://localhost:8080',
+	c: 'http://localhost:8081',
+	cpp: 'http://localhost:8082',
 };
