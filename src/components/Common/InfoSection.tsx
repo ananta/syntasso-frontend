@@ -45,8 +45,8 @@ const InfoSection = () => (
         </svg>
       </div>
       <div className="ml-2">
-        <div className="text-2xl uppercase leading-8">Placeholder</div>
-        <div>Lorem Ipsum donno</div>
+        <div className="text-2xl uppercase leading-8">FAST</div>
+        <div>Quick and Responsive</div>
       </div>
     </div>
     <div className="md:w-1/3 p-4 flex justify-center items-center bg-gray-200 mx-2 rounded">
