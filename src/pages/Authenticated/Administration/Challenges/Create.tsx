@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { EditorState, convertToRaw } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
+import ReactTags from 'react-tag-autocomplete';
 import { useDispatch, RootStateOrAny, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { useForm } from 'react-hook-form';
@@ -12,8 +13,15 @@ import { Challenge } from 'actions/ActionTypes';
 import challengeAction from 'actions/ChallengeActions';
 
 import Button from 'components/Common/Button';
+import { getAvailableTags } from 'api';
 
 const Create: React.FC<RouteComponentProps> = () => {
+  const tagRef = useRef(null);
+
+  const [initialTags, setInitialTags] = useState([]);
+  const [tags, setTags] = useState([]);
+  const [initialTagsLoading, setInitialTagsLoading] = useState(true);
+
   const [input, setInput] = useState({
     problemStatement: EditorState.createEmpty(),
     inputFormat: EditorState.createEmpty(),
@@ -31,6 +39,38 @@ const Create: React.FC<RouteComponentProps> = () => {
     }));
   };
 
+  const handleTagAdd = (item) => {
+    const _tags = [].concat(tags, item);
+    setTags(_tags);
+  };
+
+  const handleTagRemove = (i) => {
+    const _tags = tags.slice(0);
+    _tags.splice(i, 1);
+    setTags(_tags);
+  };
+
+  const AuthState = useSelector((state) => state['Auth'].data);
+
+  const handleFetchInitialTags = async () => {
+    setInitialTagsLoading(true);
+    try {
+      const availableTags = await getAvailableTags({ token: AuthState.user.token });
+      console.log({ availableTags });
+      const translatedTags = availableTags.response.tags.map((tag) => ({
+        id: tag.tagId,
+        name: tag.tagName,
+      }));
+      setInitialTags(translatedTags);
+    } catch (err) {
+      toast.error(err.message || 'Failed loading initial tags');
+    }
+    setInitialTagsLoading(false);
+  };
+
+  const validateTags = (tag) => {
+    return /^[a-z]{3,12}$/i.test(tag.name);
+  };
   const handleChallenge = (data) => {
     let hasErrors = false;
     if (!input.problemStatement.getCurrentContent().hasText()) {
@@ -59,6 +99,7 @@ const Create: React.FC<RouteComponentProps> = () => {
           constraints: JSON.stringify(convertToRaw(input.constraints.getCurrentContent())),
           sampleInput: JSON.stringify(convertToRaw(input.inputFormat.getCurrentContent())),
           sampleOutput: JSON.stringify(convertToRaw(input.outputFormat.getCurrentContent())),
+          tags: tags.map((_tag) => _tag.name),
         },
       }),
     );
@@ -73,6 +114,11 @@ const Create: React.FC<RouteComponentProps> = () => {
     console.log(_input);
   };
 
+  useEffect(() => {
+    // get the available tags for autocompletion
+    handleFetchInitialTags();
+  }, []);
+  console.log({ tags });
   return (
     <div>
       <div className="bg-white ">
@@ -194,7 +240,20 @@ const Create: React.FC<RouteComponentProps> = () => {
                   >
                     Tags
                   </label>
-                  <input
+
+                  <ReactTags
+                    allowNew
+                    // @ts-ignore: react-tags issue
+                    newTagText="Create new tag"
+                    // onValidate={validateTags}
+                    ref={tagRef}
+                    tags={tags}
+                    suggestions={initialTags || []}
+                    placeholderText="Add Tags...."
+                    onDelete={handleTagRemove}
+                    onAddition={handleTagAdd}
+                  />
+                  {/* <input
                     ref={register({ required: true })}
                     // onChange={(e) => handleChange('tags', e.target.value)}
                     name="tags"
@@ -205,7 +264,7 @@ const Create: React.FC<RouteComponentProps> = () => {
                     )}
                     id="grid-text-1"
                     type="text"
-                  />
+                  /> */}
                   {errors.tags && <p className="text-red-600">&nbsp;This is required</p>}
                 </div>
               </div>

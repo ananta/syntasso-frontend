@@ -1,6 +1,8 @@
 import React, { useState, useEffect, ChangeEvent } from 'react';
-import { RouteComponentProps } from 'react-router-dom';
+import { RouteComponentProps, RouteProps, useLocation } from 'react-router-dom';
+import qs from 'query-string';
 import { useSelector } from 'react-redux';
+import _ from 'lodash';
 import { toast } from 'react-toastify';
 
 import { history } from 'utils/History';
@@ -13,6 +15,8 @@ import CustomPaginate from 'components/Common/CustomPaginaton';
 import moment from 'moment';
 import CustomLoader from 'components/Common/CustomLoader';
 import NoPostYet from 'components/Common/NoPostYet';
+import Checkbox from 'components/Common/Checkbox';
+
 import usePaginatedList from 'hooks/usePaginatedList';
 
 export interface ChallengeListItemProps {
@@ -83,12 +87,33 @@ export const ChallengeListItem: React.FC<ChallengeListItemProps> = ({
   </li>
 );
 
-const Contest: React.FC<RouteComponentProps> = () => {
+const Contest: React.FC<RouteComponentProps> = (props: RouteProps) => {
+  const searchString: any = qs.parse(props.location.search);
   const [searchQuery] = useState('');
   const [difficulty] = useState('');
   const [pagination] = useState(5);
   const [currentPage] = useState(1);
-
+  const [tags] = useState([
+    {
+      name: 'Algorithms',
+    },
+    {
+      name: 'Data Structures',
+    },
+    {
+      name: 'Dynamic Programming',
+    },
+    {
+      name: 'Graphs',
+    },
+    {
+      name: 'Sort',
+    },
+    {
+      name: 'Linked List',
+    },
+  ]);
+  const [selectedTags, setSelectedTags] = useState(searchString.tag ? [searchString.tag] : []);
   const {
     isItemsLoading,
     items,
@@ -105,8 +130,10 @@ const Contest: React.FC<RouteComponentProps> = () => {
     getDataApi: searchChallenge,
     type: 'challenges',
     difficulty,
+    tags: selectedTags,
   });
 
+  console.log(selectedTags);
   return (
     <div className="max-w-screen-xl mx-auto">
       <div className="block lg:flex lg:space-x-2 px-2 lg:p-0 mb-10 ">
@@ -254,13 +281,22 @@ const Contest: React.FC<RouteComponentProps> = () => {
           </div>
           <div className="border border-dotted"></div>
           <div className="p-1 mt-4 mb-4">
-            <h5 className="font-bold text-lg uppercase text-gray-700 mb-2"> Subscribe </h5>
-            <p className="text-gray-600">Subscribe to our newsletter to get notified for upcoming contests.</p>
-            <input
-              placeholder="your email address"
-              className="text-gray-700 bg-gray-100 rounded-t hover:outline-none p-2 w-full mt-4 border"
-            />
-            <Button title="Subscribe" color="gray-700" classNames="mt-2" />
+            <h5 className="font-bold text-lg uppercase text-gray-700 mb-2"> Tags </h5>
+            <div className="flex flex-col">
+              <ul>
+                {tags.map((tag) => (
+                  <Checkbox
+                    title={tag.name}
+                    checked={selectedTags.includes(tag.name)}
+                    onCheck={(item) =>
+                      selectedTags.includes(item)
+                        ? setSelectedTags(selectedTags.filter((_tag) => _tag !== item))
+                        : setSelectedTags((tags) => [...tags, item])
+                    }
+                  />
+                ))}
+              </ul>
+            </div>
           </div>
           <div className="border border-dotted"></div>
         </div>
