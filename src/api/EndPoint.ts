@@ -17,6 +17,7 @@ const EndPoint = {
   Submission: '/submissions',
   Testcase: '/testcase',
   Bookmark: '/bookmark',
+  Tags: '/tags',
 };
 
 export { BASE_URL };

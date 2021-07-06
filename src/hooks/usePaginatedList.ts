@@ -10,6 +10,7 @@ const usePaginatedList = ({
   type,
   difficulty: _difficulty,
   status,
+  tags,
   ...extras
 }: any) => {
   const AuthState = useSelector((state) => state['Auth']);
@@ -52,6 +53,9 @@ const usePaginatedList = ({
     if (extras && extras.bookmarkType) {
       options['bookmarkType'] = extras.bookmarkType;
     }
+    if (tags && tags.length > 0) {
+      options['tags'] = JSON.stringify(tags);
+    }
     const dataRes = await getDataApi(options);
     if (!dataRes.isSuccess) throw new Error(dataRes.message);
 
@@ -78,7 +82,7 @@ const usePaginatedList = ({
 
   useEffect(() => {
     handlePageInitiaiton();
-  }, [searchQuery, difficulty, pagination, currentPage]);
+  }, [searchQuery, difficulty, pagination, currentPage, tags]);
 
   //   handlePageInitiaiton();
   //   setCurrentPage(1);

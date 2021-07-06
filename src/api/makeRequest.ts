@@ -26,6 +26,7 @@ interface RequestResponse {
     isEnrolled?: any;
     enrollments?: any;
     bookmarks?: any;
+    tags?: any;
   };
   message: string | null | undefined;
 }
