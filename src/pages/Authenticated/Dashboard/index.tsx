@@ -5,6 +5,7 @@ import SectionHeader from 'components/Common/SectionHeader';
 import LatestHorizontalPost from './Components/LatestHorizontalPost';
 import SidebarContainer from './Components/SidebarContainer';
 import TimelineList from './Components/StatusList';
+import TagsGrid from './Components/TagsGrid';
 
 const Home: React.FC<RouteComponentProps> = () => {
   return (
@@ -15,15 +16,17 @@ const Home: React.FC<RouteComponentProps> = () => {
             <SectionHeader title="Activity Overview" />
             <SidebarContainer
               mainContent={
-                <div className="bg-white shadow sm:rounded-lg">
-                  <div className="px-4 py-5 sm:px-6">
+                <div>
+                  {/* <div className="px-4 py-5 sm:px-6">
                     <h2 id="applicant-information-title" className="text-lg leading-6 font-medium text-gray-900">
                       Don't know what to put here. but yeah
                     </h2>
                     <p className="mt-1 max-w-2xl text-sm text-gray-500">
                       Will put something just like anime filler episodes
                     </p>
-                  </div>
+                  </div> */}
+
+                  <TagsGrid />
                 </div>
               }
               sidebarContent={<TimelineList />}
