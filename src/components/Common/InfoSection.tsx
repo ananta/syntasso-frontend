@@ -111,6 +111,8 @@ const InfoSection = () => (
         <div>Save money with us</div>
       </div>
     </div>
+
+    
   </div>
 );
 
