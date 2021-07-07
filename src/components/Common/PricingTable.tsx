@@ -6,7 +6,7 @@ const PricingTable = () => {
   return (
     <section>
       <div className="container max-w-full mx-auto py-24 px-6">
-        <TitleText>Pricing</TitleText>
+        <TitleText classNames="text-center py-5">Pricing</TitleText>
         <MediumTitle classNames="text-center">
           Everything you need for the price you meet.
         </MediumTitle>
@@ -93,7 +93,7 @@ const PricingTable = () => {
                 </div>
               </div>
             </div>
-            <div className="w-full max-w-md sm:w-2/3 lg:w-1/3 sm:my-5 my-8 relative z-10 bg-white rounded-lg shadow-lg border-2 border-black">
+            <div className="w-full max-w-md sm:w-2/3 lg:w-1/3 sm:my-5 my-8 relative z-10 bg-white rounded-lg shadow-lg border border-black">
               <div className="text-sm leading-none rounded-t-lg bg-gray-200 text-black font-semibold uppercase py-4 text-center tracking-wide">
                 Most Popular
               </div>
