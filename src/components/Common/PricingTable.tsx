@@ -18,7 +18,7 @@ const PricingTable = () => {
                 <div className="block text-left text-sm sm:text-md max-w-sm mx-auto mt-2 text-black px-8 lg:px-6">
                   <h1 className="text-lg font-medium uppercase p-3 pb-0 text-center tracking-wide">Hobby</h1>
                   <h2 className="text-sm text-gray-500 text-center pb-6">FREE</h2>
-                 This pack offers you a surface experience if you are just starting the competitive coding as a hobby. Give it a try.
+                 This pack offers you a surface level experience if you are just starting the competitive coding as a hobby. Give it a try.
                 </div>
 
                 <div className="flex flex-wrap mt-3 px-6">
@@ -93,7 +93,7 @@ const PricingTable = () => {
                 </div>
               </div>
             </div>
-            <div className="w-full max-w-md sm:w-2/3 lg:w-1/3 sm:my-5 my-8 relative z-10 bg-white rounded-lg shadow-lg">
+            <div className="w-full max-w-md sm:w-2/3 lg:w-1/3 sm:my-5 my-8 relative z-10 bg-white rounded-lg shadow-lg border-2 border-black">
               <div className="text-sm leading-none rounded-t-lg bg-gray-200 text-black font-semibold uppercase py-4 text-center tracking-wide">
                 Most Popular
               </div>
