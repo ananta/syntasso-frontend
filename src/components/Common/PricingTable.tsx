@@ -6,7 +6,7 @@ const PricingTable = () => {
   return (
     <section>
       <div className="container max-w-full mx-auto py-24 px-6">
-        <TitleText classNames="text-center py-5">Pricing</TitleText>
+        <TitleText classNames="text-center py-5 text-5xl">Pricing</TitleText>
         <MediumTitle classNames="text-center">
           Everything you need for the price you meet.
         </MediumTitle>
