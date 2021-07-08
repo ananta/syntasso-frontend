@@ -18,6 +18,7 @@ import TimelineListItem from './Components/TimelineListItem';
 import getUserTimeline from 'api/methods/getUserTimeline';
 import usePaginatedFetcher from 'hooks/usePaginatedFetcher';
 import { BASE_URL } from 'api/EndPoint';
+import NoPostYet from 'components/Common/NoPostYet';
 
 type IUserInfo = {
   userId: string;
@@ -233,6 +234,8 @@ const Profile: React.FC<RouteComponentProps> = (RouteProps) => {
                               </div>
                             </li>
                           ))}
+
+                          {!(enrollments.data.length > 0) && <NoPostYet title="User hasn't enrolled in any contest!" />}
                         </ul>
                       </div>
                       <div className="flex bg-gray-50 px-4 pt-3 mb-3 sm:px-6 justify-end">
@@ -356,6 +359,9 @@ const Profile: React.FC<RouteComponentProps> = (RouteProps) => {
                                         ))}
                                       </tbody>
                                     </table>
+                                    {!(submissions.data.length > 0) && (
+                                      <NoPostYet title="User hasn't submitted any code" />
+                                    )}
                                   </div>
                                 </div>
                               </div>

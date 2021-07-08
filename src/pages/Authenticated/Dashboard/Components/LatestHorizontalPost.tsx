@@ -6,6 +6,7 @@ import SectionHeader from 'components/Common/SectionHeader';
 import usePaginatedList from 'hooks/usePaginatedList';
 import React, { useEffect, useRef, useState } from 'react';
 import ScrollMenu from 'react-horizontal-scrolling-menu';
+import { useHistory } from 'react-router-dom';
 
 import DefaultImage from 'shared/assets/images/defaultPostRect.png';
 
@@ -59,19 +60,23 @@ const PostCard = (item: IContestCard | IChallengeCard | IBookmarkCard) => {
       : `/join/item.bookmark.contest_contestId`;
 
   return (
-    <div>
-      <div className="bg-white shadow sm:rounded-lg rounded lg:p-0 overflow-hidden ml-2 mr-2" style={{ width: 400 }}>
-        <div>
-          <img src={DefaultImage} alt="technology" className="object-cover h-32 w-full" draggable={false} />
-        </div>
-        <div className="p-2 pl-2">
-          <h2 className="font-bold text-md text-gray-800 mt-2">{title}</h2>
-          <p className="text-gray-700 mb-2 text-sm">{description}</p>
-          <div className="flex flex-end">
-            <a href={link} className="inline-block py-1 rounded text-blue-900 mt-1 ml-auto capitalize text-sm">
-              View {(item.type === 'challenges' || item.type === 'contests') && item.type}
-            </a>
-          </div>
+    <div
+      className="bg-white shadow-md sm:rounded-lg rounded-lg lg:p-0 overflow-hidden ml-2 mr-2"
+      style={{ width: 400 }}
+    >
+      <div>
+        <img src={DefaultImage} alt="technology" className="object-cover h-32 w-full" draggable={false} />
+      </div>
+      <div className="p-2 pl-2">
+        <h2 className="font-bold text-md text-gray-800 mt-2">{title}</h2>
+        <p className="text-gray-700 mb-2 text-sm truncate">{description}</p>
+        <div className="flex flex-end">
+          <a
+            href={link}
+            className="inline-block py-1 rounded text-blue-900 mt-1 ml-auto capitalize text-sm bg-gray-200 py-1 px-2 "
+          >
+            View {(item.type === 'challenges' || item.type === 'contests') && item.type}
+          </a>
         </div>
       </div>
     </div>
@@ -99,6 +104,7 @@ interface ILatestHorizontalPost {
 }
 
 const LatestHorizontalPost: React.FC<ILatestHorizontalPost> = ({ type }) => {
+  const history = useHistory();
   const { isItemsLoading, items } = usePaginatedList({
     pagination: 5,
     currentPage: 1,
@@ -127,7 +133,23 @@ const LatestHorizontalPost: React.FC<ILatestHorizontalPost> = ({ type }) => {
             : 'Contest Bookmarks'
         }
         ActionButton={
-          <a className="bg-gray-200 hover:bg-green-200 text-gray-800 px-3 py-1 rounded cursor-pointer">Press me</a>
+          <button
+            onClick={() =>
+              history.push(
+                type === 'contests'
+                  ? '/contests'
+                  : type === 'challenges'
+                  ? '/challenges'
+                  : type === 'bookmark_challenge'
+                  ? '/bookmarks?tab=challenges'
+                  : '/bookmarks?tab=contests',
+              )
+            }
+            className="bg-gray-200 hover:bg-green-200 text-gray-200 px-3 py-1 rounded cursor-pointer"
+            style={{ background: '#2E3749' }}
+          >
+            View more
+          </button>
         }
       />
       {!isItemsLoading && items.length < 1 && <NoPostYet />}

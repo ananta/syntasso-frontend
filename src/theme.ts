@@ -5,7 +5,7 @@ const theme = createMuiTheme({
     primary: {
       // light: will be calculated from palette.primary.main,
       // main: "#ff4400",
-      main: '#0A3440',
+      main: '#2E3749',
 
       // dark: will be calculated from palette.primary.main,
       // contrastText: will be calculated to contrast with palette.primary.main
@@ -23,6 +23,9 @@ const theme = createMuiTheme({
     // two indexes within its tonal palette.
     // E.g., shift from Red 500 to Red 300 or Red 700.
     tonalOffset: 0.2,
+  },
+  typography: {
+    fontFamily: 'nunito',
   },
 });
 
