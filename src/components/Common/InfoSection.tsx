@@ -2,7 +2,7 @@ import React from 'react';
 
 const InfoSection = () => (
   <div className="flex md:flex-row flex-col max-w-6xl m-auto my-10">
-    <div className="md:w-1/3 p-4 flex justify-center items-center bg-gray-200 mx-2 rounded">
+    <div className="md:w-1/3 p-4 flex justify-center items-center bg-gray-200 mx-2 rounded-lg">
       <div className="w-16 h-16 p-2">
         <svg
           className="fill-current "
@@ -49,7 +49,7 @@ const InfoSection = () => (
         <div>Quick and Responsive</div>
       </div>
     </div>
-    <div className="md:w-1/3 p-4 flex justify-center items-center bg-gray-200 mx-2 rounded">
+    <div className="md:w-1/3 p-4 flex justify-center items-center bg-gray-200 mx-2 rounded-lg">
       <div className="w-16 h-16 p-2">
         <svg
           className="fill-current "
@@ -85,7 +85,7 @@ const InfoSection = () => (
         <div>24/7 ONLINE</div>
       </div>
     </div>
-    <div className="md:w-1/3 p-4 flex justify-center items-center bg-gray-200 mx-2 rounded">
+    <div className="md:w-1/3 p-4 flex justify-center items-center bg-gray-200 mx-2 rounded-lg">
       <div className="w-16 h-16 p-2">
         <svg
           className="fill-current "
