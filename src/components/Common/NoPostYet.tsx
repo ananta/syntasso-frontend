@@ -1,7 +1,10 @@
 import React from 'react';
 import DvrIcon from '@material-ui/icons/Dvr';
 
-const NoPostYet = () => {
+interface INoPostYet {
+  title?: string;
+}
+const NoPostYet: React.FC<INoPostYet> = ({ title }) => {
   return (
     <div className=" w-full mx-auto">
       <div
@@ -14,7 +17,7 @@ const NoPostYet = () => {
         }}
       >
         <DvrIcon style={{ color: 'rgba(107, 114, 128, 1)', fontSize: 40 }} />
-        <div className={'text-xl  align-middle text-gray-600 capitalize'}>no posts yet</div>
+        <div className={'text-xl  align-middle text-gray-600 capitalize'}> {title ? title : 'no posts yet'}</div>
       </div>
     </div>
   );
