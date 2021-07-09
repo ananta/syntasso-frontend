@@ -6,7 +6,7 @@ interface IBanner {
 }
 
 const Banner: React.FC<IBanner> = ({ title, message }) => (
-  <div className="flex items-center justify-center bg-gray-200">
+  <div className="flex items-center justify-center bg-gray-200 ">
     <div className="container flex align-middle">
       <div className="bg-white rounded-lg shadow-lg p-5 md:p-20 mx-2">
         <div className="text-center">
