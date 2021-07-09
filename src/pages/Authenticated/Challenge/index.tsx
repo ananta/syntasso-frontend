@@ -13,6 +13,7 @@ import CustomLoader from 'components/Common/CustomLoader';
 import Problem from './Problem';
 import Leaderboard from './Leaderboard';
 import Submissions from './Submissions';
+import TimeAgoGenerator from 'utils/TimeAgoGenerator';
 
 type MatchParams = {
   challengeId: string;
@@ -136,7 +137,7 @@ const Challenge: React.FC<ChallengeParams> = (RouteProps) => {
             >
               <li className="-mb-px mr-1">Problem</li>
             </NavLink>
-            <NavLink
+            {/* <NavLink
               activeStyle={{ backgroundColor: 'white', marginBottom: -1 }}
               activeClassName={
                 'inline-block border-l border-t border-r rounded-t py-2 px-4 text-gray-700 font-semibold'
@@ -145,7 +146,7 @@ const Challenge: React.FC<ChallengeParams> = (RouteProps) => {
               className="bg-gray-200 inline-block py-2 px-4 text-blue-500 hover:text-gray-800 font-semibold"
             >
               <li className="mr-1">Leaderboard</li>
-            </NavLink>
+            </NavLink> */}
             {/* {isContest && ( */}
             <NavLink
               activeStyle={{ backgroundColor: 'white', marginBottom: -1 }}
@@ -224,21 +225,21 @@ const Challenge: React.FC<ChallengeParams> = (RouteProps) => {
                     </Link>
                   </div>
                   <div className="flex mt-4 justify-between text-gray-600 cursor-pointer">
-                    <p>Created At</p>
-                    <p className="text-blue-600 ">{currentChallenge.createdAt}</p>
+                    <p>Created </p>
+                    <p className="text-blue-600 ">{TimeAgoGenerator({ time: currentChallenge.createdAt })}</p>
                   </div>
                   <div className="flex mt-4 justify-between text-gray-600 cursor-pointer">
                     <p>Submissions</p>
                     <Link to={`${url}/submissions`}>
-                      <p className="text-blue-600 ">Your Submissions</p>
+                      <p className="text-blue-600 ">View all</p>
                     </Link>
                   </div>
-                  <div className="flex mt-4 justify-between text-gray-600 cursor-pointer">
+                  {/* <div className="flex mt-4 justify-between text-gray-600 cursor-pointer">
                     <p>Leaderboard</p>
                     <Link to={`${url}/leaderboard`}>
                       <p className="text-blue-600 ">Global Leaderboard</p>
                     </Link>
-                  </div>
+                  </div> */}
                 </li>
               </ul>
             </div>
