@@ -62,11 +62,11 @@ const Footer = () => {
 
       <div className="bg-gray-100 pt-2 ">
         <div
-          className="flex pb-5 px-3 m-auto pt-5 border-t text-gray-800 text-sm flex-col
-      md:flex-row max-w-6xl"
+          className="flex pb-5  m-auto pt-5 border-t text-gray-800 text-sm flex-col
+      md:flex-row max-w-6xl "
         >
-          <div className="mt-2">Syntasso.io © Copyright 2020. All Rights Reserved.</div>
-          <div className="md:flex-auto md:flex-row-reverse mt-2 flex-row flex">
+          <div className="mt-2 text-center">Syntasso.io © Copyright 2020. All Rights Reserved.</div>
+          <div className="md:flex-auto md:flex-row-reverse mt-2 flex-row flex justify-center">
             <a href="/#" className="w-6 mx-1">
               <svg
                 className="fill-current cursor-pointer text-gray-500 hover:text-gray-400"
