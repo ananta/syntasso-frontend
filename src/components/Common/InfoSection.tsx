@@ -2,7 +2,7 @@ import React from 'react';
 
 const InfoSection = () => (
   <div className="flex md:flex-row flex-col max-w-6xl m-auto my-10">
-    <div className="md:w-1/3 p-4 flex justify-center items-center bg-gray-200 mx-2 rounded">
+    <div className="md:w-1/3 p-4 flex justify-center items-center bg-gray-200 mx-2 rounded-lg">
       <div className="w-16 h-16 p-2">
         <svg
           className="fill-current "
@@ -45,11 +45,11 @@ const InfoSection = () => (
         </svg>
       </div>
       <div className="ml-2">
-        <div className="text-2xl uppercase leading-8">Placeholder</div>
-        <div>Lorem Ipsum donno</div>
+        <div className="text-2xl uppercase leading-8">FAST</div>
+        <div>Quick and Responsive</div>
       </div>
     </div>
-    <div className="md:w-1/3 p-4 flex justify-center items-center bg-gray-200 mx-2 rounded">
+    <div className="md:w-1/3 p-4 flex justify-center items-center bg-gray-200 mx-2 rounded-lg">
       <div className="w-16 h-16 p-2">
         <svg
           className="fill-current "
@@ -85,7 +85,7 @@ const InfoSection = () => (
         <div>24/7 ONLINE</div>
       </div>
     </div>
-    <div className="md:w-1/3 p-4 flex justify-center items-center bg-gray-200 mx-2 rounded">
+    <div className="md:w-1/3 p-4 flex justify-center items-center bg-gray-200 mx-2 rounded-lg">
       <div className="w-16 h-16 p-2">
         <svg
           className="fill-current "
@@ -111,6 +111,8 @@ const InfoSection = () => (
         <div>Save money with us</div>
       </div>
     </div>
+
+    
   </div>
 );
 
