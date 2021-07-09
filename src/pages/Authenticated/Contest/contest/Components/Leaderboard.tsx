@@ -12,6 +12,8 @@ import ContestContainer from './ContestContainer';
 import moment from 'moment';
 import { history } from 'utils/History';
 import TimeAgoGenerator from 'utils/TimeAgoGenerator';
+import { ListItemLoader } from 'components/Common/ListItemLoader';
+import NoPostYet from 'components/Common/NoPostYet';
 
 interface ILeaderboardState {
   isLoading: boolean;
@@ -133,9 +135,8 @@ const Leaderboard: React.FC<IRoutePropsForContest> = ({ contestId }) => {
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
-                  {submissionState.isLoading ? (
-                    <p>Loading info</p>
-                  ) : submissionState.leaderboard.length > 0 ? (
+                  {!submissionState.isLoading &&
+                    submissionState.leaderboard.length > 0 &&
                     submissionState.leaderboard.map((item, index) => (
                       <ListItem
                         key={index}
@@ -144,12 +145,16 @@ const Leaderboard: React.FC<IRoutePropsForContest> = ({ contestId }) => {
                         email={item['user_email']}
                         joined={item['enrolled_createdAt']}
                       />
-                    ))
-                  ) : (
-                    <p>Empty at the moment :) </p>
-                  )}
+                    ))}
                 </tbody>
               </table>
+
+              {submissionState.isLoading && <ListItemLoader />}
+              {!submissionState.isLoading && !(submissionState.leaderboard.length > 0) && (
+                <div className="flex w-full">
+                  <NoPostYet />
+                </div>
+              )}
             </div>
           </div>
         </div>

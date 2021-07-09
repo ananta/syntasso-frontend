@@ -60,7 +60,7 @@ const Sidebar: React.FC<ISidebar> = ({ endTime }) => {
           </li>
         </ul>
       </div>
-      <div className="p-1 mt-4 mb-4">
+      {/* <div className="p-1 mt-4 mb-4">
         <h5 className="font-bold text-lg uppercase text-gray-700 mb-2"> Admin Options </h5>
         <ul>
           <li
@@ -75,7 +75,7 @@ const Sidebar: React.FC<ISidebar> = ({ endTime }) => {
           </li>
         </ul>
       </div>
-      <div className="border border-dotted"></div>
+      <div className="border border-dotted"></div> */}
     </div>
   );
 };

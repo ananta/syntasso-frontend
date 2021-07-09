@@ -11,6 +11,8 @@ import { IRoutePropsForContest } from './types';
 import LogoWhite from 'shared/assets/images/logo-white.png';
 import ContestContainer from './ContestContainer';
 import TimeAgoGenerator from 'utils/TimeAgoGenerator';
+import NoPostYet from 'components/Common/NoPostYet';
+import { ListItemLoader } from 'components/Common/ListItemLoader';
 
 interface ISubmissionState {
   isLoading: boolean;
@@ -191,10 +193,10 @@ const Submissions: React.FC<IRoutePropsForContest> = ({ contestId }) => {
                     </th>
                   </tr>
                 </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
-                  {submissionState.isLoading ? (
-                    <p>Loading info</p>
-                  ) : submissionState.submissions.length > 0 ? (
+
+                <tbody className="bg-white divide-y divide-gray-200 w-full table">
+                  {!submissionState.isLoading &&
+                    submissionState.submissions.length > 0 &&
                     submissionState.submissions.map((item, index) => (
                       <ListItem
                         key={index}
@@ -206,12 +208,15 @@ const Submissions: React.FC<IRoutePropsForContest> = ({ contestId }) => {
                         challengeId={item['challenge_challengeId']}
                         contestId={item['contest_contestId']}
                       />
-                    ))
-                  ) : (
-                    <p>Empty at the moment :) </p>
-                  )}
+                    ))}
                 </tbody>
               </table>
+              {submissionState.isLoading && <ListItemLoader />}
+              {!submissionState.isLoading && !(submissionState.submissions.length > 0) && (
+                <div className="flex w-full">
+                  <NoPostYet />
+                </div>
+              )}
             </div>
           </div>
         </div>

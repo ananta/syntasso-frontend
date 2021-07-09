@@ -34,6 +34,7 @@ import getUserTimeline from './methods/getUserTimeline';
 import removeBookmark from './methods/removeBookmark';
 import getContestChallengeSubmissions from './methods/getContestChallengeSubmissions';
 import getAvailableTags from './methods/getAvailableTags';
+import getSystemStatus from './methods/getSystemStatus';
 
 export {
   executeCode,
@@ -72,4 +73,5 @@ export {
   removeBookmark,
   getContestChallengeSubmissions,
   getAvailableTags,
+  getSystemStatus,
 };

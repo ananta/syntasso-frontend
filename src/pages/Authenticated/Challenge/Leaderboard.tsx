@@ -8,6 +8,7 @@ import { getChallengeLeaderboard, getContestChallengeLeaderboard } from 'api';
 import CustomLoader from 'components/Common/CustomLoader';
 
 import LogoWhite from 'shared/assets/images/logo-white.png';
+import NoPostYet from 'components/Common/NoPostYet';
 
 interface ILeaderboardState {
   isLoading: boolean;
@@ -166,7 +167,7 @@ const Leaderboard: React.FC<ILeaderboard> = (SubmissionInfo) => {
                         </th>
                       </tr>
                     </thead>
-                    {submissionState.submissions && submissionState.submissions.length > 0 ? (
+                    {submissionState.submissions && submissionState.submissions.length > 0 && (
                       <tbody>
                         {submissionState.submissions.map((sub, indx) => (
                           <SubmissionRow
@@ -178,10 +179,11 @@ const Leaderboard: React.FC<ILeaderboard> = (SubmissionInfo) => {
                           />
                         ))}
                       </tbody>
-                    ) : (
-                      <p>Noone has submitted at the moment!</p>
                     )}
                   </table>
+                  {!submissionState.isLoading &&
+                    submissionState.submissions &&
+                    !(submissionState.submissions.length > 0) && <NoPostYet title="Leaderboard is empty :)" />}
                 </div>
               </form>
             )}
