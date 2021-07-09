@@ -18,6 +18,7 @@ const EndPoint = {
   Testcase: '/testcase',
   Bookmark: '/bookmark',
   Tags: '/tags',
+  System: '/system',
 };
 
 export { BASE_URL };

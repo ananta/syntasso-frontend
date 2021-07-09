@@ -13,6 +13,8 @@ import { IRoutePropsForContest } from './types';
 import { IEnrolledUser } from 'constants/';
 import ContestContainer from './ContestContainer';
 import TimeAgoGenerator from 'utils/TimeAgoGenerator';
+import { ListItemLoader } from 'components/Common/ListItemLoader';
+import NoPostYet from 'components/Common/NoPostYet';
 
 interface ILeaderboardItem {
   username: string;
@@ -97,19 +99,22 @@ const Enrollments: React.FC<IRoutePropsForContest> = ({ contestId }) => {
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
-                  {enrollments.length > 0 ? (
+                  {enrollments.length > 0 &&
                     enrollments.map((enrollment, i) => (
                       <ListItem
                         username={enrollment['username']}
                         email={enrollment['email']}
                         enrolled={enrollment['enrolledAt']}
                       />
-                    ))
-                  ) : (
-                    <p>Empty at the moment :)</p>
-                  )}
+                    ))}
                 </tbody>
               </table>
+              {isEnrollmentLoading && <ListItemLoader />}
+              {!isEnrollmentLoading && !(enrollments.length > 0) && (
+                <div className="flex w-full">
+                  <NoPostYet />
+                </div>
+              )}
             </div>
           </div>
         </div>

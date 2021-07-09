@@ -17,6 +17,8 @@ import { MdAccountCircle } from 'react-icons/md';
 import TimelineListItem from './Components/TimelineListItem';
 import getUserTimeline from 'api/methods/getUserTimeline';
 import usePaginatedFetcher from 'hooks/usePaginatedFetcher';
+import { BASE_URL } from 'api/EndPoint';
+import NoPostYet from 'components/Common/NoPostYet';
 
 type IUserInfo = {
   userId: string;
@@ -232,6 +234,8 @@ const Profile: React.FC<RouteComponentProps> = (RouteProps) => {
                               </div>
                             </li>
                           ))}
+
+                          {!(enrollments.data.length > 0) && <NoPostYet title="User hasn't enrolled in any contest!" />}
                         </ul>
                       </div>
                       <div className="flex bg-gray-50 px-4 pt-3 mb-3 sm:px-6 justify-end">
@@ -355,6 +359,9 @@ const Profile: React.FC<RouteComponentProps> = (RouteProps) => {
                                         ))}
                                       </tbody>
                                     </table>
+                                    {!(submissions.data.length > 0) && (
+                                      <NoPostYet title="User hasn't submitted any code" />
+                                    )}
                                   </div>
                                 </div>
                               </div>
@@ -390,12 +397,14 @@ const Profile: React.FC<RouteComponentProps> = (RouteProps) => {
                     </ul>
                   </div>
                   <div className="mt-6 flex flex-col justify-stretch">
-                    <button
+                    <a
+                      href={`${BASE_URL}/timeline/${userInfo.username}`}
+                      target="__blank"
                       type="button"
                       className="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                     >
                       Generate Portfolio
-                    </button>
+                    </a>
                   </div>
                 </div>
               </section>
