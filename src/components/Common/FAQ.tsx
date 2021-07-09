@@ -7,11 +7,11 @@ const FAQ = () => (
         <div className="flex flex-col md:flex-row">
           <div className="md:w-1/3 p-4 text-sm">
             <div className="text-3xl">
-              Frequently asked <span className="font-medium">Questions</span>
+              Frequently Asked <span className="font-medium">Questions</span>
             </div>
             <div className="my-2">Wondering how our service works ?</div>
-            <div className="mb-2">Confused about how we can improve your business ?</div>
-            <div className="text-xs text-gray-600">Dive into our FAQ for more details</div>
+            <div className="mb-2">Confused about how we can help your business ?</div>
+            <div className="mb-2 font-bold">Dive into our FAQ for more infomation about how we can help you.</div>
           </div>
           <div className="md:w-2/3">
             <div className="p-4">
@@ -83,7 +83,7 @@ const FAQ = () => (
                     </div>
                   </div>
                 </div>
-                <div className="p-2 text-justify text-left text-gray-800 mb-5 bg-white">
+                <div className="px-5 py-2 text-justify text-left text-gray-800 mb-5 bg-white">
                   Lorem, ipsum dolor sit amet consectetur <span className="font-bold">adipisicing elit</span>. Mollitia
                   temporibus doloremque non eligendi unde ipsam? Voluptatibus, suscipit deserunt quidem delectus
                   perferendis velit molestias, veritatis officia fugiat cumque quaerat earum adipisci?

@@ -6,10 +6,9 @@ const PricingTable = () => {
   return (
     <section>
       <div className="container max-w-full mx-auto py-24 px-6">
-        <TitleText>Pricing</TitleText>
+        <TitleText classNames="text-center py-5 text-5xl">Pricing</TitleText>
         <MediumTitle classNames="text-center">
-          Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem
-          aperiam.
+          Everything you need for the price you meet.
         </MediumTitle>
         <div className="h-1 mx-auto bg-indigo-200 w-24 opacity-75 mt-4 rounded"></div>
         <div className="max-w-full md:max-w-6xl mx-auto my-3 md:px-8">
@@ -19,7 +18,7 @@ const PricingTable = () => {
                 <div className="block text-left text-sm sm:text-md max-w-sm mx-auto mt-2 text-black px-8 lg:px-6">
                   <h1 className="text-lg font-medium uppercase p-3 pb-0 text-center tracking-wide">Hobby</h1>
                   <h2 className="text-sm text-gray-500 text-center pb-6">FREE</h2>
-                  Stripe offers everything needed to run an online business at scale. Get in touch for details.
+                 This pack offers you a surface level experience if you are just starting the competitive coding as a hobby. Give it a try.
                 </div>
 
                 <div className="flex flex-wrap mt-3 px-6">
@@ -94,7 +93,7 @@ const PricingTable = () => {
                 </div>
               </div>
             </div>
-            <div className="w-full max-w-md sm:w-2/3 lg:w-1/3 sm:my-5 my-8 relative z-10 bg-white rounded-lg shadow-lg">
+            <div className="w-full max-w-md sm:w-2/3 lg:w-1/3 sm:my-5 my-8 relative z-10 bg-white rounded-lg shadow-lg border border-black">
               <div className="text-sm leading-none rounded-t-lg bg-gray-200 text-black font-semibold uppercase py-4 text-center tracking-wide">
                 Most Popular
               </div>
@@ -103,7 +102,7 @@ const PricingTable = () => {
                 <h2 className="text-sm text-gray-500 text-center pb-6">
                   <span className="text-3xl">€19</span> /mo
                 </h2>
-                Stripe offers everything needed to run an online business at scale. Get in touch for details.
+               If you know what you are doing and want to add more to your arsenal, we suggest you get the Expert pack.
               </div>
               <div className="flex pl-12 justify-start sm:justify-start mt-3">
                 <ul>
@@ -182,7 +181,7 @@ const PricingTable = () => {
                 <div className="block text-left text-sm sm:text-md max-w-sm mx-auto mt-2 text-black px-8 lg:px-6">
                   <h1 className="text-lg font-medium uppercase p-3 pb-0 text-center tracking-wide">Enteprise</h1>
                   <h2 className="text-sm text-gray-500 text-center pb-6">€39 /mo</h2>
-                  Stripe offers everything needed to run an online business at scale. Get in touch for details.
+                  As an enteprise, this pack can help you a great deal. Get easy hand hassle-free setup with this pack. 
                 </div>
                 <div className="flex flex-wrap mt-3 px-6">
                   <ul>
