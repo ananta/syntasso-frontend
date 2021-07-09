@@ -35,7 +35,7 @@ const genearateMarkerAndAnnotations = (errors: any) => {
       errors.map((error) => ({
         type: 'error',
         row: error.error.lineNumber - 1,
-        text: error.error.errorStack,
+        text: error.error.errorStack || error.error.fullError,
       })),
   };
 };
