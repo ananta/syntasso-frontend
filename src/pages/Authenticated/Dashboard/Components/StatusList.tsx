@@ -62,25 +62,25 @@ const StatusList = () => {
               <StatusListItem
                 Icon={GrTrophy}
                 title="Ongoing Contests"
-                value={systemStatus.onGoingContests.amount}
+                value={systemStatus.onGoingContests.amount || 0}
                 recentActivityTime={systemStatus.onGoingContests.time || new Date().toString()}
               />
               <StatusListItem
                 Icon={GrSend}
                 title="Total Submissions"
-                value={systemStatus.totalSubmissions.amount}
+                value={systemStatus.totalSubmissions.amount || 0}
                 recentActivityTime={systemStatus.totalSubmissions.time || new Date().toString()}
               />
               <StatusListItem
                 Icon={FaThumbsUp}
                 title="Solved Challenges"
-                value={systemStatus.solvedChallenges.amount}
+                value={systemStatus.solvedChallenges.amount || 0}
                 recentActivityTime={systemStatus.solvedChallenges.time || new Date().toString()}
               />
               <StatusListItem
                 Icon={FaUsers}
                 title="Total Users"
-                value={systemStatus.totalUsers.amount}
+                value={systemStatus.totalUsers.amount || 0}
                 recentActivityTime={systemStatus.totalUsers.time || new Date().toString()}
               />
             </>
