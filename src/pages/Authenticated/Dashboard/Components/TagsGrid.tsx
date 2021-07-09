@@ -1,6 +1,6 @@
 import React from 'react';
-import { GiAtomicSlashes,GiProcessor,GiFamilyTree } from 'react-icons/gi';
-import {GrGraphQl} from 'react-icons/gr';
+import { GiProcessor,GiFamilyTree,GiBreakingChain,GiPuzzle } from 'react-icons/gi';
+import {GrGraphQl,GrSort} from 'react-icons/gr';
 import {RiLinksLine} from 'react-icons/ri';
 
 const TagsGrid = () => {
@@ -71,6 +71,40 @@ const TagsGrid = () => {
                     {/* Extend touch target to entire panel */}
                     <span className="absolute inset-0" aria-hidden="true"></span>
                     <p className="pt-2">Data Structures</p>
+                  </a>
+                </h3>
+              </div>
+            </div>
+
+            <div className="   rounded-bl-lg rounded-br-lg sm:rounded-bl-none relative group bg-white p-6 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-500 flex">
+              <div>
+                <span className="rounded-lg inline-flex px-3 bg-teal-50 text-teal-700 ring-4 ring-white">
+                  <GiBreakingChain className="h-12 w-12" />
+                </span>
+              </div>
+              <div className="">
+                <h3 className="text-lg font-medium">
+                  <a href="/challenges?tag=Dynamic%20Programming" className="focus:outline-none">
+                    {/* Extend touch target to entire panel */}
+                    <span className="absolute inset-0" aria-hidden="true"></span>
+                    <p className="pt-2">Dynamic Programming</p>
+                  </a>
+                </h3>
+              </div>
+            </div>
+
+            <div className="   rounded-bl-lg rounded-br-lg sm:rounded-bl-none relative group bg-white p-6 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-500 flex">
+              <div>
+                <span className="rounded-lg inline-flex px-3 bg-teal-50 text-teal-700 ring-4 ring-white">
+                  <GiPuzzle className="h-12 w-12" />
+                </span>
+              </div>
+              <div className="">
+                <h3 className="text-lg font-medium">
+                  <a href="/challenges?tag=Sort" className="focus:outline-none">
+                    {/* Extend touch target to entire panel */}
+                    <span className="absolute inset-0" aria-hidden="true"></span>
+                    <p className="pt-2">Sort</p>
                   </a>
                 </h3>
               </div>
