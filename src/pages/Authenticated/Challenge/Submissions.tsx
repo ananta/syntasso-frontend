@@ -6,6 +6,7 @@ import getChallengeSubmissions from 'api/methods/getChallengeSubmissions';
 import CustomLoader from 'components/Common/CustomLoader';
 import { getContestChallengeSubmissions } from 'api';
 import NoPostYet from 'components/Common/NoPostYet';
+import TimeAgoGenerator from 'utils/TimeAgoGenerator';
 
 interface ISubmissionsState {
   isLoading: boolean;
@@ -55,7 +56,7 @@ const SubmissionRow = ({
         </div>
       </td>
       <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-        <p className="text-gray-900 whitespace-no-wrap">{updatedAt}</p>
+        <p className="text-gray-900 whitespace-no-wrap">{TimeAgoGenerator({ time: updatedAt })}</p>
       </td>
       <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
         <p className="text-gray-900 whitespace-no-wrap">{score}</p>
@@ -167,7 +168,7 @@ const Submissions: React.FC<ISubmissions> = (SubmissionInfo) => {
                             username={sub['user_username']}
                             score={sub['submission_score']}
                             key={indx}
-                            updatedAt={sub['submission_updatedAt']}
+                            updatedAt={sub['submission_createdAt']}
                             status={sub['submission_status']}
                           />
                         ))}
