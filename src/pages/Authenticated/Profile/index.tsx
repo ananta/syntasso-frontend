@@ -19,6 +19,7 @@ import getUserTimeline from 'api/methods/getUserTimeline';
 import usePaginatedFetcher from 'hooks/usePaginatedFetcher';
 import { BASE_URL } from 'api/EndPoint';
 import NoPostYet from 'components/Common/NoPostYet';
+import TimeAgoGenerator from 'utils/TimeAgoGenerator';
 
 type IUserInfo = {
   userId: string;
@@ -348,7 +349,7 @@ const Profile: React.FC<RouteComponentProps> = (RouteProps) => {
                                               </span>
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                              {moment(submission.submissions_createdAt).format('YY/MM/DD')}
+                                              {TimeAgoGenerator({ time: submission.submissions_createdAt })}
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                               <a href="/" className="text-green-600 hover:text-indigo-900">
