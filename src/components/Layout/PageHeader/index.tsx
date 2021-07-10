@@ -18,7 +18,7 @@ const PageHeader: React.FC<PageHeaderProps> = ({ title, subTitle }) => {
   breadcrumbs.shift();
   return (
     <header className="bg-white shadow-md">
-      <div className="max-w-7xl mx-auto  sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div className="flex flex-row items-center my-4 mr-4">
           {NavBarElements.filter((item) => item.location === location.pathname).length <= 0 && (
             <ArrowBackIosIcon
@@ -27,7 +27,7 @@ const PageHeader: React.FC<PageHeaderProps> = ({ title, subTitle }) => {
               className="cursor-pointer"
             />
           )}
-          <h1 className="text-3xl font-bold leading-tight text-gray-900 sm:px-2">{title}</h1>
+          <h1 className="text-3xl font-bold leading-tight text-gray-900 ">{title}</h1>
         </div>
         <header>
           <div className="max-w-7xl mx-auto ">
