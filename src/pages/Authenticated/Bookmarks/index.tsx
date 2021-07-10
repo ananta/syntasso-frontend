@@ -207,7 +207,7 @@ const Bookmarks: React.FC<RouteComponentProps> = (RouteProps) => {
           <div className="border border-dotted"></div>
           <div className="p-1 mt-4 mb-4">
             <h5 className="font-bold text-lg uppercase text-gray-700 mb-2"> Subscribe </h5>
-            <p className="text-gray-600">Subscribe to our newsletter to get notified for upcoming contests.</p>
+            <p className="text-gray-600">Subscribe to our newsletter and get notified about upcoming contests.</p>
             <input
               placeholder="your email address"
               className="text-gray-700 bg-gray-100 rounded-t hover:outline-none p-2 w-full mt-4 border"
