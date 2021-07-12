@@ -201,6 +201,7 @@ const Problem: React.FC<ProblemInfoProps> = (ProblemInfo) => {
   useEffect(() => {
     handleContainerStatusUpdates(msgContainerStatus);
   }, [msgContainerStatus]);
+
   return (
     <div>
       <div className="bg-white shadow-xl  border-l  border-r py-4 px-4 ">
@@ -218,7 +219,7 @@ const Problem: React.FC<ProblemInfoProps> = (ProblemInfo) => {
                 >
                   Description
                 </label>
-                <div className="flex flex-1 appearance-none block w-full text-gray-700  rounded-md py-3 px-4 leading-tight ">
+                <div className="flex-1 appearance-none block w-full text-gray-700  rounded-md py-3 px-4 leading-tight ">
                   {challenge.description}
                 </div>
               </div>
@@ -229,7 +230,7 @@ const Problem: React.FC<ProblemInfoProps> = (ProblemInfo) => {
                 >
                   Problem Statement
                 </label>
-                <div className="flex flex-1 mb-32 md:mb-2 bg-gray-200 py-8 px-4">
+                <div className="flex-1 mb-32 md:mb-2 bg-gray-200 py-8 px-4">
                   {ReactHtmlParser(stateToHTML(convertFromRaw(JSON.parse(challenge.problemStatement))))}
                 </div>
               </div>
@@ -241,7 +242,7 @@ const Problem: React.FC<ProblemInfoProps> = (ProblemInfo) => {
                   Input Format
                 </label>
 
-                <div className="flex flex-1 mb-32 md:mb-2 bg-gray-200 py-8 px-4">
+                <div className="flex-1 mb-32 md:mb-2 bg-gray-200 py-8 px-4">
                   {ReactHtmlParser(stateToHTML(convertFromRaw(JSON.parse(challenge.sampleInput))))}
                 </div>
               </div>
@@ -253,7 +254,7 @@ const Problem: React.FC<ProblemInfoProps> = (ProblemInfo) => {
                   Constraints
                 </label>
 
-                <div className="flex flex-1 mb-32 md:mb-2 bg-gray-200 py-8 px-4">
+                <div className="flex-1 mb-32 md:mb-2 bg-gray-200 py-8 px-4">
                   {ReactHtmlParser(stateToHTML(convertFromRaw(JSON.parse(challenge.constraints))))}
                 </div>
               </div>
@@ -264,7 +265,7 @@ const Problem: React.FC<ProblemInfoProps> = (ProblemInfo) => {
                 >
                   Output Format
                 </label>
-                <div className="flex flex-1 mb-32 md:mb-2 bg-gray-200 py-8 px-4">
+                <div className="flex-1 mb-32 md:mb-2 bg-gray-200 py-8 px-4">
                   {ReactHtmlParser(stateToHTML(convertFromRaw(JSON.parse(challenge.sampleOutput))))}
                 </div>
               </div>
