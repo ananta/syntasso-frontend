@@ -189,12 +189,12 @@ const DropdownMenu = forwardRef<HTMLDivElement, IDropdownMenu>(({ isMobile }, re
       >
         <div className="menu">
           <DropdownItem goToMenu="main" leftIcon={<ArrowIcon />}>
-            <h2>My Tutorial</h2>
+            <h2>Back</h2>
           </DropdownItem>
-          <DropdownItem leftIcon={<BoltIcon />}>HTML</DropdownItem>
-          <DropdownItem leftIcon={<BoltIcon />}>CSS</DropdownItem>
-          <DropdownItem leftIcon={<BoltIcon />}>JavaScript</DropdownItem>
-          <DropdownItem leftIcon={<BoltIcon />}>Awesome!</DropdownItem>
+          <DropdownItem leftIcon={<BoltIcon />}>Option 1</DropdownItem>
+          <DropdownItem leftIcon={<BoltIcon />}>Option 2</DropdownItem>
+          <DropdownItem leftIcon={<BoltIcon />}>Option 3</DropdownItem>
+          <DropdownItem leftIcon={<BoltIcon />}>Option 4</DropdownItem>
         </div>
       </CSSTransition>
     </div>
