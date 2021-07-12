@@ -79,8 +79,8 @@ const Challenges: React.FC<EditContest> = (RouteProps) => {
               <ul className="flex border-b">
                 <TabItem title="Details" to={`${url}/details`} />
                 <TabItem title="Challenges" to={`${url}/challenges`} />
-                <TabItem title="Signups" to={`${url}/signups`} />
-                <TabItem title="Statistics" to={`${url}/statistics`} />
+                {/* <TabItem title="Signups" to={`${url}/signups`} />
+                <TabItem title="Statistics" to={`${url}/statistics`} /> */}
               </ul>
             </div>
             <Switch>

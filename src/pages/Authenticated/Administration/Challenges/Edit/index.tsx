@@ -84,9 +84,9 @@ const Challenges: React.FC<EditChallengeParms> = (RouteProps) => {
               <ul className="flex border-b">
                 <TabItem title="Details" to={`${url}/details`} />
                 <TabItem title="Test Case" to={`${url}/testcase`} />
-                <TabItem title="Editorial" to={`${url}/editorial`} />
+                {/* <TabItem title="Editorial" to={`${url}/editorial`} />
                 <TabItem title="Language" to={`${url}/language`} />
-                <TabItem title="Code Stub" to={`${url}/codestub`} />
+                <TabItem title="Code Stub" to={`${url}/codestub`} /> */}
                 <TabItem title="Settings" to={`${url}/settings`} />
               </ul>
             </div>
