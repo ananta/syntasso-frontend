@@ -1,5 +1,6 @@
 import React from 'react';
 import { IconType } from 'react-icons/lib';
+import { MdAccountCircle } from 'react-icons/md';
 
 interface IStatusListItem {
   Icon?: IconType;
@@ -13,15 +14,7 @@ const StatusListItem: React.FC<IStatusListItem> = ({ Icon, recentActivityTime, t
     <li className="py-4">
       <div className="flex items-center space-x-4">
         <div className="flex-shrink-0">
-          {Icon ? (
-            <Icon className="h-8 w-8" />
-          ) : (
-            <img
-              className="h-8 w-8 rounded-full"
-              src="https://images.unsplash.com/photo-1500917293891-ef795e70e1f6?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=facearea&amp;facepad=2&amp;w=256&amp;h=256&amp;q=80"
-              alt=""
-            />
-          )}
+          {Icon ? <Icon className="h-8 w-8" /> : <MdAccountCircle className="h-8 w-8 text-gray-800" />}
         </div>
         <div className="flex-1 min-w-0">
           <p className="text-sm font-medium text-gray-900 truncate">{title || 'undefined'}</p>
