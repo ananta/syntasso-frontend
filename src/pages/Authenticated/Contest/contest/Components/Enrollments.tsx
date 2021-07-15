@@ -42,7 +42,7 @@ const ListItem: React.FC<ILeaderboardItem> = ({ username, email, enrolled }) => 
         </div>
       </div>
     </td>
-    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{TimeAgoGenerator({ time: enrolled })} ago</td>
+    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{TimeAgoGenerator({ time: enrolled })} </td>
   </tr>
 );
 
