@@ -7,6 +7,7 @@ import routes from 'routes';
 import AppContainer from 'components/Layout/AppContainer';
 import Navbar from 'components/Layout/Navbar';
 import Footer from 'components/Layout/Footer';
+import useLoadingAuthenticator from 'hooks/useLoadingAuthenticator';
 
 interface Props {
   children: React.ReactNode;
@@ -14,15 +15,10 @@ interface Props {
 }
 
 const PublicLayout: React.FC<Props & RouteComponentProps> = (props) => {
+  const [isLayoutLoading] = useLoadingAuthenticator('public');
   const { children } = props;
-  const Auth = useSelector((state: RootStateOrAny) => state.Auth);
 
-  useEffect(() => {
-    if (Auth.data.isLoggedIn) {
-      props.history.push(routes.dashboard);
-    }
-  }, [Auth]);
-
+  if (isLayoutLoading) return <div />;
   return (
     <AppContainer>
       <Navbar />
