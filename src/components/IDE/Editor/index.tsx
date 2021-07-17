@@ -1,7 +1,8 @@
-import React, { useEffect, useState, Dispatch, SetStateAction, ChangeEvent } from 'react';
+import React, { useEffect, useState, Dispatch, SetStateAction, ChangeEvent, useRef } from 'react';
 import AceEditor from 'react-ace';
 import ReactResizeDetector from 'react-resize-detector';
 
+import 'ace-builds/src-noconflict/keybinding-vim';
 import 'ace-builds/src-noconflict/mode-javascript';
 import 'ace-builds/src-noconflict/mode-c_cpp';
 import 'ace-builds/src-noconflict/theme-xcode';
@@ -41,6 +42,7 @@ const genearateMarkerAndAnnotations = (errors: any) => {
 };
 
 const Editor: React.FC<EditorInterface> = ({ currentCode, setCurrentCode, height, language, setLanguage, errors }) => {
+  const editor: any = useRef(null);
   const [editorSize, setEditorSize] = useState({
     width: 0,
   });
@@ -61,10 +63,25 @@ const Editor: React.FC<EditorInterface> = ({ currentCode, setCurrentCode, height
     setLanguage(e.target.value);
   };
 
+  const removePreviousMarkers = () => {
+    if (editor && editor.current) {
+      const _editor = editor.current.editor;
+      const prevMarkers = _editor.session.getMarkers();
+      if (prevMarkers) {
+        const prevMarkersArr = Object.keys(prevMarkers);
+        for (let item of prevMarkersArr) {
+          _editor.session.removeMarker(prevMarkers[item].id);
+        }
+      }
+    }
+  };
   useEffect(() => {
     formatLanguageForEditor();
   }, []);
 
+  useEffect(() => {
+    if (errors && errors.length < 1) removePreviousMarkers();
+  }, [errors]);
   useEffect(() => {
     formatLanguageForEditor();
   }, [language, setLanguage]);
@@ -99,9 +116,11 @@ const Editor: React.FC<EditorInterface> = ({ currentCode, setCurrentCode, height
         </div>
       </div>
       <AceEditor
+        ref={editor}
         height={(height * 17).toString() + 'px'}
         width={editorSize.width.toString() + 'px'}
         placeholder="// Please add yoeur code here"
+        keyboardHandler="vim"
         mode={selectedLanguage}
         theme="xcode"
         name="blah2"
