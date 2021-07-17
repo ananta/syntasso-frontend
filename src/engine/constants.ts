@@ -11,15 +11,19 @@ let rawSampleInput,
 	parsedInput = [],
 	currentLine = 0;
 
-// TODO:
-// write your function here:
-// example:
-function calcArea(length, breadth) {
-	return length * breadth;
-}
+/**
+ * TODO:
+ * write your function here:
+ * example:
+ * function calcArea(length, breadth) {
+ * 	return length * breadth;
+ * }
+ */
 
-// use this function to read individual lines of the sample input, ...
-// ... incrementing the line-pointer on each read
+/**
+ * use the readLine function to read individual lines of the sample input,
+ * incrementing the line pointer on each read
+ */
 const readLine = () => parsedInput[currentLine++];
 
 const main = () => {
@@ -27,17 +31,21 @@ const main = () => {
 		rawSampleInput = process.argv[2];
 		parsedInput = rawSampleInput.split("\\n");
 
-		// TODO:
-		// invoke your function here:
-		// example:
-		try {
-			let length = parseInt(readLine());
-			let breadth = parseInt(readLine());
-			let output = calcArea(length, breadth);
-			process.stdout.write(output.toString());
-		} catch (error) {
-			process.stderr.write(error.stack);
-		}
+		/**
+		 * TODO:
+		 * call your function here and write the output to stdout:
+		 * [note: console.log, unlike process.stdout.write, adds a \\n character
+		 * at the end of the message]
+		 * example:
+		 * try {
+		 * 	let length = parseInt(readLine());
+		 * 	let breadth = parseInt(readLine());
+		 * 	output = calcArea(length, breadth);
+		 * 	process.stdout.write(output.toString());
+		 * } catch (error) {
+		 * 	process.stderr.write(error.stack);
+		 * }
+		 */
 	} else if (process.argv.length > 3) {
 		throw new Error("Too many inputs provided");
 	} else {
@@ -64,10 +72,14 @@ char *sampleInput[SAMPLE_INPUT_MAX_LINES];
 int len_sampleInput = 0;
 int currentLine = 0;
 
-
-int calcArea(int length, int breadth) {
-		return length * breadth;
-}
+/**
+ * TODO:
+ * write your function here:
+ * example:
+ * int calcArea(int length, int breadth) {
+ * 	return length * breadth;
+ * }
+ */
 
 int main(int argc, char *argv[]) {
 	if (argc == 2) {
@@ -77,10 +89,15 @@ int main(int argc, char *argv[]) {
 			fprintf(stderr, "Length of sample input lines exceeded 500");
 			return -1;
 		}
-		int length = atoi(readLine());
-		int breadth = atoi(readLine());
-		int output = calcArea(length, breadth);
-		printf("%d", output);
+		/**
+		 * TODO:
+		 * call your function here and write the output to stdout:
+		 * example:
+		 * int length = atoi(readLine());
+		 * int breadth = atoi(readLine());
+		 * int output = calcArea(length, breadth);
+		 * printf("%d", output);
+		 */
 	} else if (argc > 2) {
 		fprintf(stderr, "Too Many Inputs Provided");
 		return -1;
@@ -89,6 +106,12 @@ int main(int argc, char *argv[]) {
 		return -1;
 	}
 }
+
+/**
+ * use the readLine function to read individual lines from the sample input,
+ * incrementing the line pointer on each read
+ */
+char *readLine() { return sampleInput[currentLine++]; }
 
 int parseRawSampleInput(char *rawSampleInput) {
 	char *token = strtok(rawSampleInput, "\\n");
@@ -102,8 +125,6 @@ int parseRawSampleInput(char *rawSampleInput) {
 		return FALSE;
 	return TRUE;
 }
-
-char *readLine() { return sampleInput[currentLine++]; }
 	`,
 	cpp: `#include<iostream>
 #include<string>
@@ -119,12 +140,14 @@ bool parse_raw_sample_input(string rawSampleInput);
 vector<string> split(string str, string delimiter);
 string read_line();
 
-// TODO:
-// write your function here:
-// example:
-// int calc_area(int length, int breadth) {
-// 		return length * breadth;
-// }
+/**
+ * TODO:
+ * write your function here:
+ * example:
+ * int calc_area(int length, int breadth) {
+ * 	return length * breadth;
+ * }
+ */
 
 int main(int argc, char *argv[]) {
 	if (argc == 2) {
@@ -138,22 +161,26 @@ int main(int argc, char *argv[]) {
 			return -1;
 		}
 
-		// TODO:
-		// read individual lines from parsed sample inputs like following:
-		// string line;
-		// string line = read_line();
-		// while (line != "") {
-		// 	cout << "During readLine: " << line << endl;
-		// 	line = read_line();
-		// }
+		/**
+		 * TODO:
+		 * read individual lines from parsed sample inputs like following:
+		 * string line;
+		 * string line = read_line();
+		 * while (line != "") {
+		 * cout << "During readLine: " << line << endl;
+		 * line = read_line();
+		 * }
+		 */
 
-		// TODO:
-		// invoke your function here:
-		// example:
-		// int length = stoi(read_line());
-		// int breadth = stoi(read_line());
-		// int output = calc_area(length, breadth);
-		// cout << output;
+		/**
+		 * TODO:
+		 * call your function here and write the output to stdout:
+		 * example:
+		 * int length = stoi(read_line());
+		 * int breadth = stoi(read_line());
+		 * int output = calc_area(length, breadth);
+		 * cout << output;
+		 */
 
 	} else if (argc > 2) {
 		cerr << "Too many inputs provided";
@@ -162,11 +189,20 @@ int main(int argc, char *argv[]) {
 	}
 }
 
-/*
-* parse the raw input string into a vector of ...
-* ... linebreak-separated string(s)
-* e.g., "1\\n2 3 4 5" into ["1", "2 3 4 5"]
-*/
+/**
+ * use the readLine function to read individual lines from the sample input,
+ * incrementing the line pointer on each read
+ */
+string read_line() {
+	if (currentLine == sampleInput.size()) return "";
+	return sampleInput.at(currentLine++);
+}
+
+/**
+ * parse the raw input string into a vector of ...
+ * ... linebreak-separated string(s)
+ * e.g., "1\\n2 3 4 5" into ["1", "2 3 4 5"]
+ */
 bool parse_raw_sample_input(string rawInput) {
 	sampleInput = split(rawInput, "\\n");
 	if (sampleInput.size() > SAMPLE_INPUT_MAX_LINES)
@@ -174,19 +210,10 @@ bool parse_raw_sample_input(string rawInput) {
 	return true;
 }
 
-/*
-* read individual lines from the sample input; incrementing the currentLine ...
-* ... value each time it's called
-*/
-string read_line() {
-	if (currentLine == sampleInput.size()) return "";
-	return sampleInput.at(currentLine++);
-}
-
-/*
-* split a string into a vector of substrings, each substring ...
-* ... separated by a delimiter
-*/
+/**
+ * split a string into a vector of substrings, each substring ...
+ * ... separated by a delimiter
+ */
 vector<string> split(string str, string delimiter) {
 	// find the first occurrence of delimiter in string
 	size_t position = str.find(delimiter);
