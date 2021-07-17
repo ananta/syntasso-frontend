@@ -180,7 +180,7 @@ const Create: React.FC<RouteComponentProps> = () => {
                   >
                     Problem Statement
                   </label>
-                  <div className="flex flex-1 mb-32 md:mb-20">
+                  <div className="flex flex-1 mb-32 md:mb-20 h-40">
                     <Editor
                       editorState={input.problemStatement}
                       editorClassName="block w-full bg-white text-gray-700 border border-gray-400 shadow-inner rounded-md py-3 px-4 leading-tight focus:outline-none  focus:border-gray-500"
@@ -195,7 +195,7 @@ const Create: React.FC<RouteComponentProps> = () => {
                   >
                     Input Format
                   </label>
-                  <div className="flex flex-1 mb-32 md:mb-20">
+                  <div className="flex flex-1 mb-32 md:mb-20 h-40">
                     <Editor
                       editorState={input.inputFormat}
                       editorClassName="block w-full bg-white text-gray-700 border border-gray-400 shadow-inner rounded-md py-3 px-4 leading-tight focus:outline-none  focus:border-gray-500"
@@ -210,7 +210,7 @@ const Create: React.FC<RouteComponentProps> = () => {
                   >
                     Constraints
                   </label>
-                  <div className="flex flex-1 mb-32 md:mb-20">
+                  <div className="flex flex-1 mb-32 md:mb-20 h-40">
                     <Editor
                       editorState={input.constraints}
                       editorClassName="block w-full bg-white text-gray-700 border border-gray-400 shadow-inner rounded-md py-3 px-4 leading-tight focus:outline-none  focus:border-gray-500"
@@ -225,7 +225,7 @@ const Create: React.FC<RouteComponentProps> = () => {
                   >
                     Output Format
                   </label>
-                  <div className="flex flex-1 mb-32 md:mb-20">
+                  <div className="flex flex-1 mb-32 md:mb-20 h-40">
                     <Editor
                       editorState={input.outputFormat}
                       editorClassName="block w-full bg-white text-gray-700 border border-gray-400 shadow-inner rounded-md py-3 px-4 leading-tight focus:outline-none  focus:border-gray-500"
