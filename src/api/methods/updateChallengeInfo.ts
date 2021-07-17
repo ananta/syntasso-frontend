@@ -9,6 +9,7 @@ interface challengeInfoProps {
   constraints: string;
   sampleInput: string;
   sampleOutput: string;
+  tags?: string[];
 }
 
 interface updateChallengeProps {

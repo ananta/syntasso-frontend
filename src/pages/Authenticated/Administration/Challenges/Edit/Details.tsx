@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { RouteProps } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
@@ -6,17 +6,23 @@ import { EditorState, convertFromRaw, convertToRaw } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
 import Loader from 'react-loader-spinner';
 
-import { isUserAuthorizedToChallenge, updateChallenge } from 'api';
+import { getAvailableTags, getChallengeInfo, isUserAuthorizedToChallenge, updateChallenge } from 'api';
 import challengeAction from 'actions/ChallengeActions';
 import { Challenge } from 'actions/ActionTypes';
 
 import Button from 'components/Common/Button';
+import ReactTags from 'react-tag-autocomplete';
 
 interface EditPageProps extends RouteProps {
   challengeId: string;
 }
 
 const Details: React.FC<EditPageProps> = (EditPageProps) => {
+  const tagRef = useRef(null);
+
+  const [initialTags, setInitialTags] = useState([]);
+  const [tags, setTags] = useState([]);
+  const [initialTagsLoading, setInitialTagsLoading] = useState(true);
   const { challengeId } = EditPageProps;
   const [isDetailsLoading, setIsDetailsLoading] = useState(false);
   const [isDetailsUpdating, setIsDetailsUpdating] = useState(false);
@@ -39,7 +45,7 @@ const Details: React.FC<EditPageProps> = (EditPageProps) => {
   const getChallengeDetails = async () => {
     const {
       response: {
-        challenge: { constraints, description, difficulty, name, problemStatement, sampleInput, sampleOutput },
+        challenge: { constraints, description, difficulty, name, problemStatement, sampleInput, sampleOutput, tags },
       },
     } = await isUserAuthorizedToChallenge({
       token: AuthState.user.token,
@@ -63,6 +69,14 @@ const Details: React.FC<EditPageProps> = (EditPageProps) => {
       outputFormat:
         EditorState.createWithContent(convertFromRaw(JSON.parse(sampleOutput)), null) || EditorState.createEmpty(),
     }));
+    const initialTags =
+      tags && tags.length > 0
+        ? tags.map((_tag) => ({
+            name: _tag.tagName,
+            id: _tag.tagId,
+          }))
+        : [];
+    setTags(initialTags);
   };
 
   const updateChallengeInfo = async () => {
@@ -79,6 +93,7 @@ const Details: React.FC<EditPageProps> = (EditPageProps) => {
           sampleInput: JSON.stringify(convertToRaw(input.inputFormat.getCurrentContent())),
           constraints: JSON.stringify(convertToRaw(input.constraints.getCurrentContent())),
           sampleOutput: JSON.stringify(convertToRaw(input.outputFormat.getCurrentContent())),
+          tags: tags.map((_tag) => _tag.name),
         },
       });
       if (!updateRes.isSuccess) throw new Error(updateRes.message);
@@ -108,7 +123,8 @@ const Details: React.FC<EditPageProps> = (EditPageProps) => {
           EditorState.createWithContent(convertFromRaw(JSON.parse(sampleOutput)), null) || EditorState.createEmpty(),
       }));
       toast.success('Updated Challenge Information');
-      dispatch(challengeAction(Challenge.Get, {}));
+      await getChallengeDetails();
+      // dispatch(challengeAction(Challenge.Get, {}));
       window.scrollTo(0, 0);
       setIsDetailsUpdating(false);
     } catch (err) {
@@ -133,6 +149,38 @@ const Details: React.FC<EditPageProps> = (EditPageProps) => {
       [name]: value,
     }));
   };
+
+  const handleTagAdd = (item) => {
+    const _tags = [].concat(tags, item);
+    setTags(_tags);
+  };
+
+  const handleTagRemove = (i) => {
+    const _tags = tags.slice(0);
+    _tags.splice(i, 1);
+    setTags(_tags);
+  };
+
+  const handleFetchInitialTags = async () => {
+    setInitialTagsLoading(true);
+    try {
+      const availableTags = await getAvailableTags({ token: AuthState.user.token });
+      console.log({ availableTags });
+      const translatedTags = availableTags.response.tags.map((tag) => ({
+        id: tag.tagId,
+        name: tag.tagName,
+      }));
+      setInitialTags(translatedTags);
+    } catch (err) {
+      toast.error(err.message || 'Failed loading initial tags');
+    }
+    setInitialTagsLoading(false);
+  };
+
+  useEffect(() => {
+    // get the available tags for autocompletion
+    handleFetchInitialTags();
+  }, []);
 
   return (
     <div>
@@ -275,14 +323,27 @@ const Details: React.FC<EditPageProps> = (EditPageProps) => {
                     >
                       Tags
                     </label>
-                    <input
+
+                    <ReactTags
+                      allowNew
+                      // @ts-ignore: react-tags issue
+                      newTagText="Create new tag"
+                      // onValidate={validateTags}
+                      ref={tagRef}
+                      tags={tags}
+                      suggestions={initialTags || []}
+                      placeholderText="Add Tags...."
+                      onDelete={handleTagRemove}
+                      onAddition={handleTagAdd}
+                    />
+                    {/* <input
                       onChange={(e) => handleChange('tags', e.target.value)}
                       value={input.tags}
                       className="flex flex-1 appearance-none block w-full bg-white text-gray-700 border border-gray-400 shadow-inner rounded-md py-3 px-4 leading-tight focus:outline-none  focus:border-gray-500"
                       id="grid-text-1"
                       type="text"
                       required
-                    />
+                    /> */}
                   </div>
                 </div>
                 <div className="justify-between flex">
