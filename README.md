@@ -1,44 +1,59 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Syntasso Frontend App
 
-## Available Scripts
+A Blast from the Past: My Cringe-Worthy Repo
 
-In the project directory, you can run:
+## Introduction
 
-### `yarn start`
+Syntasso is a web-based application designed to challenge and inspire programmers of all levels. With its diverse range of programming challenges and contests, users can test their skills, learn new programming languages, and compete with others in a fun and engaging way. Supporting the execution of Javascript, C, and C++, Syntasso is a versatile platform that enables users to improve their coding abilities and build their confidence as programmers. Whether you're a seasoned developer or just starting out, Syntasso has something to offer for everyone.
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## App Architecture
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+![Syntasso Overview](https://anntz.com/_astro/syntasso-overview.a9ba2142_ZEPDfj.png)
 
-### `yarn test`
+## Engine Architecture
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+![Engine Architecture](https://anntz.com/_astro/syntasso.40fd60f6_Z20rvgs.png)
 
-### `yarn build`
+## Demo
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+<iframe
+	width="560"
+	height="315"
+	src="https://www.youtube.com/embed/TC3zW5LGkRI"
+	title="YouTube video player"
+	frameborder="0"
+	allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+	allowfullscreen
+></iframe>
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+## Technology Used
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+| Frontend Web Stack |
+| ------------------ |
+| React              |
+| Redux              |
+| Typescript         |
+| Socket.io          |
+| Jest               |
+| Elixer             |
+| Tailwind           |
+| Framer Motion      |
+| Axios              |
 
-### `yarn eject`
+| Backend Stack |
+| ------------- |
+| Node.js       |
+| Typescript    |
+| Docker        |
+| Express       |
+| PostgreSQL    |
+| Agenda        |
+| Redis         |
+| PdfKit        |
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+| Language Engines |
+| ---------------- |
+| Docker           |
+| Kubernetes       |
+| Redis            |
+| Rimraf           |
