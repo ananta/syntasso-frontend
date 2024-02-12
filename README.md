@@ -1,6 +1,6 @@
 # Syntasso Frontend App
 
-A Blast from the Past: My Cringe-Worthy Repo
+*This is the frontend application for our platform, which relies on 4 backend servers for full functionality. For details on server integration, feel free to contact me at hi@anntz.com.*
 
 ## Introduction
 
